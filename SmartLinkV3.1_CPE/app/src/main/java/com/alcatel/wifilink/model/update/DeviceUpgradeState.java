@@ -9,7 +9,7 @@ public class DeviceUpgradeState {
 
     /**
      *  Current Check State
-     * 0: No start update(UI does not send the start update command)
+     * 0: No start update(UI does not send the startAnim update command)
      1: updating (Download Firmware phase)
      2: complete
      */

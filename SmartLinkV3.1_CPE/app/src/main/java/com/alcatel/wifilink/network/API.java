@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alcatel.wifilink.model.sms.SMSStorageState;
 import com.alcatel.wifilink.model.wlan.WlanSetting;
 import com.alcatel.wifilink.model.wlan.WlanStatus;
 import com.alcatel.wifilink.utils.Constants;
@@ -117,7 +118,7 @@ public class API {
     private static API api;
 
     private String token;
-    private int TIMEOUT = 15;
+    private int TIMEOUT = 30;
     public static String gateWay;
 
     private API() {
@@ -179,19 +180,6 @@ public class API {
         }
     }
 
-    //    private API(DownloadProgressListener listener) {
-    //        if (smartLinkApi == null) {
-    //            Retrofit.Builder builder = new Retrofit.Builder();
-    //            builder.baseUrl("http://192.168.1.1")
-    //                    .client(createDownloadHttpClient(listener))
-    //                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-    //                    .addConverterFactory(GsonConverterFactory.create());
-    //            Retrofit retrofit = builder.build();
-    //            smartLinkApi = retrofit.create(SmartLinkApi.class);
-    //        }
-    //
-    //    }
-
     private OkHttpClient buildOkHttpClient() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -199,6 +187,7 @@ public class API {
         builder.connectTimeout(TIMEOUT, TimeUnit.SECONDS);
         builder.readTimeout(TIMEOUT, TimeUnit.SECONDS);
         builder.writeTimeout(TIMEOUT, TimeUnit.SECONDS);
+        builder.retryOnConnectionFailure(true);// 连接失败后重试
         builder.addInterceptor(chain -> {
             Request request = chain.request();
             Request.Builder reqBuilder = request.newBuilder();
@@ -218,7 +207,6 @@ public class API {
             Log.d("ma_load", ip);
             /* referer */
             reqBuilder.addHeader("Referer", ip);
-
             request = reqBuilder.build();
             Response proceed = chain.proceed(request);
             return proceed;
@@ -226,7 +214,6 @@ public class API {
         
         /* google play request online ssl verify */
         builder.hostnameVerifier(HostnameUtils.getVerify());
-
         builder.addInterceptor(httpLoggingInterceptor);
         return builder.build();
     }
@@ -237,17 +224,6 @@ public class API {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).retryOnConnectionFailure(true).connectTimeout(TIMEOUT, TimeUnit.SECONDS).build();
         return client;
     }
-
-    //    public static API get(DownloadProgressListener listener) {
-    //        if (api == null) {
-    //            synchronized (API.class) {
-    //                if (api == null) {
-    //                    api = new API(listener);
-    //                }
-    //            }
-    //        }
-    //        return api;
-    //    }
 
 
     private void subscribe(MySubscriber subscriber, Observable observable) {
@@ -276,8 +252,16 @@ public class API {
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
+    public void getNetworkRegisterState(MySubscriber<NetworkRegisterState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getNetworkRegisterState(new RequestBody(Methods.GET_NETWORK_REGISTER_STATE)));
+    }
+
     public void getCurrentLanguage(MySubscriber<LanguageResult> subscriber) {
         subscribe(subscriber, smartLinkApi.getCurrentLanguage(new RequestBody(Methods.GET_CURRENT_LANGUAGE)));
+    }
+
+    public void getSMSStorageState(MySubscriber<SMSStorageState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSMSStorageState(new RequestBody(Methods.GET_SMS_STORAGE_STATE)));
     }
 
     /**
@@ -574,7 +558,6 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGERECORDCLEAR, new UsageParams(clearTime))));
     }
 
-    // TOAT: 
     public void getConnectedDeviceList(MySubscriber<ConnectedList> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectedDeviceList(new RequestBody(Methods.GET_CONNECTEDDEVICELIST)));
     }
@@ -641,10 +624,14 @@ public class API {
         subscribe(subscriber, smartLinkApi.GetLanSettings(new RequestBody(Methods.GET_LAN_SETTINGS)));
     }
 
+    // TOAT: 接口
     interface SmartLinkApi {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody> request(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<NetworkRegisterState>> getNetworkRegisterState(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<LanguageResult>> getCurrentLanguage(@Body RequestBody requestBody);
@@ -771,5 +758,8 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<LanSettings>> GetLanSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SMSStorageState>> getSMSStorageState(@Body RequestBody requestBody);
     }
 }

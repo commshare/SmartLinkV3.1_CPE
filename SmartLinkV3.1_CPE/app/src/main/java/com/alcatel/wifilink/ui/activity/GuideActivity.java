@@ -34,7 +34,7 @@ public class GuideActivity extends BaseActivityWithBack implements OnPageChangeL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OtherUtils.stopAutoTimer();
+        OtherUtils.stopHomeTimer();
         setContentView(R.layout.guide);
         initViews();
         initDots();

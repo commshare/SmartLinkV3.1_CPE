@@ -10,6 +10,8 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.LoginRxActivity;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 /**
  * Created by qianli.ma on 2017/11/15 0015.
@@ -40,32 +42,40 @@ public abstract class CheckBoard {
      * @param target 出错时的目标ac
      */
     public void checkBoard(Activity ori, Class target) {
-        // 请求接口前
-        onPrepare();
-        API.get().getLoginState(new MySubscriber<LoginState>() {
-            @Override
-            protected void onSuccess(LoginState result) {
-                onSuccessful();// 请求接口成功后
-                successful();
-            }
+        // 检测wifi是否有连接
+        if (OtherUtils.isWifiConnect(ori)) {
+            // 请求接口前
+            onPrepare();
+            API.get().getLoginState(new MySubscriber<LoginState>() {
+                @Override
+                protected void onSuccess(LoginState result) {
+                    onSuccessful();// 请求接口成功后
+                    successful();
+                }
 
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                System.out.println("ma_rx_loging: " + error.getMessage() + ":" + error.getCode());
-                allError();
-                onResultErrors(error);// 请求接口中途错误
-                ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    allError();
+                    onResultErrors(error);// 请求接口中途错误
+                    // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
+                    CA.toActivity(ori, target, false, true, false, 0);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    allError();
+                    onErrors(e);// 请求接口错误溢出
+                    // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
+                    CA.toActivity(ori, target, false, true, false, 0);
+                }
+            });
+        } else {
+            // wifi掉线
+            if (ori != null) {
+                // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
                 CA.toActivity(ori, target, false, true, false, 0);
             }
-
-            @Override
-            public void onError(Throwable e) {
-                allError();
-                onErrors(e);// 请求接口错误溢出
-                ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
-                CA.toActivity(ori, target, false, true, false, 0);
-            }
-        });
+        }
     }
 
     /**

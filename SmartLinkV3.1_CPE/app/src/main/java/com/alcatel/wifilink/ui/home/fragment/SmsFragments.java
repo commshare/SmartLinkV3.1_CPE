@@ -26,6 +26,7 @@ import com.alcatel.wifilink.ui.home.helper.rcv.SmsRcvAdapter;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.sms.helper.SmsDeletePop;
 import com.alcatel.wifilink.ui.sms.helper.SmsDeleteSessionHelper;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,6 +110,7 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
             }
         };
         timerHelper.start(2000);
+        OtherUtils.timerList.add(timerHelper);
     }
 
 

@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.view.Window;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CA;
@@ -21,8 +20,8 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.AppInfo;
@@ -124,19 +123,19 @@ public class BaseActivityWithBack extends AppCompatActivity {
         int action = ev.getAction();
         if (MotionEvent.ACTION_DOWN == action || MotionEvent.ACTION_UP == action) {
             // 每次点击时候判断是否为以下三个界面--> 是则不启动定时器--> 只有进入Home界面才启用定时器
-            OtherUtils.stopAutoTimer();
+            OtherUtils.stopHomeTimer();
             if (isSpecialAc()) {
             } else {
-                HomeActivity.autoLogoutTask = new TimerTask() {
+                HomeRxActivity.autoLogoutTask = new TimerTask() {
                     @Override
                     public void run() {
                         logout(false);
                     }
                 };
-                HomeActivity.autoLogoutTimer = new Timer();
-                HomeActivity.autoLogoutTimer.schedule(HomeActivity.autoLogoutTask, Cons.AUTO_LOGOUT_PERIOD);
-                OtherUtils.homeTimerList.add(HomeActivity.autoLogoutTimer);
-                OtherUtils.homeTimerList.add(HomeActivity.autoLogoutTask);
+                HomeRxActivity.autoLogoutTimer = new Timer();
+                HomeRxActivity.autoLogoutTimer.schedule(HomeRxActivity.autoLogoutTask, Cons.AUTO_LOGOUT_PERIOD);
+                OtherUtils.homeTimerList.add(HomeRxActivity.autoLogoutTimer);
+                OtherUtils.homeTimerList.add(HomeRxActivity.autoLogoutTask);
             }
         }
         return super.dispatchTouchEvent(ev);
@@ -145,11 +144,9 @@ public class BaseActivityWithBack extends AppCompatActivity {
     /* 是否为指定的三个界面--> true: 是 */
     public boolean isSpecialAc() {
         String currentActivity = AppInfo.getCurrentActivityName(this);
-        boolean la = currentActivity.contains("LoadingActivity");
-        boolean ga = currentActivity.contains("GuideActivity");
-        // TOAT: 这里替换成LoginRxActivity
+        boolean la = currentActivity.contains("LoadingRxActivity");
+        boolean ga = currentActivity.contains("GuideRxActivity");
         boolean loa = currentActivity.contains("LoginRxActivity");
-        // boolean loa = currentActivity.contains("LoginActivity");
         if (la | ga | loa) {
             return true;
         } else {
@@ -166,11 +163,11 @@ public class BaseActivityWithBack extends AppCompatActivity {
                     case Intent.ACTION_SCREEN_ON:
                         break;
                     case Intent.ACTION_SCREEN_OFF:
-                        OtherUtils.stopAutoTimer();
+                        OtherUtils.stopHomeTimer();
                         if (!isSpecialAc()) {
                             logout(true);/* 锁屏后登出 */
                         } else {
-                            OtherUtils.stopAutoTimer();
+                            OtherUtils.stopHomeTimer();
                         }
                         break;
                     case Intent.ACTION_USER_PRESENT:
@@ -201,8 +198,6 @@ public class BaseActivityWithBack extends AppCompatActivity {
         API.get().logout(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                // ToastUtil_m.show(BaseActivityWithBack.this, getString(R.string.login_logout_successful));
-                // CA.toActivity(BaseActivityWithBack.this, LoginActivity.class, false, true, false, 0);
                 CA.toActivity(BaseActivityWithBack.this, LoginRxActivity.class, false, true, false, 0);
             }
 

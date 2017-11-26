@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
+import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
@@ -154,11 +155,15 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         //        mBillingDaySpinner.setSelection(0, true);
         mBillingDaySpinner.setOnItemSelectedListener(this);
         mUsageAlertSpinner = (AppCompatSpinner) findViewById(R.id.setdataplan_usagealert);
+        int usageLimit_default = SP.getInstance(SettingNetworkActivity.this).getInt(Cons.USAGE_LIMIT, 90);
+        setDefaultLimit(mUsageAlertSpinner, usageLimit_default);
         mUsageAlertSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] usageAlertStringArr = getResources().getStringArray(R.array.settings_data_plan_usage_alert);
                 String usageAlertPercent = usageAlertStringArr[position];
+                int usageLimit = Integer.valueOf(usageAlertPercent.replace("%", ""));
+                SP.getInstance(SettingNetworkActivity.this).putInt(Cons.USAGE_LIMIT, usageLimit);
             }
 
             @Override
@@ -215,6 +220,23 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mNewSimPin = (EditText) findViewById(R.id.new_sim_pin);
         mConfirmNewSimPin = (EditText) findViewById(R.id.confirm_new_sim_pin);
 
+    }
+
+    private void setDefaultLimit(AppCompatSpinner mUsageAlertSpinner, int usageLimit_default) {
+        switch (usageLimit_default) {
+            case 90:
+                mUsageAlertSpinner.setSelection(0, true);
+                break;
+            case 80:
+                mUsageAlertSpinner.setSelection(1, true);
+                break;
+            case 70:
+                mUsageAlertSpinner.setSelection(2, true);
+                break;
+            case 60:
+                mUsageAlertSpinner.setSelection(3, true);
+                break;
+        }
     }
 
     private void initRes() {
@@ -695,7 +717,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                         mUsageSetting.setUnit(Constants.UsageSetting.UNIT_MB);
                     } else if (radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()) {
                         mUsageSetting.setUnit(Constants.UsageSetting.UNIT_GB);
-                    } 
+                    }
                     // else if (radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()) {
                     //     mUsageSetting.setUnit(Constants.UsageSetting.UNIT_KB);
                     // }

@@ -1,7 +1,6 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.ImageView;
 
 import com.alcatel.wifilink.R;
@@ -16,7 +15,7 @@ import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.rx.helper.CheckBoard;
-import com.alcatel.wifilink.utils.FraHelper;
+import com.alcatel.wifilink.utils.FraHelpers;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +35,7 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
 
     public Class[] allClass = {PinPukPinFragment.class, PinPukPukFragment.class};
     private int containId = R.id.fl_pinpuk_index_rx;
-    public FraHelper fraHelper;
+    public FraHelpers fraHelper;
     private TimerHelper heartTimer;
     private CheckBoard checkBoard;
 
@@ -84,7 +83,7 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void initUi(PinPukBean pp) {
         Class clazz = pp.getFlag() == Cons.PIN_FLAG ? PinPukPinFragment.class : PinPukPukFragment.class;
-        fraHelper = new FraHelper(this, allClass, clazz, containId);
+        fraHelper = new FraHelpers(this, allClass, clazz, containId);
     }
 
     @OnClick(R.id.iv_pinpuk_index_rx_banner_back)
@@ -109,6 +108,7 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         fraHelper = null;
+        heartTimer.stop();
     }
 
     public void to(Class ac) {

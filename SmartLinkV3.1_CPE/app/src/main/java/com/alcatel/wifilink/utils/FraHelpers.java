@@ -7,18 +7,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by qianli.ma on 2017/9/8.
  */
-public class FraHelper {
+public class FraHelpers {
 
-    private Class[] clazzs;
     private Class initClass;
     private int contain;
     private FragmentActivity activity;
-    private List<String> tags;
+    private Class[] clazzs;// fragment类集合
+    private Map<String, Class> tagMap;// TAG对应的class
+    private Map<Class, String> classMap;// class对应的tag
+    private List<String> tags;// TAG集合
     private FragmentManager fm;
 
     /**
@@ -29,7 +33,7 @@ public class FraHelper {
      * @param initClass 初始的fragment class,如:AFragment.class
      * @param contain   fragment容器ID,如:R.id.fragmentlayout
      */
-    public FraHelper(FragmentActivity activity, Class[] clazzs, Class initClass, int contain) {
+    public FraHelpers(FragmentActivity activity, Class[] clazzs, Class initClass, int contain) {
         this.activity = activity;
         this.fm = activity.getSupportFragmentManager();
         this.clazzs = clazzs;
@@ -52,6 +56,46 @@ public class FraHelper {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 重新加载
+     * @param initClass 需要显示的首屏fragment
+     */
+    public void reload(Class initClass) {
+        try {
+            Map<String, Fragment> fragmentMap = new HashMap<>();
+            Fragment showFragment = null;// 需要显示的fragment
+            FragmentTransaction ft = fm.beginTransaction();
+            // 1. 重新填充fragment到contain
+            for (String tag : tagMap.keySet()) {
+                Fragment fragment_temp = fm.findFragmentByTag(tag);
+                if (fragment_temp != null) {
+                    // 删除原先的fragment
+                    ft.remove(fragment_temp);
+                    // 再通过字节码文件进行新创
+                    fragment_temp = (Fragment) tagMap.get(tag).newInstance();
+                    if (showFragment == null) {// 此处防止空指针
+                        showFragment = fragment_temp;
+                    }
+                    // 重新添加到容器中
+                    ft.add(contain, fragment_temp, tag);
+                    // 装载进临时集合(在下一步显示指定界面做准备)
+                    fragmentMap.put(tag, fragment_temp);
+                }
+            }
+            // 2.通过initClass字节码名称找出对应的fragment
+            for (String tag : fragmentMap.keySet()) {
+                if (tag.equalsIgnoreCase(initClass.getSimpleName())) {
+                    showFragment = fragmentMap.get(tag);
+                }
+            }
+            // 3.提交
+            ft.show(showFragment);
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -99,8 +143,12 @@ public class FraHelper {
      */
     private List<String> getTags() {
         List<String> tags = new ArrayList<>();
+        tagMap = new HashMap<>();
+        classMap = new HashMap<>();
         for (Class clazz : clazzs) {
             tags.add(clazz.getSimpleName());
+            tagMap.put(clazz.getSimpleName(), clazz);
+            classMap.put(clazz, clazz.getSimpleName());
         }
         return tags;
     }

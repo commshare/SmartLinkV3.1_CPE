@@ -27,6 +27,7 @@ import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import butterknife.BindView;
@@ -147,8 +148,17 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
                     protected void onSuccess(WlanSetting result) {
                         WifiInitRxActivity.this.result = result;
                         WifiInitRxActivity.this.resultCache = result.deepClone();// 备份缓存
-                        boolean is2P4GEnable = result.getAP2G().getApStatus() == Cons.ENABLE;
-                        boolean is5GEnable = result.getAP5G().getApStatus() == Cons.ENABLE;
+                        WlanSetting.AP2GBean ap2G = result.getAP2G();
+                        boolean is2P4GEnable = false;
+                        if (ap2G != null) {
+                            is2P4GEnable = ap2G.getApStatus() == Cons.ENABLE;
+                        }
+                        WlanSetting.AP5GBean ap5G = result.getAP5G();
+                        boolean is5GEnable = false;
+                        if (ap5G != null) {
+                            is5GEnable = ap5G.getApStatus() == Cons.ENABLE;
+                        }
+
                         // 面板
                         rl2p4GPanel.setVisibility(is2P4GEnable ? View.VISIBLE : View.GONE);
                         rl5GPanel.setVisibility(is5GEnable ? View.VISIBLE : View.GONE);
@@ -169,20 +179,22 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
                         etAccount5G.setTextColor(is5GEnable ? blue_color : gray_color);
                         etPassword5G.setTextColor(is5GEnable ? blue_color : gray_color);
                         // 编辑SSID
-                        etAccount2p4G.setText(result.getAP2G().getSsid());
-                        etAccount5G.setText(result.getAP5G().getSsid());
+                        etAccount2p4G.setText(ap2G != null ? ap2G.getSsid() : "");
+                        etAccount5G.setText(ap5G != null ? ap5G.getSsid() : "");
                         // 编辑密码
-                        etPassword2p4G.setText(result.getAP2G().getWpaKey());
-                        etPassword5G.setText(result.getAP5G().getWpaKey());
+                        etPassword2p4G.setText(ap2G != null ? ap2G.getWpaKey() : "");
+                        etPassword5G.setText(ap5G != null ? ap5G.getWpaKey() : "");
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Logger.v("ma_wifiinit: " + e.getMessage());
                         rlFailedPanel.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        Logger.v("ma_wifiinit: " + error.getMessage());
                         rlFailedPanel.setVisibility(View.VISIBLE);
                     }
                 });
@@ -192,8 +204,8 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         OtherUtils.stopHeartBeat(heartTimer);
+        super.onDestroy();
     }
 
     @Override
@@ -276,23 +288,29 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
             return;
         }
         // 3.封装
-        if (is2P4GEnable) {
-            result.getAP2G().setApStatus(Cons.ENABLE);
-            result.getAP2G().setSecurityMode(Cons.SECURITY_WPA_WPA2);// 强制为WPA\WPA2模式
-            result.getAP2G().setSsid(OtherUtils.getEdContentIncludeSpace(etAccount2p4G));
-            result.getAP2G().setWpaKey(OtherUtils.getEdContentIncludeSpace(etPassword2p4G));
-        } else {
-            result.getAP2G().setApStatus(Cons.DISABLE);
+        if (result.getAP2G() != null) {
+            if (is2P4GEnable) {
+                result.getAP2G().setApStatus(Cons.ENABLE);
+                result.getAP2G().setSecurityMode(Cons.SECURITY_WPA_WPA2);// 强制为WPA\WPA2模式
+                result.getAP2G().setSsid(OtherUtils.getEdContentIncludeSpace(etAccount2p4G));
+                result.getAP2G().setWpaKey(OtherUtils.getEdContentIncludeSpace(etPassword2p4G));
+            } else {
+                result.getAP2G().setApStatus(Cons.DISABLE);
+            }
         }
 
-        if (is5GEnable) {
-            result.getAP5G().setApStatus(Cons.ENABLE);
-            result.getAP5G().setSecurityMode(Cons.SECURITY_WPA_WPA2);// 强制为WPA\WPA2模式
-            result.getAP5G().setSsid(OtherUtils.getEdContentIncludeSpace(etAccount5G));
-            result.getAP5G().setWpaKey(OtherUtils.getEdContentIncludeSpace(etPassword5G));
-        } else {
-            result.getAP5G().setApStatus(Cons.DISABLE);
+
+        if (result.getAP5G() != null) {
+            if (is5GEnable) {
+                result.getAP5G().setApStatus(Cons.ENABLE);
+                result.getAP5G().setSecurityMode(Cons.SECURITY_WPA_WPA2);// 强制为WPA\WPA2模式
+                result.getAP5G().setSsid(OtherUtils.getEdContentIncludeSpace(etAccount5G));
+                result.getAP5G().setWpaKey(OtherUtils.getEdContentIncludeSpace(etPassword5G));
+            } else {
+                result.getAP5G().setApStatus(Cons.DISABLE);
+            }
         }
+
         // 4.检测是否连接上硬件以及内容是否发生改变
         checkBoardAndContent();
     }
@@ -315,16 +333,30 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
      * 判断是否有修改过
      */
     private void checkChange() {
-        // 1.状态是否相同
-        boolean is2P4GAPStatusSame = resultCache.getAP2G().getApStatus() == result.getAP2G().getApStatus();
-        boolean is5GAPStatusSame = resultCache.getAP5G().getApStatus() == result.getAP5G().getApStatus();
-        // 2.SSID是否相同
-        boolean is2P4GSSIDSame = resultCache.getAP2G().getSsid().equals(result.getAP2G().getSsid());
-        boolean is5GSSIDSame = resultCache.getAP5G().getSsid().equals(result.getAP5G().getSsid());
-        // 3.password是否相同
-        boolean is2P4GWpaSame = resultCache.getAP2G().getWpaKey().equals(result.getAP2G().getWpaKey());
-        boolean is5GWpaSame = resultCache.getAP5G().getWpaKey().equals(result.getAP5G().getWpaKey());
+        WlanSetting.AP2GBean ap2G = result.getAP2G();
+        WlanSetting.AP5GBean ap5G = result.getAP5G();
 
+        // 默认为true
+        boolean is2P4GAPStatusSame = true;
+        boolean is5GAPStatusSame = true;
+        boolean is2P4GSSIDSame = true;
+        boolean is5GSSIDSame = true;
+        boolean is2P4GWpaSame = true;
+        boolean is5GWpaSame = true;
+
+        if (ap2G != null) {
+            // 1.状态是否相同
+            is2P4GAPStatusSame = ap2G.getApStatus() == resultCache.getAP2G().getApStatus();
+            // 2.SSID是否相同
+            is2P4GSSIDSame = ap2G.getSsid().equals(resultCache.getAP2G().getSsid());
+            // 3.password是否相同
+            is2P4GWpaSame = ap2G.getWpaKey().equals(resultCache.getAP2G().getWpaKey());
+        }
+        if (ap5G != null) {
+            is5GAPStatusSame = ap5G.getApStatus() == resultCache.getAP5G().getApStatus();
+            is5GSSIDSame = ap5G.getSsid().equals(resultCache.getAP5G().getSsid());
+            is5GWpaSame = ap5G.getWpaKey().equals(resultCache.getAP5G().getWpaKey());
+        }
         if (is2P4GAPStatusSame & is5GAPStatusSame & is2P4GSSIDSame & is5GSSIDSame & is2P4GWpaSame & is5GWpaSame) {
             // 4.直接跳转到主页
             SP.getInstance(activity).putBoolean(Cons.WIFIINIT_RX, true);
@@ -451,7 +483,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
     }
 
     private void startHeartTimer() {
-        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class);
+        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class, LoginRxActivity.class);
     }
 
     /**

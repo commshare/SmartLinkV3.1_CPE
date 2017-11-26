@@ -267,7 +267,7 @@ public class PinCodeFragment extends Fragment {
 //                        // 跳转到PUK设置界面k
 //                        // to puk fragment
 //                        //ChangeActivity.toActivity(getActivity(), SettingPukActivity.class, true, true, false, 0);
-//                        FraHelper.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PUK_FRA);
+//                        FraHelpers.commit(activity, activity.fm, activity.flid_setupWizard, FragmentEnum.PUK_FRA);
 //                    }
 //                }
 //

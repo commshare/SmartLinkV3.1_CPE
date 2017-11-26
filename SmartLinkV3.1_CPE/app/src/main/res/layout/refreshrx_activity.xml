@@ -1,0 +1,46 @@
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/not_wifi_background"
+    android:padding="16dp"
+    tools:context=".ui.activity.RefreshWifiActivity">
+
+    <ImageView
+        android:id="@+id/iv_refreshrx_logo"
+        android:layout_width="299dp"
+        android:layout_height="173dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/device_ic" />
+
+    <TextView
+        android:id="@+id/tv_refreshrx_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_refreshrx_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/connect_failed"
+        android:textColor="@color/color_deep_grey"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/selector_nowifi_button"
+        android:gravity="center"
+        android:text="@string/refresh"
+        android:textColor="@color/mg_blue"
+        app:layout_heightPercent="10%w"
+        app:layout_marginBottomPercent="5%h"
+        app:layout_textSizePercent="2.5%h"
+        app:layout_widthPercent="25%w" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

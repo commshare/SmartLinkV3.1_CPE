@@ -398,8 +398,8 @@
     <string name="operation_unfavorite">إزالة من المفضلات</string>
     <string name="removed_favorite">تمت الإزالة من المفضلات</string>
     <string name="menu_setting">التفضيلات</string>
-    <string name="m_unit">ميغابايت</string>
-    <string name="g_unit">غيغابايت</string>
+    <string name="mb_text">ميغابايت</string>
+    <string name="gb_text">غيغابايت</string>
     <string name="confirm_unit">تأكيد</string>
     <string name="connect_type_select_sim_card_disable">قم بإدراج بطاقة SIM أولاً</string>
     <string name="connect_type_select_wan_port_disable">أدخل كبل إنترنت في منفذ WAN</string>

@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,8 +81,8 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
         switch_off = getResources().getDrawable(R.drawable.pwd_switcher_off);
         check_color = getResources().getColor(R.color.mg_blue);
         uncheck_color = getResources().getColor(R.color.gray);
-        MB = getString(R.string.m_unit);
-        GB = getString(R.string.g_unit);
+        MB = getString(R.string.mb_text);
+        GB = getString(R.string.gb_text);
     }
 
     private void initBean() {
@@ -114,7 +113,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
     }
 
     private void startHeartTimer() {
-        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class);
+        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class, LoginRxActivity.class);
     }
 
     @Override
@@ -153,24 +152,29 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
      * 点击了done按钮的操作
      */
     private void doneClick() {
-        // 是否掉线
-        if (result == null) {
-            toast(R.string.connect_failed);
-            return;
+        if (OtherUtils.isWifiConnect(this)) {
+
+            // 是否掉线
+            if (result == null) {
+                toast(R.string.connect_failed);
+                return;
+            }
+            // 空值判断
+            if (TextUtils.isEmpty(OtherUtils.getEdContent(etDataplanRxLimit))) {
+                toast(R.string.not_empty);
+                return;
+            }
+            // 范围判断
+            int limit = Integer.valueOf(OtherUtils.getEdContent(etDataplanRxLimit));
+            if (limit < 0 | limit > 1024) {
+                toast(R.string.input_a_data_value_between_0_1024);
+                return;
+            }
+            // 提交请求
+            pullRequest();
+        } else {
+            failed();
         }
-        // 空值判断
-        if (TextUtils.isEmpty(OtherUtils.getEdContent(etDataplanRxLimit))) {
-            toast(R.string.not_empty);
-            return;
-        }
-        // 范围判断
-        int limit = Integer.valueOf(OtherUtils.getEdContent(etDataplanRxLimit));
-        if (limit < 0 | limit > 1024) {
-            toast(R.string.input_a_data_value_between_0_1024);
-            return;
-        }
-        // 提交请求
-        pullRequest();
     }
 
     private void failed() {

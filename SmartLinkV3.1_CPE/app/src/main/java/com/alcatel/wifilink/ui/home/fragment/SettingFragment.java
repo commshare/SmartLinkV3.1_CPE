@@ -13,7 +13,9 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,7 @@ import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.AboutActivity;
 import com.alcatel.wifilink.ui.activity.EthernetWanConnectionActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
@@ -47,13 +50,13 @@ import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
 import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.net.SocketTimeoutException;
@@ -110,69 +113,114 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private TextView mMobileNetworkSimSocket;
     private TextView mMobileNetworkWanSocket;
     private TimerHelper checkTimer;
+    private HomeRxActivity activity;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        activity = (HomeRxActivity) getActivity();
         m_view = View.inflate(getActivity(), R.layout.fragment_home_setting, null);
         init();
         initEvent();
+        startTimer();
         return m_view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        checkTimer = new TimerHelper(getActivity()) {
-            @Override
-            public void doSomething() {
-                // 检测WAN口 | SIM是否连接
-                getSimOrWanConnect();
-            }
-        };
-        checkTimer.start(2500);
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopTimer();
     }
-    
+
     @Override
-    public boolean getUserVisibleHint() {
-        return super.getUserVisibleHint();
+    public void onPause() {
+        super.onPause();
+        stopTimer();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {// 隐藏界面
+            stopTimer();
+        } else {
+            startTimer();
+        }
+    }
+
+    private void stopTimer() {
+        if (checkTimer != null) {
+            checkTimer.stop();
+            checkTimer = null;
+        }
+    }
+
+    private void startTimer() {
+        if (checkTimer == null) {
+            checkTimer = new TimerHelper(activity) {
+                @Override
+                public void doSomething() {
+                    Logger.v("ma_check:" + "settingfragment--> timer");
+                    // 检测WAN口 | SIM是否连接
+                    getSimOrWanConnect();
+                }
+            };
+        }
+        checkTimer.start(2500);
+        OtherUtils.timerList.add(checkTimer);
     }
 
     /**
      * 检测WAN口 | SIM是否连接
      */
     private void getSimOrWanConnect() {
-        // 1.检测WAN口是否连接
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
-            @Override
-            protected void onSuccess(WanSettingsResult result) {
-                if (result.getStatus() == Cons.CONNECTED) {
-                    mMobileNetworkWanSocket.setText(getString(R.string.setting_on_state));
-                } else {
-                    mMobileNetworkWanSocket.setText(getString(R.string.setting_off_state));
+        // 0.检测wifi是否生效
+        if (OtherUtils.isWifiConnect(activity)) {
+            // 1.检测WAN口是否连接
+            API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+                @Override
+                protected void onSuccess(WanSettingsResult result) {
+                    if (result.getStatus() == Cons.CONNECTED) {
+                        mMobileNetworkWanSocket.setText(activity.getString(R.string.setting_on_state));
+                    } else {
+                        mMobileNetworkWanSocket.setText(activity.getString(R.string.setting_off_state));
+                    }
                 }
-            }
-        });
-        // 2.检测sim是否连接
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
-            @Override
-            protected void onSuccess(ConnectionStates result) {
-                if (result.getConnectionStatus() == Cons.CONNECTED) {
-                    mMobileNetworkSimSocket.setText(getString(R.string.setting_on_state));
-                } else {
-                    mMobileNetworkSimSocket.setText(getString(R.string.setting_off_state));
+
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    mMobileNetworkWanSocket.setText(activity.getString(R.string.setting_off_state));
                 }
-            }
-        });
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        checkTimer.stop();
-    }
+                @Override
+                public void onError(Throwable e) {
+                    mMobileNetworkWanSocket.setText(activity.getString(R.string.setting_off_state));
+                }
+            });
+            // 2.检测sim是否连接
+            API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+                @Override
+                protected void onSuccess(ConnectionStates result) {
+                    Log.v("ma_setting", "status: " + result.getConnectionStatus());
+                    if (result.getConnectionStatus() == Cons.CONNECTED) {
+                        mMobileNetworkSimSocket.setText(activity.getString(R.string.setting_on_state));
+                    } else {
+                        mMobileNetworkSimSocket.setText(activity.getString(R.string.setting_off_state));
+                    }
+                }
 
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    mMobileNetworkSimSocket.setText(activity.getString(R.string.setting_off_state));
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mMobileNetworkSimSocket.setText(activity.getString(R.string.setting_off_state));
+                }
+            });
+        }
+    }
 
     private void init() {
         mLoginPassword = (RelativeLayout) m_view.findViewById(R.id.setting_login_password);
@@ -233,7 +281,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 if (isSharingSupported) {
                     goToShareSettingPage();
                 } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.setting_not_support_sharing_service));
+                    ToastUtil_m.show(activity, getString(R.string.setting_not_support_sharing_service));
                 }
                 break;
             case R.id.setting_language:
@@ -247,7 +295,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.setting_backup:
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
-                    verifyStoragePermissions(getActivity());
+                    verifyStoragePermissions(activity);
                 }
                 popDialogFromBottom(Backup_Restore);
                 break;
@@ -266,7 +314,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 if (result.getConnectionStatus() == Constants.ConnectionStatus.CONNECTED) {
                     requestSetCheckNewVersion();
                 } else {
-                    ToastUtil_m.show(getActivity(), getString(R.string.setting_upgrade_no_connection));
+                    ToastUtil_m.show(activity, getString(R.string.setting_upgrade_no_connection));
                 }
 
             }
@@ -311,8 +359,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void popDialogFromBottom(int itemType) {
-        PopupWindow popupWindow = new PopupWindow(getActivity());
-        View view = View.inflate(getActivity(), R.layout.dialog_from_bottom, null);
+        PopupWindow popupWindow = new PopupWindow(activity);
+        View view = View.inflate(activity, R.layout.dialog_from_bottom, null);
 
         TextView mFirstTxt = (TextView) view.findViewById(R.id.first_txt);
         TextView mSecondTxt = (TextView) view.findViewById(R.id.second_txt);
@@ -354,13 +402,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
-                backgroundAlpha(getActivity(), 1f);
+                backgroundAlpha(activity, 1f);
             }
         });
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                backgroundAlpha(getActivity(), 1f);
+                backgroundAlpha(activity, 1f);
             }
         });
         popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -368,13 +416,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color.white));
-        backgroundAlpha(getActivity(), 0.5f);
+        backgroundAlpha(activity, 0.5f);
         popupWindow.setAnimationStyle(R.style.dialogStyle);
         popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
 
     }
 
-    // TODO: 2017/8/1 备份文件
     public int requestTimes = 0;
 
     private void backupDevice() {
@@ -418,9 +465,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void showBackupSuccessDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.back_up_settings);
-        EditText editText = new EditText(getActivity());
+        EditText editText = new EditText(activity);
         LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LayoutParams.setMargins(20, 0, 20, 0);
         editText.setLayoutParams(LayoutParams);
@@ -436,7 +483,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String savePath = editText.getText().toString();
-                SPUtils.getInstance(CONFIG_SPNAME, getActivity()).put(CONFIG_FILE_PATH, savePath);
+                SPUtils.getInstance(CONFIG_SPNAME, activity).put(CONFIG_FILE_PATH, savePath);
                 downLoadConfigureFile(savePath);
             }
         });
@@ -469,13 +516,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCompleted() {
                 dismissLoadingDialog();
-                ToastUtil_m.show(getActivity(), R.string.succeed);
+                ToastUtil_m.show(activity, R.string.succeed);
             }
 
             @Override
             public void onError(Throwable e) {
                 dismissLoadingDialog();
-                ToastUtil_m.show(getActivity(), R.string.fail);
+                ToastUtil_m.show(activity, R.string.fail);
             }
 
             @Override
@@ -488,7 +535,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void showDialogResetFactorySetting() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.reset_router);
         builder.setMessage(R.string.This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -517,21 +564,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil_m.show(getActivity(), R.string.succeed);
+                ToastUtil_m.show(activity, R.string.succeed);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                ToastUtil_m.show(getActivity(), R.string.fail);
+                ToastUtil_m.show(activity, R.string.fail);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                ToastUtil_m.show(getActivity(), R.string.fail);
+                ToastUtil_m.show(activity, R.string.fail);
                 dismissLoadingDialog();
             }
         });
@@ -572,14 +619,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     public int restoreTimes = 0;
 
     private void restore() {
-        String savePath = SPUtils.getInstance(CONFIG_SPNAME, getActivity()).getString(CONFIG_FILE_PATH);
+        String savePath = SPUtils.getInstance(CONFIG_SPNAME, activity).getString(CONFIG_FILE_PATH);
         if (savePath.equals("")) {
-            ToastUtil_m.show(getActivity(), "no backupFile");
+            ToastUtil_m.show(activity, "no backupFile");
             return;
         }
         File file = new File(FileUtils.createFilePath(savePath), "configure.bin");
         if (!file.exists()) {
-            ToastUtil_m.show(getActivity(), "No this file");
+            ToastUtil_m.show(activity, "No this file");
             return;
         }
 
@@ -601,7 +648,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             public void onCompleted() {
                 restoreTimes = 0;
                 dismissLoadingDialog();
-                ToastUtil_m.show(getActivity(), R.string.succeed);
+                ToastUtil_m.show(activity, R.string.succeed);
             }
 
             @Override
@@ -610,9 +657,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 if (restoreTimes > 12) {
                     dismissLoadingDialog();
                     if (e instanceof SocketTimeoutException) {
-                        ToastUtil_m.show(getActivity(), R.string.succeed);
+                        ToastUtil_m.show(activity, R.string.succeed);
                     } else {
-                        ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
+                        ToastUtil_m.show(activity, R.string.couldn_t_restore_try_again);
                     }
                 } else {
                     restore();
@@ -631,22 +678,22 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void showSuccessDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getActivity().getString(R.string.complete));
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(activity.getString(R.string.complete));
         builder.setCancelable(true);
         builder.show();
     }
 
     private void showFailedDialog(int stringId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getActivity().getString(stringId));
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(activity.getString(stringId));
         builder.setCancelable(true);
         builder.show();
     }
 
     private void showLoadingDialog() {
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage(getActivity().getString(R.string.back_up_progress));
+        mProgressDialog = new ProgressDialog(activity);
+        mProgressDialog.setMessage(activity.getString(R.string.back_up_progress));
         mProgressDialog.show();
 
     }
@@ -669,8 +716,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     /* -------------------------------------------- HELPER -------------------------------------------- */
     /* -------------------------------------------- HELPER -------------------------------------------- */
     private void goToShareSettingPage() {
-        Intent intent = new Intent(getActivity(), SettingShareActivity.class);
-        getActivity().startActivity(intent);
+        Intent intent = new Intent(activity, SettingShareActivity.class);
+        activity.startActivity(intent);
     }
 
     private void getDeviceFWCurrentVersion() {
@@ -702,13 +749,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onFailure() {
-                ToastUtil_m.show(getActivity(), R.string.fail);
+                ToastUtil_m.show(activity, R.string.fail);
                 super.onFailure();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                ToastUtil_m.show(getActivity(), R.string.fail);
+                ToastUtil_m.show(activity, R.string.fail);
                 super.onResultError(error);
             }
         });
@@ -716,7 +763,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void getDeviceNewVersionTask() {
-        timerHelper = new TimerHelper(getActivity()) {
+        timerHelper = new TimerHelper(activity) {
             @Override
             public void doSomething() {
                 requestGetDeviceNewVersion();
@@ -726,7 +773,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getUpgradeProgressTask() {
-        timerHelper = new TimerHelper(getActivity()) {
+        timerHelper = new TimerHelper(activity) {
             @Override
             public void doSomething() {
                 requestGetDeviceUpgradeState();
@@ -739,7 +786,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().getDeviceNewVersion(new MySubscriber<DeviceNewVersion>() {
             @Override
             protected void onSuccess(DeviceNewVersion result) {
-                getActivity().runOnUiThread(new Runnable() {
+                activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         processCheckVersionResult(result);
@@ -761,11 +808,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void showCheckingDlg() {
-        if (getActivity().isFinishing()) {
+        if (activity.isFinishing()) {
             return;
         }
         if (mCheckingDlg == null) {
-            mCheckingDlg = new ProgressDialog(getActivity());
+            mCheckingDlg = new ProgressDialog(activity);
             mCheckingDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mCheckingDlg.setMessage(getString(R.string.checking_for_update));
             mCheckingDlg.setTitle("");
@@ -778,10 +825,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showCheckResultDlg(String message, int state) {
-        if (getActivity().isFinishing()) {
+        if (activity.isFinishing()) {
             return;
         }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(message);
         builder.setTitle("");
         builder.setCancelable(false);
@@ -838,11 +885,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void showUpgradeStateResultDlg(String message, int state) {
-        if (getActivity().isFinishing()) {
+        if (activity.isFinishing()) {
             return;
         }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = LayoutInflater.from(activity);
         View view = inflater.inflate(R.layout.dialog_firmware_update, null);
         TextView messageText = (TextView) view.findViewById(R.id.tv_content);
         messageText.setText(message);
@@ -867,12 +914,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
 
     private void showUpgradeProgressDlg(int state, int progress) {
-        if (getActivity().isFinishing()) {
+        if (activity.isFinishing()) {
             return;
         }
         if (state == PROGRESS_STYLE_WAITING) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            LayoutInflater inflater = LayoutInflater.from(activity);
             View view = inflater.inflate(R.layout.dialog_firmware_update, null);
             ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_update_waiting);
             progressBar.setVisibility(View.VISIBLE);
@@ -885,8 +932,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
         } else {
             if (mUpgradingDlg == null) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                LayoutInflater inflater = LayoutInflater.from(activity);
                 View view = inflater.inflate(R.layout.dialog_firmware_update, null);
                 mUpgradingProgressBar = (ProgressBar) view.findViewById(R.id.pb_update_progress);
                 mUpgradingProgressBar.setVisibility(View.VISIBLE);
@@ -972,7 +1019,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                ToastUtil_m.show(getActivity(), R.string.fail);
+                ToastUtil_m.show(activity, R.string.fail);
             }
         });
     }
@@ -986,7 +1033,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getActivity().runOnUiThread(new Runnable() {
+                        activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (mUpgradedDlg != null) {
@@ -1003,7 +1050,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                getActivity().runOnUiThread(new Runnable() {
+                activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (mUpgradedDlg != null) {
@@ -1023,7 +1070,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         API.get().getDeviceUpgradeState(new MySubscriber<DeviceUpgradeState>() {
             @Override
             protected void onSuccess(DeviceUpgradeState result) {
-                getActivity().runOnUiThread(new Runnable() {
+                activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         processUpgradeStateResult(result);
@@ -1039,7 +1086,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                getActivity().runOnUiThread(new Runnable() {
+                activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         processUpgradeStateResult(null);
@@ -1051,36 +1098,36 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goSettingLanguagePage() {
-        Intent intent = new Intent(getActivity(), SettingLanguageActivity.class);
+        Intent intent = new Intent(activity, SettingLanguageActivity.class);
         startActivityForResult(intent, SET_LANGUAGE_REQUEST);
     }
 
     private void goToAccountSettingPage() {
         // to setting account activity
-        Intent intent = new Intent(getActivity(), SettingAccountActivity.class);
-        getActivity().startActivity(intent);
+        Intent intent = new Intent(activity, SettingAccountActivity.class);
+        activity.startActivity(intent);
     }
 
     private void goToMobileNetworkSettingPage() {
         // to setting network activity
-        Intent intent = new Intent(getActivity(), SettingNetworkActivity.class);
-        getActivity().startActivity(intent);
+        Intent intent = new Intent(activity, SettingNetworkActivity.class);
+        activity.startActivity(intent);
     }
 
     private void goEthernetWanConnectionPage() {
-        Intent intent = new Intent(getActivity(), EthernetWanConnectionActivity.class);
-        getActivity().startActivity(intent);
+        Intent intent = new Intent(activity, EthernetWanConnectionActivity.class);
+        activity.startActivity(intent);
     }
 
     private void goToDeviceSettingPage() {
         // to setting connectDeviceList activity
-        CA.toActivity(getActivity(), SettingDeviceActivity.class, false, true, false, 0);
+        CA.toActivity(activity, SettingDeviceActivity.class, false, true, false, 0);
     }
 
     private void goToAboutSettingPage() {
-        Intent intent = new Intent(getActivity(), AboutActivity.class);
+        Intent intent = new Intent(activity, AboutActivity.class);
         intent.putExtra("upgradeStatus", upgradeStatus);
-        getActivity().startActivity(intent);
+        activity.startActivity(intent);
     }
 
     @Override
@@ -1088,8 +1135,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == SettingFragment.SET_LANGUAGE_REQUEST) {
             if (data != null && data.getBooleanExtra(SettingLanguageActivity.IS_SWITCH_LANGUAGE, false)) {
-                HomeActivity parentActivity = (HomeActivity) getActivity();
-                parentActivity.afterSwitchLanguageReloadPage();
+                // 切换语言(重新加载fragment)
+                activity.reloadFragment();
             }
         }
     }

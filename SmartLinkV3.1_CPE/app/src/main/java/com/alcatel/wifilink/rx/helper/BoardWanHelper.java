@@ -3,6 +3,7 @@ package com.alcatel.wifilink.rx.helper;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Handler;
+import android.util.Log;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CA;
@@ -35,51 +36,99 @@ public class BoardWanHelper {
     private OnDisconnetingNextListener onDisconnetingNextListener;
     private OnSendRequestSuccess onSendRequestSuccess;
     private OnSendRequestFailed onSendRequestFailed;
+    private OnResultError onResultError;
+    private OnError onError;
+    private CheckBoard checkBoardClick;
+    private CheckBoard checkBoardRoll;
 
     public BoardWanHelper(Activity activity) {
         this.activity = activity;
     }
 
     /**
-     * 调用此方法
+     * 点击事件调用此方法
      */
     public void boardNormal() {
         if (pgd == null) {
             pgd = OtherUtils.showProgressPop(activity);
         }
+        if (!pgd.isShowing()) {
+            pgd.show();
+        }
         // 1.连接硬件
-        new CheckBoard() {
-            @Override
-            public void successful() {
-                // 2.登陆状态
-                API.get().getLoginState(new MySubscriber<LoginState>() {
-                    @Override
-                    protected void onSuccess(LoginState result) {
-                        if (result.getState() == Cons.LOGOUT) {
-                            toast(R.string.login_kickoff_logout_successful);
-                            to(LoginRxActivity.class);
-                            return;
+        if (checkBoardClick == null) {
+            checkBoardClick = new CheckBoard() {
+                @Override
+                public void successful() {
+                    // 2.登陆状态
+                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                        @Override
+                        protected void onSuccess(LoginState result) {
+                            if (result.getState() == Cons.LOGOUT) {
+                                to(LoginRxActivity.class);
+                                return;
+                            }
+                            // 3.WAN状态
+                            obtainWanStatus();
                         }
-                        // 3.WAN状态
-                        obtainWanStatus();
-                    }
 
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        OtherUtils.hideProgressPop(pgd);
-                        toast(R.string.connect_failed);
-                        to(RefreshWifiRxActivity.class);
-                    }
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            Log.v("ma_couldn_connect", "boardWanHelper getLoginState error: " + error.getMessage());
+                            OtherUtils.hideProgressPop(pgd);
+                            toast(R.string.connect_failed);
+                            to(RefreshWifiRxActivity.class);
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        OtherUtils.hideProgressPop(pgd);
-                        toast(R.string.connect_failed);
-                        to(RefreshWifiRxActivity.class);
-                    }
-                });
-            }
-        }.checkBoard(activity, RefreshWifiRxActivity.class);
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.v("ma_couldn_connect", "boardWanHelper getLoginState error: " + e.getMessage());
+                            OtherUtils.hideProgressPop(pgd);
+                            toast(R.string.connect_failed);
+                            to(RefreshWifiRxActivity.class);
+                        }
+                    });
+                }
+            };
+        }
+        checkBoardClick.checkBoard(activity, LoginRxActivity.class);
+    }
+
+    /**
+     * 定时器调用此方法
+     */
+    public void boardTimer() {
+        // 1.连接硬件
+        if (checkBoardRoll == null) {
+            checkBoardRoll = new CheckBoard() {
+                @Override
+                public void successful() {
+                    // 2.登陆状态
+                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                        @Override
+                        protected void onSuccess(LoginState result) {
+                            if (result.getState() == Cons.LOGOUT) {
+                                to(LoginRxActivity.class);
+                                return;
+                            }
+                            // 3.WAN状态
+                            obtainWanStatusRoll();
+                        }
+
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            resultErrorNext(error);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            errorNext(e);
+                        }
+                    });
+                }
+            };
+        }
+        checkBoardRoll.checkBoard(activity, LoginRxActivity.class);
     }
 
     /**
@@ -139,6 +188,43 @@ public class BoardWanHelper {
     /**
      * 获取wan状态
      */
+    private void obtainWanStatusRoll() {
+        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            @Override
+            protected void onSuccess(WanSettingsResult result) {
+                normalNext(result);
+                int status = result.getStatus();
+                switch (status) {
+                    case Cons.CONNECTED:
+                        connectedNext(result);
+                        break;
+                    case Cons.CONNECTING:
+                        connectingNext(result);
+                        break;
+                    case Cons.DISCONNECTED:
+                        disconnectedNext(result);
+                        break;
+                    case Cons.DISCONNECTING:
+                        disconnectingNext(result);
+                        break;
+                }
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                resultErrorNext(error);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                errorNext(e);
+            }
+        });
+    }
+
+    /**
+     * 获取wan状态
+     */
     private void obtainWanStatus() {
         API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
             @Override
@@ -174,6 +260,7 @@ public class BoardWanHelper {
 
             @Override
             public void onError(Throwable e) {
+                Log.v("ma_couldn_connect", "boardWanHelper obtainWanStatus error: " + e.getMessage());
                 OtherUtils.hideProgressPop(pgd);
                 toast(R.string.connect_failed);
                 to(RefreshWifiRxActivity.class);
@@ -190,6 +277,7 @@ public class BoardWanHelper {
     }
 
     private void toast(int resId) {
+        Log.v("ma_counld", getClass().getSimpleName());
         ToastUtil_m.show(activity, resId);
     }
 
@@ -198,6 +286,14 @@ public class BoardWanHelper {
     }
 
     /* -------------------------------------------- INTERFACE -------------------------------------------- */
+
+    public interface OnResultError {
+        void resultError(ResponseBody.Error error);
+    }
+
+    public interface OnError {
+        void error(Throwable e);
+    }
 
     public interface OnSendRequestSuccess {
         void sendSuccess();
@@ -229,6 +325,14 @@ public class BoardWanHelper {
 
     /* -------------------------------------------- METHOD -------------------------------------------- */
 
+    public void setOnResultError(OnResultError onResultError) {
+        this.onResultError = onResultError;
+    }
+
+    public void setOnError(OnError onError) {
+        this.onError = onError;
+    }
+
     public void setOnSendRequestSuccess(OnSendRequestSuccess onSendRequestSuccess) {
         this.onSendRequestSuccess = onSendRequestSuccess;
     }
@@ -258,6 +362,18 @@ public class BoardWanHelper {
     }
 
     /* -------------------------------------------- USE -------------------------------------------- */
+
+    private void resultErrorNext(ResponseBody.Error error) {
+        if (onResultError != null) {
+            onResultError.resultError(error);
+        }
+    }
+
+    private void errorNext(Throwable e) {
+        if (onError != null) {
+            onError.error(e);
+        }
+    }
 
     private void sendSuccessNext() {
         if (onSendRequestSuccess != null) {

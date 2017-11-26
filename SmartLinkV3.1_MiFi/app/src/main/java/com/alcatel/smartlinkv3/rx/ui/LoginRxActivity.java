@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.appwidget.PopupWindows;
 import com.alcatel.smartlinkv3.appwidget.RippleView;
+import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
@@ -32,6 +33,7 @@ import com.alcatel.smartlinkv3.utils.SPUtils;
 import com.alcatel.smartlinkv3.utils.ScreenSize;
 import com.alcatel.smartlinkv3.utils.ToastUtil_m;
 import com.alcatel.smartlinkv3.utils.TokenUtils;
+import com.alcatel.smartlinkv3.utils.VersionUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -130,86 +132,17 @@ public class LoginRxActivity extends BaseRxActivity {
         pgd = OtherUtils.showProgressPop(this);
         // 延遲2秒
         btLogin.postDelayed(() -> {
-            // 2.1.判断是否需要加密
-            API.get().getLoginState(new MySubscriber<LoginState>() {
-
-                private String password;
-                private String admin;
-
+            // 2.0.判断设备版本号
+            API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
                 @Override
-                protected void onSuccess(LoginState result) {
-                    Logs.v("ma_login", "login LoginState");
-                    if (result.getLoginRemainingTimes() <= 0) {
-                        showResetDeviceDialog(result);// 超过登陆限制次数
-                        return;
-                    }
-                    // 2.1.1.默认帐号密码
-                    admin = ADMIN;
-                    password = OtherUtils.getEdittext(etLoginPsd);
-                    // 2.2.是否需要加密
-                    if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
-                        admin = EncryptionUtil.encrypt(admin);
-                        password = EncryptionUtil.encrypt(password);
-                    }
-                    // 2.3.请求登陆接口
-                    API.get().login(admin, password, new MySubscriber<LoginResult>() {
-                        @Override
-                        protected void onSuccess(LoginResult result) {
-                            Logs.v("ma_login", "login success");
-                            API.get().updateToken(result.getToken());
-                            TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
-                            API.get().getLoginState(new MySubscriber<LoginState>() {
-                                @Override
-                                protected void onSuccess(LoginState result) {
-                                    if (result.getState() == Cons.LOGIN) {
-                                        //OtherUtils.initBusiness();// 2.5.启动请求接口
-                                        OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
-                                        // 2.7.是否进入过快速设置
-                                        boolean quick = SPUtils.getInstance(LoginRxActivity.this).getBoolean(Conn.QUICK_SETUP, false);
-                                        if (quick) {
-                                            ChangeActivity.toActivityNormal(LoginRxActivity.this, MainActivity.class, true);
-                                            // ChangeActivity.toActivityNormal(LoginRxActivity.this, TestRxActivity.class, true);
-                                        } else {
-                                            ChangeActivity.toActivityNormal(LoginRxActivity.this, QuickSetupRxActivity.class, true);
-                                        }
-                                        
-                                        /* 测试跳转 */
-                                        // ChangeActivity.toActivityNormal(LoginRxActivity.this, QuickSetupRxActivity.class, 
-                                        // true);
-                                    }
-                                }
-
-                                @Override
-                                protected void onResultError(ResponseBody.Error error) {
-                                    Logs.v("ma_login", "get loginstatus failed");
-                                    OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Logs.v("ma_login", "login onError");
-                            OtherUtils.hideProgressPop(pgd);
-                        }
-
-                        @Override
-                        protected void onResultError(ResponseBody.Error error) {
-                            Logs.v("ma_login", "error: " + error.getMessage() + ";code:" + error.getCode());
-                            OtherUtils.hideProgressPop(pgd);
-                            showErrorToast(error);
-                        }
-                    });
+                protected void onSuccess(SystemInfo result) {
+                    checkBoardConn(result.getDeviceName());
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    System.out.println("ma login onError");
                     OtherUtils.hideProgressPop(pgd);
-                    if (!OtherUtils.isWiFiActive(LoginRxActivity.this)) {
-                        ToastUtil_m.show(LoginRxActivity.this, getString(R.string.no_wifi));
-                    }
-                    ChangeActivity.toActivity(LoginRxActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+                    ToastUtil_m.show(LoginRxActivity.this, getString(R.string.refresh_wifi_tip));
                 }
 
                 @Override
@@ -218,8 +151,107 @@ public class LoginRxActivity extends BaseRxActivity {
                     ToastUtil_m.show(LoginRxActivity.this, getString(R.string.refresh_wifi_tip));
                 }
             });
+
+
         }, 2000);
 
+    }
+
+    /**
+     * 检测是否连接上硬件
+     */
+    private void checkBoardConn(String deviceName) {
+        // 2.1.判断是否需要加密
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+
+            private String password;
+            private String admin;
+
+            @Override
+            protected void onSuccess(LoginState result) {
+                Logs.v("ma_login", "login LoginState");
+                // 判断是否为Y858的旧版本
+                boolean isOld = VersionUtils.isOldVersion(deviceName);
+                if (result.getLoginRemainingTimes() <= 0 & !isOld) {
+                    OtherUtils.hideProgressPop(pgd);
+                    showResetDeviceDialog(result);// 超过登陆限制次数
+                    return;
+                }
+                // 2.1.1.默认帐号密码
+                admin = ADMIN;
+                password = OtherUtils.getEdittext(etLoginPsd);
+                // 2.2.是否需要加密
+                if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
+                    admin = EncryptionUtil.encrypt(admin);
+                    password = EncryptionUtil.encrypt(password);
+                }
+                // 2.3.请求登陆接口
+                API.get().login(admin, password, new MySubscriber<LoginResult>() {
+                    @Override
+                    protected void onSuccess(LoginResult result) {
+                        Logs.v("ma_login", "login success");
+                        API.get().updateToken(result.getToken());
+                        TokenUtils.setToken(result.getToken() + "");// 2.4.保存token
+                        API.get().getLoginState(new MySubscriber<LoginState>() {
+                            @Override
+                            protected void onSuccess(LoginState result) {
+                                if (result.getState() == Cons.LOGIN) {
+                                    //OtherUtils.initBusiness();// 2.5.启动请求接口
+                                    OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
+                                    // 2.7.是否进入过快速设置
+                                    boolean quick = SPUtils.getInstance(LoginRxActivity.this).getBoolean(Conn.QUICK_SETUP, false);
+                                    if (quick) {
+                                        ChangeActivity.toActivityNormal(LoginRxActivity.this, MainActivity.class, true);
+                                        // ChangeActivity.toActivityNormal(LoginRxActivity.this, TestRxActivity.class, true);
+                                    } else {
+                                        ChangeActivity.toActivityNormal(LoginRxActivity.this, QuickSetupRxActivity.class, true);
+                                    }
+                                    
+                                    /* 测试跳转 */
+                                    // ChangeActivity.toActivityNormal(LoginRxActivity.this, QuickSetupRxActivity.class, 
+                                    // true);
+                                }
+                            }
+
+                            @Override
+                            protected void onResultError(ResponseBody.Error error) {
+                                Logs.v("ma_login", "get loginstatus failed");
+                                OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logs.v("ma_login", "login onError");
+                        OtherUtils.hideProgressPop(pgd);
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        Logs.v("ma_login", "error: " + error.getMessage() + ";code:" + error.getCode());
+                        OtherUtils.hideProgressPop(pgd);
+                        showErrorToast(error);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                System.out.println("ma login onError");
+                OtherUtils.hideProgressPop(pgd);
+                if (!OtherUtils.isWiFiActive(LoginRxActivity.this)) {
+                    ToastUtil_m.show(LoginRxActivity.this, getString(R.string.no_wifi));
+                }
+                ChangeActivity.toActivity(LoginRxActivity.this, RefreshWifiActivity.class, false, true, false, 0);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                OtherUtils.hideProgressPop(pgd);
+                ToastUtil_m.show(LoginRxActivity.this, getString(R.string.refresh_wifi_tip));
+            }
+        });
     }
 
     /**
@@ -233,10 +265,39 @@ public class LoginRxActivity extends BaseRxActivity {
         String text = String.format(tip, remainTime);
         builder.setMessage(text + "\n" + getString(R.string.login_login_time_used_out_msg));
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            OtherUtils.hideProgressPop(pgd);
             dialog.dismiss();
+            setDeviceReset();// 强制设备恢复出厂设置
         });
-        builder.create();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
         builder.show();
+    }
+
+    /**
+     * 强制设备恢复出厂设置
+     */
+    private void setDeviceReset() {
+        pgd = OtherUtils.showProgressPop(this);
+        API.get().resetDevice(new MySubscriber() {
+            @Override
+            protected void onSuccess(Object result) {
+                OtherUtils.hideProgressPop(pgd);
+                ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_success));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                OtherUtils.hideProgressPop(pgd);
+                ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_failed));
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                OtherUtils.hideProgressPop(pgd);
+                ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_failed));
+            }
+        });
     }
 
     /**

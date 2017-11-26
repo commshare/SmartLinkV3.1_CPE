@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#f5f5f5"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#f5f5f5">
 
     <!-- ***** PIN UI ***** -->
     <com.zhy.android.percent.support.PercentRelativeLayout
@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:hint="@string/please_enable_sim_pin"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxLength="8"
                 android:paddingEnd="@dimen/dimen_10dip"
                 android:paddingStart="@dimen/dimen_10dip"

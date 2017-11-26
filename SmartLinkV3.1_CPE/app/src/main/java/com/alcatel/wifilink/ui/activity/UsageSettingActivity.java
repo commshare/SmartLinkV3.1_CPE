@@ -572,7 +572,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 			public void onClick(View view) {
 				dialog.dismiss();
 				if (m_isMB){
-					monthlyPlanUnit.setText(R.string.m_unit);
+					monthlyPlanUnit.setText(R.string.mb_text);
 					SP.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "MB");
 
 					DataValue data = new DataValue();
@@ -580,7 +580,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 					BusinessManager.getInstance().sendRequestMessage(
 							MessageUti.STATISTICS_SET_UNIT_REQUSET, data);
 				} else {
-					monthlyPlanUnit.setText(R.string.g_unit);
+					monthlyPlanUnit.setText(R.string.gb_text);
 					SP.getInstance(context).putString(SETTING_MONTHLY_DATA_UNIT, "GB");
 
 					DataValue data = new DataValue();

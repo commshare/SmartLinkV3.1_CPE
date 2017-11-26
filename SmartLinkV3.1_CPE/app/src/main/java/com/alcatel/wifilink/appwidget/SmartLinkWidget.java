@@ -396,12 +396,12 @@ public class SmartLinkWidget extends AppWidgetProvider {
     String dataUnitString = "";
     if (monthPlanUsageDataMode.getUsageData() == 0) {
       dataUnitString = usedUsageDataMode.getUsageUnit() == 0 ?
-          context.getResources().getString(R.string.m_unit) :
-          context.getResources().getString(R.string.g_unit);
+          context.getResources().getString(R.string.mb_text) :
+          context.getResources().getString(R.string.gb_text);
     } else {
       dataUnitString = monthPlanUsageDataMode.getUsageUnit() == 0 ? 
-          context.getResources().getString(R.string.m_unit) :
-          context.getResources().getString(R.string.g_unit);
+          context.getResources().getString(R.string.mb_text) :
+          context.getResources().getString(R.string.gb_text);
     }
     remoteViews.setImageViewBitmap(R.id.ib_widget_usage,
             drawTrafficCircle(monthPlanUsageDataMode.getUsageData(),

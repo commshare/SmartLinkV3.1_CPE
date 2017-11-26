@@ -397,8 +397,8 @@
     <string name="operation_unfavorite">Odstrani iz priljubljenih</string>
     <string name="removed_favorite">Odstranjeno iz priljubljenih</string>
     <string name="menu_setting">Nastavitve po meri</string>
-    <string name="m_unit">MB</string>
-    <string name="g_unit">GB</string>
+    <string name="mb_text">MB</string>
+    <string name="gb_text">GB</string>
     <string name="confirm_unit">POTRDI</string>
     <string name="connect_type_select_sim_card_disable">Najprej vstavite kartico SIM</string>
     <string name="connect_type_select_wan_port_disable">Vključite internetni kabel v vrata WAN</string>

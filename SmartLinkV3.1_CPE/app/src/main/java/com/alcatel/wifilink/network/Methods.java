@@ -13,8 +13,12 @@ public interface Methods {
     String HEART_BEAT = "HeartBeat";
     String SET_PASSWORD_CHANGE_FLAG = "SetPasswordChangeFlag";
     String GET_PASSWORD_CHANGE_FLAG = "GetPasswordChangeFlag";
-    
+
     String GET_CURRENT_LANGUAGE = "GetCurrentLanguage";
+    String GET_SMS_STORAGE_STATE = "GetSMSStorageState";
+
+    String SEARCH_NETWORK_RESULT = "SearchNetworkResult";
+    String GET_NETWORK_REGISTER_STATE = "GetNetworkRegisterState";
 
     //SIM card
     String GET_SIM_STATUS = "GetSimStatus";

@@ -8,6 +8,7 @@ import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 public class LoadingRxActivity extends BaseActivityWithBack {
 
@@ -21,5 +22,11 @@ public class LoadingRxActivity extends BaseActivityWithBack {
         } else {
             CA.toActivity(this, GuideRxActivity.class, false, true, false, 2000);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        OtherUtils.clearAllTimer();
     }
 }

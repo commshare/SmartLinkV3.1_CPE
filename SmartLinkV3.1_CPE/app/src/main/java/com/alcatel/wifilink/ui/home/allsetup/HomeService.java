@@ -7,11 +7,14 @@ import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.AppInfo;
+import com.alcatel.wifilink.utils.OtherUtils;
 
 import java.util.List;
 
@@ -37,14 +40,32 @@ public class HomeService extends Service {
                 String currentPackName = getPackageName();// 当前类名
                 // 如果当前运行的包名没有包含当前服务的包名,则认为APP被杀死--> 退出
                 if (!allRunningPackage.contains(currentPackName)) {
-                    API.get().logout(new MySubscriber() {
+                    API.get().getLoginState(new MySubscriber<LoginState>() {
                         @Override
-                        protected void onSuccess(Object result) {
-                            
+                        protected void onSuccess(LoginState result) {
+                            OtherUtils.clearAllTimer();
+                            if (result.getState() == Cons.LOGIN) {
+                                API.get().logout(new MySubscriber() {
+                                    @Override
+                                    protected void onSuccess(Object result) {
+
+                                    }
+
+                                    @Override
+                                    protected void onResultError(ResponseBody.Error error) {
+
+                                    }
+                                });
+                            }
                         }
 
                         @Override
                         protected void onResultError(ResponseBody.Error error) {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
 
                         }
                     });

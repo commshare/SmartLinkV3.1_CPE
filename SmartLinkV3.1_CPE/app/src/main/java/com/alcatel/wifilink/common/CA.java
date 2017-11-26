@@ -54,33 +54,28 @@ public class CA {
                                   boolean overridepedding, // 是否設置轉場動畫
                                   final int delay) {// 延遲跳轉時間
         final Activity activity = (Activity) context;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(delay);
-                    activity.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(context, clazz);
-                            if (isSingleTop) {
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            }
-                            context.startActivity(intent);
-                            if (!overridepedding) {
-                                activity.overridePendingTransition(0, 0);
-                            }
-                            if (isFinish) {
-                                activity.finish();
-                            }
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay);
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+                        Intent intent = new Intent(context, clazz);
+                        if (isSingleTop) {
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        }
+                        context.startActivity(intent);
+                        if (!overridepedding) {
+                            activity.overridePendingTransition(0, 0);
+                        }
+                        if (isFinish) {
+                            activity.finish();
                         }
                     });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+
         }).start();
     }
 

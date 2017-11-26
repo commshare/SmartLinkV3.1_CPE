@@ -56,7 +56,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         OtherUtils.setWifiActive(this, true);
-        OtherUtils.stopAutoTimer();
+        OtherUtils.stopHomeTimer();
         OtherUtils.clearContexts(getClass().getSimpleName());
         initDate();
         logout();
@@ -66,6 +66,16 @@ public class RefreshWifiActivity extends AppCompatActivity {
         API.get().logout(new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
+                
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                
+            }
+
+            @Override
+            public void onError(Throwable e) {
                 
             }
         });

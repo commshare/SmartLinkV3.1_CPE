@@ -56,7 +56,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        OtherUtils.stopAutoTimer();
+        OtherUtils.stopHomeTimer();
         setContentView(R.layout.activity_sim_unlock);
         ButterKnife.bind(this);
         actionbar = getSupportActionBar();

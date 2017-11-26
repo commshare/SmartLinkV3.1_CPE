@@ -86,7 +86,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/iv_dataplan_rx_limit_arrow"
                 android:gravity="center"
-                android:text="@string/m_unit"
+                android:text="@string/mb_text"
                 android:textColor="@color/mg_blue"
                 app:layout_textSizePercent="22%h"
                 app:layout_widthPercent="15%w" />

@@ -40,7 +40,7 @@
 *		  setDeviceDisposer()/getDeviceDisposer()
 *	04/20/04
 *		- Added the following methods.
-*		  start(String target, int mx) and start(String target).
+*		  start(String target, int mx) and startAnim(String target).
 *	06/23/04
 *		- Added setNMPRMode() and isNMPRMode().
 *	07/08/04

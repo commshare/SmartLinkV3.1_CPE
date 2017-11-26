@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dip"
         android:background="@color/white"
-        android:text="@string/m_unit"
+        android:text="@string/mb_text"
         android:textSize="@dimen/dimen_textsize_18sp"
         android:textColor="@drawable/selector_mb_color"/>
 
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_50dip"
         android:background="@color/white"
-        android:text="@string/g_unit"
+        android:text="@string/gb_text"
         android:textSize="@dimen/dimen_textsize_18sp"
         android:textColor="@drawable/selector_mb_color"/>
 

@@ -21,7 +21,6 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.common.CA;
-import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
@@ -29,9 +28,10 @@ import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.helper.LogoutHelper;
+import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
-import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.PukUnlockActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
@@ -190,24 +190,21 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         initView();
         initUi();
 
-        setGuideFlag();
         OtherUtils.timerList.add(startTimer()); // 定时器在此处而不是在Onresume是为了防止界面重复刷新
         OtherUtils.timerList.add(getCurrentActivity());// 定时获取当前位于顶层运行的ACTIVITY
-        OtherUtils.timerList.add(heartBeanTimer());// 心跳包发送
+        OtherUtils.timerList.add(heartTimer());// 心跳包发送
         Timer autoTimer = autoLogoutTimer();
         OtherUtils.timerList.add(autoTimer);// 启动定时退出计时器
         OtherUtils.homeTimerList.add(autoTimer);
         startAPPPackageService();// 后台服务: 检测当前APP是否被杀死
     }
 
-    /* 提交向导页标记 */
-    private void setGuideFlag() {
-        boolean isWifiGuide = SP.getInstance(this).getBoolean(Cons.WIFI_GUIDE_FLAG, false);
-        boolean isDataPlan = SP.getInstance(this).getBoolean(Cons.DATA_PLAN_FLAG, false);
-        SP.getInstance(this).putBoolean(LoginActivity.GUIDE_FLAG, isWifiGuide & isDataPlan);
-    }
 
+    // TOAT: 
 
+    /**
+     * 启动后台服务:检测APP是否为前台进程
+     */
     private void startAPPPackageService() {
         // 查看正在运行的服务
         boolean homeServiceWorked = OtherUtils.isServiceWork(this, HomeService.class);
@@ -217,7 +214,14 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         }
     }
 
-    /* 启动定时退出 */
+
+    // TOAT: 
+
+    /**
+     * 启动自动退出定时器
+     *
+     * @return
+     */
     private Timer autoLogoutTimer() {
         autoLogoutTask = new TimerTask() {
             @Override
@@ -232,8 +236,14 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         return autoLogoutTimer;
     }
 
-    /* **** heartBeanTimer:心跳包 **** */
-    private TimerHelper heartBeanTimer() {
+    // TOAT: 
+
+    /**
+     * 心跳包
+     *
+     * @return
+     */
+    private TimerHelper heartTimer() {
         // 单点登陆
         heartBeatTimer = new TimerHelper(this) {
             @Override
@@ -241,6 +251,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 API.get().heartBeat(new MySubscriber() {
                     @Override
                     protected void onSuccess(Object result) {
+
                     }
 
                     @Override
@@ -255,7 +266,13 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
     }
 
 
-    /* **** getCurrentActivity:循环获取当前顶层的ACTIVITY(用于辅助未读短信的判断) **** */
+    // TOAT: 
+
+    /**
+     * 循环获取当前顶层的ACTIVITY(用于辅助未读短信的判断)
+     *
+     * @return
+     */
     private TimerHelper getCurrentActivity() {
         curActTimer = new TimerHelper(this) {
             @Override
@@ -267,7 +284,11 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         return curActTimer;
     }
 
-    /* **** initActionbar **** */
+    // TOAT: 
+
+    /**
+     * 初始化顶部导航栏
+     */
     private void initActionbar() {
         barSetting = new ActionbarSetting() {
             @Override
@@ -284,26 +305,15 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         barSetting.settingActionbarAttr(this, supportActionBar, R.layout.actionbarhome);
     }
 
+    // TOAT: 
     @Override
     public void onBackPressed() {
         if ((System.currentTimeMillis() - mkeyTime) > 2000) {
             mkeyTime = System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), R.string.home_exit_app, Toast.LENGTH_SHORT).show();
         } else {
-            destroyOperate();/* 用户退出销毁定时器 */
-            API.get().logout(new MySubscriber() {
-                @Override
-                protected void onSuccess(Object result) {
-                    OtherUtils.kill();
-                    finish();
-                }
-
-                @Override
-                protected void onResultError(ResponseBody.Error error) {
-                    OtherUtils.kill();
-                    finish();
-                }
-            });
+            destroyAll();// 用户退出销毁定时器
+            logout();// 退出
         }
     }
 
@@ -317,12 +327,14 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         setLastPage(page);
     }
 
+    // TOAT: 
     @Override
     protected void onPause() {
         super.onPause();
         Logs.v("ma_home", "onPause");
     }
 
+    // TOAT: 
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -398,6 +410,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     }
 
+    // TOAT: 
     public void afterSwitchLanguageReloadPage() {
         FragmentHomeBucket.afterSwitchLanguageReloadPage(this, fm, container);
         refreshActionbar(FragmentHomeEnum.SETTING);
@@ -480,20 +493,12 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
      * A1.登出
      */
     private void logout() {
-        // 2. logout action
-        API.get().logout(new MySubscriber() {
+        new LogoutHelper(this) {
             @Override
-            protected void onSuccess(Object result) {
-                ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_successful));
-                // 3. when logout finish --> to the login Acitvity
-                CA.toActivity(HomeActivity.this, LoginActivity.class, false, true, false, 0);
+            public void logoutFinish() {
+                CA.toActivity(HomeActivity.this, LoginRxActivity.class, false, true, false, 0);
             }
-
-            @Override
-            protected void onFailure() {
-                ToastUtil_m.show(HomeActivity.this, getString(R.string.login_logout_failed));
-            }
-        });
+        };
     }
 
     /**
@@ -767,16 +772,36 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         }
     }
 
+    /**
+     * 获取上次缓存的页码
+     *
+     * @return
+     */
     private int getPage() {
         String sp = ShareperfrenceUtil.getSp(this, SP_PAGE_FILE, Cons.PAGE);
         return (TextUtils.isEmpty(sp) || Integer.valueOf(sp) == Cons.WIFI) && !isRe ? Cons.MAIN : Integer.valueOf(sp);
     }
 
-    private void destroyOperate() {
+    /**
+     * 销毁定时器
+     */
+    private void destroyAll() {
         // 复位page标记
         ShareperfrenceUtil.setSp(this, SP_PAGE_FILE, Cons.PAGE, Cons.MAIN);
         // 停止所有的定时器
         clearAllTimer();
+    }
+
+    public void toast(int resId) {
+        ToastUtil_m.show(this, resId);
+    }
+
+    public void toast(String content) {
+        ToastUtil_m.show(this, content);
+    }
+
+    private void to(Class clazz) {
+        CA.toActivity(this, clazz, false, true, false, 0);
     }
 
 }

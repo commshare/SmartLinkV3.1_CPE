@@ -5,11 +5,207 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.alcatel.wifilink.rx.ui.HomeRxActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_homeRx_banner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="homerxactivity" />
+        android:background="@color/mg_blue"
+        android:visibility="visible"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_homeRx_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="10%w" />
+
+        <TextView
+            android:id="@+id/tv_homeRx_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_homeRx_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:maxLines="1"
+            android:text="@string/log_out"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_textSizePercent="25%h" />
+
+        <ImageView
+            android:id="@+id/iv_homeRx_smsNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:src="@drawable/actionbar_edit_icon"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_heightPercent="65%h"
+            app:layout_widthPercent="80%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- navigation -->
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_homeRx_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/homerx_navigation_bg"
+        android:orientation="horizontal"
+        app:layout_heightPercent="9%h">
+
+        <!-- HOME -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:id="@+id/ll_homeRx_home"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_widthPercent="25%w">
+
+            <ImageView
+                android:id="@+id/iv_homeRx_tab_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tab_home_pre"
+                app:layout_heightPercent="55%h"
+                app:layout_widthPercent="55%h" />
+
+            <TextView
+                android:id="@+id/tv_homeRx_tab_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_home"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="20%h" />
+
+        </com.zhy.android.percent.support.PercentLinearLayout>
+
+        <!-- WIFI -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:id="@+id/ll_homeRx_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_widthPercent="25%w">
+
+            <ImageView
+                android:id="@+id/iv_homeRx_tab_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wifikey_nor"
+                app:layout_heightPercent="55%h"
+                app:layout_widthPercent="55%h" />
+
+            <TextView
+                android:id="@+id/tv_homeRx_tab_wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_wifi"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="20%h" />
+
+        </com.zhy.android.percent.support.PercentLinearLayout>
+
+        <!-- SMS -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/ll_homeRx_sms"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            app:layout_widthPercent="25%w">
+
+            <ImageView
+                android:id="@+id/iv_homeRx_tab_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/tab_sms_nor"
+                app:layout_heightPercent="55%h"
+                app:layout_widthPercent="55%h" />
+
+            <TextView
+                android:id="@+id/tv_homeRx_tab_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_homeRx_tab_sms"
+                android:layout_centerHorizontal="true"
+                android:text="@string/main_sms"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="20%h" />
+
+            <TextView
+                android:id="@+id/tv_homeRx_smsDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iv_homeRx_tab_sms"
+                android:background="@drawable/bg_dot"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_heightPercent="20%h"
+                app:layout_textSizePercent="13%h"
+                app:layout_widthPercent="20%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- SETTING -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:id="@+id/ll_homeRx_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_widthPercent="25%w">
+
+            <ImageView
+                android:id="@+id/iv_homeRx_tab_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tab_settings_nor"
+                app:layout_heightPercent="55%h"
+                app:layout_widthPercent="55%h" />
+
+            <TextView
+                android:id="@+id/tv_homeRx_tab_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_setting"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="20%h" />
+
+        </com.zhy.android.percent.support.PercentLinearLayout>
+
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <!-- container -->
+    <com.zhy.android.percent.support.PercentFrameLayout
+        android:id="@+id/fl_homeRx_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_homeRx_navigation"
+        android:layout_below="@id/rl_homeRx_banner">
+
+    </com.zhy.android.percent.support.PercentFrameLayout>
 
 </com.zhy.android.percent.support.PercentRelativeLayout>

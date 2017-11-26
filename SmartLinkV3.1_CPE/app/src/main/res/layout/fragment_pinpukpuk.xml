@@ -15,6 +15,7 @@
 
         <!-- 输入框 -->
         <EditText
+            android:inputType="numberPassword"
             android:id="@+id/et_puk_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,6 +54,7 @@
 
         <!-- 重新设置PIN码 -->
         <EditText
+            android:inputType="numberPassword"
             android:id="@+id/et_puk_resetpin_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,6 +85,7 @@
 
         <!-- 确认PIN码 -->
         <EditText
+            android:inputType="numberPassword"
             android:id="@+id/et_puk_resetpin_rx_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

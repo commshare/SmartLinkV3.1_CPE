@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33a0f6">
+
+    <!-- ***** 中心按钮 ***** -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_mainrx_connected_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/home_ic_bg"
+        app:layout_heightPercent="50%w"
+        app:layout_marginTopPercent="12%h"
+        app:layout_widthPercent="50%w">
+
+        <!-- wan口连接按钮 -->
+        <Button
+            android:id="@+id/bt_mainrx_wanConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/wan_conn"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
+
+        <!-- sim卡未连接按钮 -->
+        <Button
+            android:id="@+id/bt_mainrx_simUnConnected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/home_btn_connected_nor"
+            android:text="@string/connect"
+            android:textColor="@color/mg_blue"
+            android:visibility="visible"
+            app:layout_heightPercent="100%w"
+            app:layout_textSizePercent="12%h"
+            app:layout_widthPercent="100%w" />
+
+        <!-- sim卡已连接按钮 -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_mainrx_simConnected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <!-- 波浪 -->
+            <com.gelitenight.waveview.library.WaveView
+                android:id="@+id/bt_mainrx_simConnected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:layout_heightPercent="90%w"
+                app:layout_widthPercent="90%w" />
+
+            <!-- 已使用流量数值 -->
+            <TextView
+                android:id="@+id/tv_mainrx_usedData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                app:layout_textSizePercent="20%h" />
+
+            <!-- 流量单位 -->
+            <TextView
+                android:id="@+id/tv_mainrx_usedUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/tv_mainrx_usedData"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                app:layout_marginBottomPercent="5%h"
+                app:layout_textSizePercent="10%h" />
+
+            <!-- 总流量说明 -->
+            <TextView
+                android:id="@+id/tv_mainrx_usedTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mainrx_usedData"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                app:layout_marginLeftPercent="9%w"
+                app:layout_marginRightPercent="9%w"
+                app:layout_textSizePercent="7%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- ***** 运营商 ***** -->
+    <TextView
+        android:id="@+id/tv_mainrx_networkType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_mainrx_connected_panel"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        app:layout_marginTopPercent="2%h"
+        app:layout_textSizePercent="3%h" />
+
+    <!-- **** 最底部面板 **** -->
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/rl_mainrx_signalAndConnected_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        app:layout_heightPercent="32%h">
+
+        <!-- 信号 -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_mainrx_signal_panel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_mainrx_signal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/home_4g_none"
+                app:layout_heightPercent="30%h"
+                app:layout_widthPercent="30%h" />
+
+            <TextView
+                android:id="@+id/tv_mainrx_signal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_mainrx_signal"
+                android:layout_centerHorizontal="true"
+                android:text="- -"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="8%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- 连接数 -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_mainrx_connectedPeople_panel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/iv_mainrx_connectedPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/device_none"
+                app:layout_heightPercent="30%h"
+                app:layout_widthPercent="30%h" />
+
+            <TextView
+                android:id="@+id/tv_mainrx_connectedPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_mainrx_connectedPeople"
+                android:layout_centerHorizontal="true"
+                android:text="- -"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="8%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <!-- *** 波浪样式(无实际作用) *** -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_mainrx_wave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/rl_mainrx_signalAndConnected_panel"
+        app:layout_heightPercent="5%h"
+        app:layout_marginTopPercent="12%h">
+
+        <com.alcatel.wifilink.ui.view.DynamicWave
+            android:id="@+id/dw_mainrx"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#33a0f6" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

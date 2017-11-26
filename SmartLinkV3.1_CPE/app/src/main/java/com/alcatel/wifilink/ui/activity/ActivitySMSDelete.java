@@ -282,11 +282,11 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		/*Intent intent = new Intent();
 		intent.setClass(m_context, ViewSmsItemActivity.class);
-		intent.putExtra("sms_number", (String)m_smsSummaryLstData.get(position).get("number"));		
+		intent.putExtra("sms_number", (String)m_smsSummaryLstData.get(position).getUnread("number"));		
 		this.m_context.startActivity(intent);
 		
 		
-		int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).get("unread_count");		
+		int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).getUnread("unread_count");		
 		int nNewSmsCount = BusinessManager.getInstance().getNewSmsNumber();
 		
 		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount - nUnreadNum);*/

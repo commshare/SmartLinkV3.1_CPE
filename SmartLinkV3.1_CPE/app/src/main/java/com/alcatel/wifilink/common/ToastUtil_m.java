@@ -26,6 +26,16 @@ public class ToastUtil_m {
     }
 
 
+    public static void showLong(Context context, final int id) {
+        String threadName = Thread.currentThread().getName();
+        if (threadName.equalsIgnoreCase("main")) {
+            Toast.makeText(context, context.getString(id), Toast.LENGTH_LONG).show();
+        } else {
+            final Activity activity = (Activity) context;
+            activity.runOnUiThread(() -> Toast.makeText(activity, context.getString(id), Toast.LENGTH_SHORT).show());
+        }
+    }
+
     public static void showLong(Context context, final String tip) {
         String threadName = Thread.currentThread().getName();
         if (threadName.equalsIgnoreCase("main")) {

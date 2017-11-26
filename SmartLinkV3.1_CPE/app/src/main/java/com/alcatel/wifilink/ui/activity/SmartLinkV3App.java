@@ -4,17 +4,14 @@ import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
 
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
-import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.HostnameUtils;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import org.cybergarage.upnp.ControlPoint;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.net.ssl.HostnameVerifier;
 
 
 public class SmartLinkV3App extends MultiDexApplication {
@@ -43,6 +40,8 @@ public class SmartLinkV3App extends MultiDexApplication {
         super.onCreate();
         m_instance = this;
         contexts = new ArrayList<>();
+        // 初始化log打印器
+        Logger.addLogAdapter(new AndroidLogAdapter());
         // BusinessManager.getInstance();
         // NotificationService.startService();
         //HandlerUtils.replaceHandler();
@@ -52,7 +51,7 @@ public class SmartLinkV3App extends MultiDexApplication {
         // CrashHandler crashHandler = CrashHandler.getInstance();
         // crashHandler.init(getApplicationContext());
     }
-    
+
 
     public void setControlPoint(ControlPoint controlPoint) {
         mControlPoint = controlPoint;

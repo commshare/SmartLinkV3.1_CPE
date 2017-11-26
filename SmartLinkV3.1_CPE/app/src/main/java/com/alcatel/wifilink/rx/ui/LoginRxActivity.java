@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -69,18 +70,25 @@ public class LoginRxActivity extends BaseActivityWithBack {
     @Override
     protected void onResume() {
         super.onResume();
-        OtherUtils.stopAutoTimer();
+        OtherUtils.clearAllTimer();
+        OtherUtils.stopHomeTimer();
         OtherUtils.clearContexts(getClass().getSimpleName());
+        stopHomeHeart();
+    }
+
+    public void stopHomeHeart() {
+        if (HomeRxActivity.heartTimer != null) {
+            HomeRxActivity.heartTimer.stop();
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        OtherUtils.stopAutoTimer();
+        OtherUtils.clearAllTimer();
         OtherUtils.clearContexts(getClass().getSimpleName());
         finish();
         OtherUtils.kill();
-
     }
 
     private void initRes() {
@@ -136,6 +144,9 @@ public class LoginRxActivity extends BaseActivityWithBack {
         startLogin();
     }
 
+    /**
+     * 启动登陆
+     */
     private void startLogin() {
         // 检测硬件是否连接正常
         new CheckBoard() {
@@ -145,7 +156,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                 otherUtils.setOnSwVersionListener(needToEncrypt -> toLogin(needToEncrypt));
                 otherUtils.getDeviceSwVersion();
             }
-        }.checkBoard(this, RefreshWifiRxActivity.class);
+        }.checkBoard(this, LoginRxActivity.class);
     }
 
     /**
@@ -196,6 +207,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
                             ToastUtil_m.show(LoginRxActivity.this, getString(R.string.connection_timed_out));
                         } else {
+                            Log.v("ma_loginrx", "error: " + error.getCode() + ";errormes: " + error.getMessage());
                             ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
                         }
                         CA.toActivity(LoginRxActivity.this, RefreshWifiRxActivity.class, false, true, false, 0);
@@ -211,7 +223,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                System.out.println("ma_rx_loging: login" + error.getMessage() + ":" + error.getCode());
+                Log.v("ma_loginrx", "error: " + error.getCode() + ";errormes: " + error.getMessage());
                 OtherUtils.hideProgressPop(pgd);
                 if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
                     showRemainTimes();// 显示剩余次数
@@ -270,6 +282,17 @@ public class LoginRxActivity extends BaseActivityWithBack {
                             isToWizard();
                             return;
                         }
+
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        isToWizard();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        isToWizard();
                     }
 
                     /**
@@ -323,12 +346,13 @@ public class LoginRxActivity extends BaseActivityWithBack {
             @Override
             protected void onFailure() {
                 OtherUtils.hideProgressPop(pgd);
+                Log.v("ma_loginrx", "onfailed");
                 ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                System.out.println("ma_rx_loging: getwansetting" + error.getMessage() + ":" + error.getCode());
+                Log.v("ma_loginrx", "error: " + error.getCode() + ";errormes: " + error.getMessage());
                 OtherUtils.hideProgressPop(pgd);
                 ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
             }
@@ -341,7 +365,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
      * @param clazz
      */
     private void to(Class clazz) {
-        CA.toActivity(LoginRxActivity.this, clazz, false, true, false, 0);
+        CA.toActivity(this, clazz, false, true, false, 0);
     }
 
     /**
@@ -398,6 +422,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                     public void onError(Throwable e) {
                         OtherUtils.hideProgressPop(pgd);
                         if (e instanceof SocketTimeoutException) {
+                            Log.v("ma_couldn_connect", "loginrx resetDevice error: " + e.getMessage());
                             ToastUtil_m.show(LoginRxActivity.this, getString(R.string.connect_failed));
                             CA.toActivity(LoginRxActivity.this, RefreshWifiRxActivity.class, false, true, false, 0);
                         } else {
@@ -413,6 +438,6 @@ public class LoginRxActivity extends BaseActivityWithBack {
                     }
                 });
             }
-        }.checkBoard(this, RefreshWifiRxActivity.class);
+        }.checkBoard(this, LoginRxActivity.class);
     }
 }

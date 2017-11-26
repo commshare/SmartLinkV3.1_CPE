@@ -18,7 +18,7 @@ public class DynamicWave extends View {
     private static final int WAVE_PAINT_COLOR = 0xffffffff;
     // y = Asin(wx+b)+h
     private static final float STRETCH_FACTOR_A = 40;
-    private static final int OFFSET_Y = 0;
+    private static final int OFFSET_Y = -20;/* 此处调节波纹的高度和振幅,值越小,振幅越明显 */
     // 第一条水波移动速度
     private static final int TRANSLATE_X_SPEED_ONE = 8;
     // 第二条水波移动速度

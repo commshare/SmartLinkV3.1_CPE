@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/unit_selector"
                 android:layout_centerVertical="true"
-                android:text="@string/m_unit"
+                android:text="@string/mb_text"
                 android:textSize="24sp"
                 android:textColor="@color/deep_grey_text" />
 

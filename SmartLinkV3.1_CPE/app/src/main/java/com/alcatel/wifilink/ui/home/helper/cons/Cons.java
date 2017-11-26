@@ -25,13 +25,20 @@ public class Cons {
     public static int SECURITY_WPA = 2;
     public static int SECURITY_WPA2 = 3;
     public static int SECURITY_WPA_WPA2 = 4;
+    public static int TAB_HOME = 0;
+    public static int TAB_WIFI = 1;
+    public static int TAB_SMS = 2;
+    public static int TAB_SETTING = 3;
+    public static int TAB_PIN = 4;
+    public static int TAB_PUK = 5;
+    public static String USAGE_LIMIT = "USAGE_LIMIT";
 
 
     public static final int NEED_ENCRYPT = 1;// 1:表示要加密 0:不需要加密
     public static String IP_PRE = "http://";
     public static String IP_SUFFIX = "/";
     public static int AUTO_LOGOUT_PERIOD = 7 * 60 * 1000;
-    public static int PERIOD = 5000;// 5秒获取
+    public static int PERIOD = 3000;// 3秒获取
     public static String PAGE = "PAGE";// 主页的fragment切换标记
     public static String GATEWAY = "http://192.168.1.1";// 默认网关
     public static String WIFI_GUIDE_FLAG = "WIFI_GUIDE_FLAG";// WIFI向导标记
@@ -188,6 +195,11 @@ public class Cons {
     public static final int MANUAL = 1;
 
     public static final String INVALID_PIN = "020201";
+
+    public static final int NOT_REGISETER = 0;
+    public static final int REGISTTING = 1;
+    public static final int REGISTER_SUCCESSFUL = 2;
+    public static final int REGISTRATION_FAILED = 3;
 
 
 }

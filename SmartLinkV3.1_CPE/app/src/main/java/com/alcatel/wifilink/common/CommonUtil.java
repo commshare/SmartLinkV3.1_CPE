@@ -9,8 +9,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
@@ -41,9 +39,9 @@ public class CommonUtil {
         trafficMB = temp.divide(divideM, 2, BigDecimal.ROUND_HALF_UP);
         if (trafficMB.compareTo(divide) >= 0) {
             trafficGB = trafficMB.divide(divide, 2, BigDecimal.ROUND_HALF_UP);
-            return trafficGB + context.getResources().getString(R.string.g_unit);
+            return trafficGB + context.getResources().getString(R.string.gb_text);
         } else {
-            return trafficMB + context.getResources().getString(R.string.m_unit);
+            return trafficMB + context.getResources().getString(R.string.mb_text);
         }
     }
 

@@ -117,7 +117,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        OtherUtils.stopAutoTimer();
+        OtherUtils.stopHomeTimer();
         OtherUtils.clearContexts(this.getClass().getSimpleName());
     }
 

@@ -1,7 +1,6 @@
 package com.alcatel.wifilink.ui.home.helper.sms;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +10,7 @@ import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
@@ -105,10 +105,10 @@ public class SmsCountHelper {
      */
     public static int getUnreadCache(long contactId) {
         int unreadCache = 0;
-        Set<Long> contactIds = HomeActivity.smsUnreadMap.keySet();
+        Set<Long> contactIds = HomeRxActivity.smsUnreadMap.keySet();
         for (Long id : contactIds) {
             if (id == contactId) {
-                unreadCache = HomeActivity.smsUnreadMap.get(id);
+                unreadCache = HomeRxActivity.smsUnreadMap.get(id);
             }
         }
         return unreadCache;

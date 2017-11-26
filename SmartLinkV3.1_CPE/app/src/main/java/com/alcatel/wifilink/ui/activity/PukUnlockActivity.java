@@ -51,7 +51,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OtherUtils.stopAutoTimer();
+        OtherUtils.stopHomeTimer();
         setContentView(R.layout.activity_unlockpuk);
         actionbar = getSupportActionBar();
         ButterKnife.bind(this);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -13,6 +14,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -29,18 +31,22 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
+import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
@@ -64,7 +70,7 @@ public class OtherUtils {
     /**
      * 隐藏软键盘
      */
-    public static  void hideKeyBoard(Activity context) {
+    public static void hideKeyBoard(Activity context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(context.getWindow().getDecorView().getWindowToken(), 0);
@@ -140,42 +146,52 @@ public class OtherUtils {
     /**
      * 启动心跳定时器
      *
-     * @param oriActivity    当前context
-     * @param targetActivity 出错时的目标地址
+     * @param oriActivity 当前context
+     * @param acTimeout   出错时的目标地址
      * @return 定时器辅助
      */
-    public static TimerHelper startHeartBeat(Activity oriActivity, Class targetActivity) {
-        TimerHelper timerHelper = new TimerHelper(oriActivity) {
+    public static TimerHelper startHeartBeat(Activity oriActivity, Class acTimeout, Class acLogout) {
+
+        TimerHelper heartTimerAll = new TimerHelper(oriActivity) {
             @Override
             public void doSomething() {
-                API.get().heartBeat(new MySubscriber() {
-                    @Override
-                    protected void onSuccess(Object result) {
-                        if (onHeartBeatListener != null) {
-                            onHeartBeatListener.onSucess();
+                Logger.v("ma_check:" + "startHeartBeat");
+                // is wifi effect?
+                boolean isWifi = OtherUtils.isWifiConnect(oriActivity);
+                if (isWifi) {
+                    API.get().heartBeat(new MySubscriber() {
+                        @Override
+                        protected void onSuccess(Object result) {
+                            if (onHeartBeatListener != null) {
+                                onHeartBeatListener.onSucess();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        // 出错, 跳转到目标界面
-                        ToastUtil_m.show(oriActivity, oriActivity.getString(R.string.connect_failed));
-                        CA.toActivity(oriActivity, targetActivity, false, true, false, 0);
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            clear(oriActivity, acTimeout);
+                        }
 
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        // 出错, 跳转到目标界面
-                        ToastUtil_m.show(oriActivity, oriActivity.getString(R.string.connect_failed));
-                        CA.toActivity(oriActivity, targetActivity, false, true, false, 0);
-                    }
-                });
+                        @Override
+                        protected void onResultError(ResponseBody.Error error) {
+                            clear(oriActivity, acTimeout);
+                        }
+                    });
+                } else {// wifi失效
+                    clear(oriActivity, acTimeout);
+                }
             }
         };
-        timerHelper.start(2000);
-        OtherUtils.timerList.add(timerHelper);
-        return timerHelper;
+        heartTimerAll.start(2000);
+        return heartTimerAll;
     }
+
+    private static void clear(Activity oriActivity, Class acTimeout) {
+        // 出错, 跳转到目标界面
+        Log.v("ma_couldn_connect", "otherutils startHeartBeat error");
+        CA.toActivity(oriActivity, acTimeout, false, true, false, 0);
+    }
+
 
     public interface OnHeartBeatListener {
         void onSucess();
@@ -191,7 +207,9 @@ public class OtherUtils {
      * @param timerHelper
      */
     public static void stopHeartBeat(TimerHelper timerHelper) {
-        timerHelper.stop();
+        if (timerHelper != null) {
+            timerHelper.stop();
+        }
     }
 
 
@@ -400,7 +418,8 @@ public class OtherUtils {
      * @return
      */
     public static boolean isWifiConnect(Context context) {
-        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        SmartLinkV3App instance = SmartLinkV3App.getInstance();
+        ConnectivityManager connMgr = (ConnectivityManager) instance.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         NetworkInfo.State wifiState = networkInfo.getState();
         return NetworkInfo.State.CONNECTED == wifiState;
@@ -465,37 +484,6 @@ public class OtherUtils {
         return sb.toString();
     }
 
-    /**
-     * 停止全局定时器
-     */
-    public static void stopAutoTimer() {
-
-        for (Object o : homeTimerList) {
-            if (o instanceof TimerTask) {
-                TimerTask tk = (TimerTask) o;
-                tk.cancel();
-                tk = null;
-            }
-            if (o instanceof Timer) {
-                Timer t = (Timer) o;
-                t.cancel();
-                t.purge();
-                t = null;
-            }
-        }
-        homeTimerList.clear();
-
-        if (HomeActivity.autoLogoutTask != null) {
-            HomeActivity.autoLogoutTask.cancel();
-            HomeActivity.autoLogoutTask = null;
-        }
-
-        if (HomeActivity.autoLogoutTimer != null) {
-            HomeActivity.autoLogoutTimer.cancel();
-            HomeActivity.autoLogoutTimer.purge();
-            HomeActivity.autoLogoutTimer = null;
-        }
-    }
 
     /**
      * 清除域
@@ -561,9 +549,50 @@ public class OtherUtils {
      */
     public static void clearAllTimer() {
         for (Object o : timerList) {
+            // 辅助类的情况
             if (o instanceof TimerHelper) {
                 TimerHelper th = (TimerHelper) o;
                 th.stop();
+            }
+
+            // 任务
+            if (o instanceof TimerTask) {
+                TimerTask tk = (TimerTask) o;
+                tk.cancel();
+                tk = null;
+            }
+
+            // 定时器
+            if (o instanceof Timer) {
+                Timer t = (Timer) o;
+                t.cancel();
+                t.purge();
+                t = null;
+            }
+
+            // 任务集
+            if (o instanceof Map) {
+                Map<Activity, Intent> map = (Map<Activity, Intent>) o;
+                Set<Activity> acts = map.keySet();
+                for (Activity act : acts) {
+                    act.stopService(map.get(act));
+                }
+            }
+
+        }
+        timerList.clear();
+    }
+
+    /**
+     * 停止全局定时器
+     */
+    public static void stopHomeTimer() {
+
+        for (Object o : homeTimerList) {
+            if (o instanceof TimerTask) {
+                TimerTask tk = (TimerTask) o;
+                tk.cancel();
+                tk = null;
             }
             if (o instanceof Timer) {
                 Timer t = (Timer) o;
@@ -572,7 +601,18 @@ public class OtherUtils {
                 t = null;
             }
         }
-        timerList.clear();
+        homeTimerList.clear();
+
+        if (HomeRxActivity.autoLogoutTask != null) {
+            HomeRxActivity.autoLogoutTask.cancel();
+            HomeRxActivity.autoLogoutTask = null;
+        }
+
+        if (HomeRxActivity.autoLogoutTimer != null) {
+            HomeRxActivity.autoLogoutTimer.cancel();
+            HomeRxActivity.autoLogoutTimer.purge();
+            HomeRxActivity.autoLogoutTimer = null;
+        }
     }
 
     /**

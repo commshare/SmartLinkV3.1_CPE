@@ -398,8 +398,8 @@
     <string name="operation_unfavorite">Supprimer des favoris</string>
     <string name="removed_favorite">Supprimé(s) des favoris</string>
     <string name="menu_setting">Préférences</string>
-    <string name="m_unit">Mo</string>
-    <string name="g_unit">Go</string>
+    <string name="mb_text">Mo</string>
+    <string name="gb_text">Go</string>
     <string name="confirm_unit">CONFIRMER</string>
     <string name="connect_type_select_sim_card_disable">Insérer d\'abord une carte SIM</string>
     <string name="connect_type_select_wan_port_disable">Insérer le câble Internet au port WAN</string>

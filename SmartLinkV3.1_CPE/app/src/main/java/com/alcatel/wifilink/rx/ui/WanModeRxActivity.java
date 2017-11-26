@@ -180,7 +180,7 @@ public class WanModeRxActivity extends AppCompatActivity {
     }
 
     private void startHeartTimer() {
-        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class);
+        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class, LoginRxActivity.class);
     }
 
     @Override
@@ -251,47 +251,54 @@ public class WanModeRxActivity extends AppCompatActivity {
      * 点击了connect按钮逻辑
      */
     private void connectClick(int connectType) {
-        switch (connectType) {
-            case Cons.PPPOE:
-                // 空值判断
-                if (OtherUtils.isEmptys(etPppoeAccount, etPppoePsd, etPppoeMtu)) {
-                    toast(R.string.not_empty);
-                    return;
-                }
-                // MTU匹配判断
-                String mtu = OtherUtils.getEdContent(etPppoeMtu);
-                if (mtu.startsWith("0")) {// 是否为0开头
-                    toast(R.string.mtu_not_match);
-                    return;
-                }
-                // MTU取值范围判断
-                int mtuValue = Integer.valueOf(mtu);
-                if (mtuValue < 576 | mtuValue > 1492) {
-                    toast(R.string.mtu_not_match);
-                    return;
-                }
-                break;
-            case Cons.STATIC:
-                // 空值判断
-                String ipaddress = OtherUtils.getEdContent(etStaticIpaddress);
-                String subnetMask = OtherUtils.getEdContent(etStaticSubnet);
-                if (OtherUtils.isEmptys(ipaddress, subnetMask)) {
-                    toast(R.string.not_empty);
-                    return;
-                }
-                // IP规则匹配判断
-                boolean ip_match = OtherUtils.ipMatch(ipaddress);
-                boolean subnet_match = OtherUtils.ipMatch(subnetMask);
-                if (!ip_match | !subnet_match) {
-                    String ipValid = getString(R.string.ip_address) + " " + getString(R.string.connect_failed);
-                    toast(ipValid);
-                    return;
-                }
-                break;
-        }
+        // wifi是否连接
+        if (OtherUtils.isWifiConnect(this)) {
 
-        // 封装并提交
-        hibernateAndRequest(connectType);
+            switch (connectType) {
+                case Cons.PPPOE:
+                    // 空值判断
+                    if (OtherUtils.isEmptys(etPppoeAccount, etPppoePsd, etPppoeMtu)) {
+                        toast(R.string.not_empty);
+                        return;
+                    }
+                    // MTU匹配判断
+                    String mtu = OtherUtils.getEdContent(etPppoeMtu);
+                    if (mtu.startsWith("0")) {// 是否为0开头
+                        toast(R.string.mtu_not_match);
+                        return;
+                    }
+                    // MTU取值范围判断
+                    int mtuValue = Integer.valueOf(mtu);
+                    if (mtuValue < 576 | mtuValue > 1492) {
+                        toast(R.string.mtu_not_match);
+                        return;
+                    }
+                    break;
+                case Cons.STATIC:
+                    // 空值判断
+                    String ipaddress = OtherUtils.getEdContent(etStaticIpaddress);
+                    String subnetMask = OtherUtils.getEdContent(etStaticSubnet);
+                    if (OtherUtils.isEmptys(ipaddress, subnetMask)) {
+                        toast(R.string.not_empty);
+                        return;
+                    }
+                    // IP规则匹配判断
+                    boolean ip_match = OtherUtils.ipMatch(ipaddress);
+                    boolean subnet_match = OtherUtils.ipMatch(subnetMask);
+                    if (!ip_match | !subnet_match) {
+                        String ipValid = getString(R.string.ip_address) + " " + getString(R.string.connect_failed);
+                        toast(ipValid);
+                        return;
+                    }
+                    break;
+            }
+
+            // 封装并提交
+            hibernateAndRequest(connectType);
+        } else {
+            toast(R.string.connect_failed);
+            to(RefreshWifiRxActivity.class);
+        }
     }
 
     /**

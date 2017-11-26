@@ -190,6 +190,7 @@
         <activity
             android:name=".ui.activity.UsageActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.UsageSettingActivity"
@@ -431,7 +432,9 @@
         </activity>
 
         <!-- checked the package is front process -->
-        <service android:name=".ui.home.allsetup.HomeService" />
+        <service
+            android:name=".ui.home.allsetup.HomeService"
+            android:stopWithTask="true" />
 
         <activity android:name=".ui.wizard.allsetup.DataPlanActivity">
         </activity>

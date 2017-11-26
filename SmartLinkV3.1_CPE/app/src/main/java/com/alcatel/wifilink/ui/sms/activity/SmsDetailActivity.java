@@ -27,6 +27,7 @@ import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -328,11 +329,11 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                                     int unreadCount = scc.getUnreadCount();
                                     if (unreadCount > 0) {/* 如果有未读消息 */
                                         // 用户是否停留在短信详情页
-                                        if (HomeActivity.CURRENT_ACTIVITY.equalsIgnoreCase(ActivityName)) {// 当前
+                                        if (HomeRxActivity.CURRENT_ACTIVITY.equalsIgnoreCase(ActivityName)) {// 当前
                                             realToGetContent();// 向接口发起请求
                                         } else {// 用户离开
                                             // 把未读消息数量保存到MAP中
-                                            HomeActivity.smsUnreadMap.put(contactId, unreadCount);
+                                            HomeRxActivity.smsUnreadMap.put(contactId, unreadCount);
                                         }
                                     } else {/* 没有未读消息, 直接获取内容--> 正常显示已读的消息 */
                                         realToGetContent();// 向接口发起请求

@@ -19,7 +19,7 @@
             android:gravity="start|center_vertical"
             android:paddingEnd="@dimen/dimen_15dip"
             android:paddingStart="@dimen/dimen_15dip"
-            android:text="@string/m_unit"
+            android:text="@string/mb_text"
             android:textColor="@color/gray"
             app:layout_heightPercent="50%h"
             app:layout_textSizePercent="15%h" />
@@ -40,7 +40,7 @@
             android:gravity="start|center_vertical"
             android:paddingEnd="@dimen/dimen_15dip"
             android:paddingStart="@dimen/dimen_15dip"
-            android:text="@string/g_unit"
+            android:text="@string/gb_text"
             android:textColor="@color/gray"
             app:layout_heightPercent="50%h"
             app:layout_textSizePercent="15%h" />
