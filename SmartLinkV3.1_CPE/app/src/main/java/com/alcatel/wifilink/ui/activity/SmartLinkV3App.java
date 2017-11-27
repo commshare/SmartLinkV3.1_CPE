@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
 
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.wifilink.rx.helper.CrashHanlder;
 import com.alcatel.wifilink.utils.HostnameUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -38,18 +39,15 @@ public class SmartLinkV3App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 1.初始化全局异常类
+        CrashHanlder.getInstance().init(this);
+        // 2.初始化其他参数
         m_instance = this;
         contexts = new ArrayList<>();
-        // 初始化log打印器
+        // 3.初始化log打印器
         Logger.addLogAdapter(new AndroidLogAdapter());
-        // BusinessManager.getInstance();
-        // NotificationService.startService();
-        //HandlerUtils.replaceHandler();
-        // mAllShareProxy = AllShareProxy.getInstance(this);
         /* checked hostNameVerify  */
         HostnameUtils.setVerifyHostName();
-        // CrashHandler crashHandler = CrashHandler.getInstance();
-        // crashHandler.init(getApplicationContext());
     }
 
 

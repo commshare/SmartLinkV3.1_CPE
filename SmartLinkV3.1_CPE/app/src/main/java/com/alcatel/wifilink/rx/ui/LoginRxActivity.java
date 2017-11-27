@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,9 +24,10 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
+import com.alcatel.wifilink.rx.helper.CheckBoard;
+import com.alcatel.wifilink.rx.helper.WpsHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.rx.helper.CheckBoard;
 import com.alcatel.wifilink.utils.Constants;
 import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.utils.OtherUtils;
@@ -305,11 +305,23 @@ public class LoginRxActivity extends BaseActivityWithBack {
                             if (SP.getInstance(LoginRxActivity.this).getBoolean(Cons.WIFIINIT_RX, false)) {
                                 to(HomeRxActivity.class);
                             } else {
-                                to(WifiInitRxActivity.class);
+                                // 检测是否开启了WPS模式
+                                checkWps();
                             }
                         } else {
                             to(WanModeRxActivity.class);
                         }
+                    }
+
+                    /**
+                     * 检测是否开启了WPS模式
+                     */
+                    private void checkWps() {
+                        WpsHelper wpsHelper = new WpsHelper();
+                        wpsHelper.setOnWpsListener(attr -> to(attr ? HomeRxActivity.class : WifiInitRxActivity.class));
+                        wpsHelper.setOnErrorListener(attr -> to(HomeRxActivity.class));
+                        wpsHelper.setOnResultErrorListener(attr -> to(HomeRxActivity.class));
+                        wpsHelper.getWpsStatus();
                     }
 
                     /**
@@ -323,7 +335,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                             if (SP.getInstance(LoginRxActivity.this).getBoolean(Cons.WIFIINIT_RX, false)) {
                                 to(HomeRxActivity.class);// --> 主页
                             } else {
-                                to(WifiInitRxActivity.class);// --> wifi初始化向导页
+                                checkWps();// 检测wps状态:如果是wps, 则不允许修改wifi属性
                             }
                         } else {
                             to(DataPlanRxActivity.class);

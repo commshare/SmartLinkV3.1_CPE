@@ -39,6 +39,26 @@ public class CA {
     }
 
     /**
+     * 普通的AC跳转
+     *
+     * @param context
+     * @param clazz
+     * @param isFinish
+     * @param overAnim
+     */
+    public static void toAcMainThread(Context context, Class clazz, boolean isFinish, boolean overAnim) {
+        Activity activity = (Activity) context;
+        Intent intent = new Intent(context, clazz);
+        context.startActivity(intent);
+        if (!overAnim) {
+            activity.overridePendingTransition(0, 0);
+        }
+        if (isFinish) {
+            activity.finish();
+        }
+    }
+
+    /**
      * 普通传输
      *
      * @param context

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_crash"
+        app:layout_heightPercent="40%sh"
+        app:layout_widthPercent="80%sw">
+
+        <!-- APP logo -->
+        <ImageView
+            android:id="@+id/iv_crash_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_launcher"
+            app:layout_heightPercent="14%w"
+            app:layout_marginTopPercent="9%h"
+            app:layout_widthPercent="14%w" />
+
+        <!-- APP名称 -->
+        <TextView
+            android:id="@+id/tv_crash_appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_crash_logo"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_name"
+            android:textColor="@color/mg_blue"
+            app:layout_marginTopPercent="5%h"
+            app:layout_textSizePercent="5%h" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_crash_appName"
+            android:layout_centerHorizontal="true"
+            android:fadeScrollbars="false"
+            app:layout_heightPercent="35%h"
+            app:layout_marginTopPercent="5%h"
+            app:layout_widthPercent="85%w">
+
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!-- 提示 -->
+                <TextView
+                    android:id="@+id/tv_crash_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
+                    android:text="连接超时,你的手机与你的设备已经断开连接,检查你的设备信号是否正常,请重启你的设备或者WIFI,再重新登陆APP."
+                    android:textColor="@color/red"
+                    app:layout_textSizePercent="2%sh" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        </ScrollView>
+
+        <!-- button -->
+        <Button
+            android:id="@+id/bt_crash_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_crash_button_selector"
+            android:text="OK,我知道了"
+            android:textColor="@color/white"
+            app:layout_heightPercent="12%w"
+            app:layout_marginBottomPercent="5%h"
+            app:layout_textSizePercent="2%sh"
+            app:layout_widthPercent="40%w" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

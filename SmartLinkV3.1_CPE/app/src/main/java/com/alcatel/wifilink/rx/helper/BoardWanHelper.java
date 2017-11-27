@@ -233,16 +233,20 @@ public class BoardWanHelper {
                 int status = result.getStatus();
                 switch (status) {
                     case Cons.CONNECTED:
+                        Log.v("ma_boardwan", "wan connected");
                         connectedNext(result);
                         break;
                     case Cons.CONNECTING:
+                        Log.v("ma_boardwan", "wan connecting");
                         connectingNext(result);
                         delayRepeatGetWanstatu();
                         break;
                     case Cons.DISCONNECTED:
+                        Log.v("ma_boardwan", "wan disconnected");
                         disconnectedNext(result);
                         break;
                     case Cons.DISCONNECTING:
+                        Log.v("ma_boardwan", "wan wan disconneting");
                         disconnectingNext(result);
                         break;
                 }
@@ -273,7 +277,7 @@ public class BoardWanHelper {
      */
     private void delayRepeatGetWanstatu() {
         handler = new Handler();
-        handler.postDelayed(this::obtainWanStatus, 2500);
+        handler.postDelayed(this::obtainWanStatus, 1000);
     }
 
     private void toast(int resId) {

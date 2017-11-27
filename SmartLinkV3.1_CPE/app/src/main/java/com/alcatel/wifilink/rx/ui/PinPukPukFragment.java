@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.business.wlan.AP;
 import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.SP;
 import com.alcatel.wifilink.common.ToastUtil_m;
@@ -24,6 +23,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.WpsHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.zhy.android.percent.support.PercentRelativeLayout;
@@ -72,7 +72,7 @@ public class PinPukPukFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (PinPukIndexRxActivity) getActivity();
         inflate = View.inflate(getActivity(), R.layout.fragment_pinpukpuk, null);
-        unbinder = ButterKnife.bind(this,inflate);
+        unbinder = ButterKnife.bind(this, inflate);
         initRes();
         initUi();
         return inflate;
@@ -222,11 +222,22 @@ public class PinPukPukFragment extends Fragment {
             if (SP.getInstance(getActivity()).getBoolean(Cons.WIFIINIT_RX, false)) {
                 to(HomeRxActivity.class);
             } else {
-                to(WifiInitRxActivity.class);
+                checkWps();// 检测WPS模式
             }
         } else {
             to(DataPlanRxActivity.class);
         }
+    }
+
+    /**
+     * 检测是否开启了WPS模式
+     */
+    private void checkWps() {
+        WpsHelper wpsHelper = new WpsHelper();
+        wpsHelper.setOnWpsListener(attr -> to(attr ? HomeRxActivity.class : WifiInitRxActivity.class));
+        wpsHelper.setOnErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.setOnResultErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.getWpsStatus();
     }
 
     private void pukTimeout(SimStatus result) {

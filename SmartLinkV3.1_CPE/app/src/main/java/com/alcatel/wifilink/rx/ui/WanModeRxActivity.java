@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.BoardWanHelper;
 import com.alcatel.wifilink.rx.helper.CheckBoardLogin;
 import com.alcatel.wifilink.rx.helper.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.WpsHelper;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
@@ -424,9 +424,20 @@ public class WanModeRxActivity extends AppCompatActivity {
             // --> 主页
             to(HomeRxActivity.class);
         } else {
-            // wifi初始向导页
-            to(WifiInitRxActivity.class);
+            // 检测是否开启了WPS模式
+            checkWps();
         }
+    }
+
+    /**
+     * 检测是否开启了WPS模式
+     */
+    private void checkWps() {
+        WpsHelper wpsHelper = new WpsHelper();
+        wpsHelper.setOnWpsListener(attr -> to(attr ? HomeRxActivity.class : WifiInitRxActivity.class));
+        wpsHelper.setOnErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.setOnResultErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.getWpsStatus();
     }
 
     /**

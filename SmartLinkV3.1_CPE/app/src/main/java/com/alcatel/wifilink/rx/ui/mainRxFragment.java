@@ -132,6 +132,7 @@ public class mainRxFragment extends Fragment {
     private int blue_color;
     private int gray_color;
     private BoardWanHelper wanHelper;
+    private BoardWanHelper wanHelperClick;
     private BoardSimHelper simHelper;
     private NetworkInfoHelper networkHelper;
     private ConnectStatusHelper connStatuHelper;
@@ -480,18 +481,18 @@ public class mainRxFragment extends Fragment {
      * WAN口连接后点击该按钮
      */
     private void clickWhenWanConnect() {
-        if (wanHelper == null) {
-            wanHelper = new BoardWanHelper(getActivity());
+        if (wanHelperClick == null) {
+            wanHelperClick = new BoardWanHelper(getActivity());
         }
         /* 2.wan口无效后再走sim卡 */
-        wanHelper.setOnResultError(error -> toast(R.string.restart_device_tip));// 出错
-        wanHelper.setOnError(e -> toast(R.string.restart_device_tip));// 出错
-        wanHelper.setOnConnetedNextListener(wanResult -> {
+        wanHelperClick.setOnResultError(error -> toast(R.string.restart_device_tip));// 出错
+        wanHelperClick.setOnError(e -> toast(R.string.restart_device_tip));// 出错
+        wanHelperClick.setOnConnetedNextListener(wanResult -> {
             to(InternetStatusActivity.class, false);
         });// 跳转到IP
-        wanHelper.setOnDisConnetedNextListener(wanResult -> toast(R.string.check_your_wan_cabling));// 提示连接
-        wanHelper.setOnDisconnetingNextListener(wanResult -> toast(R.string.check_your_wan_cabling));// 提示连接
-        wanHelper.boardNormal();
+        wanHelperClick.setOnDisConnetedNextListener(wanResult -> toast(R.string.check_your_wan_cabling));// 提示连接
+        wanHelperClick.setOnDisconnetingNextListener(wanResult -> toast(R.string.check_your_wan_cabling));// 提示连接
+        wanHelperClick.boardNormal();
     }
 
     /**

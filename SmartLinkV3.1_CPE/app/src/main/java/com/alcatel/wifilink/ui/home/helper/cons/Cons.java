@@ -124,6 +124,7 @@ public class Cons {
 
     public static int DISABLE = 0;
     public static int ENABLE = 1;
+    public static int WPS = 2;
 
     public static int DISABLE_NOTAUTODISCONNECT = 0;
     public static int ENABLE_AUTODISCONNECT = 1;

@@ -22,6 +22,7 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.WpsHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -189,11 +190,22 @@ public class PinPukPinFragment extends Fragment {
             if (SP.getInstance(getActivity()).getBoolean(Cons.WIFIINIT_RX, false)) {
                 to(HomeRxActivity.class);
             } else {
-                to(WifiInitRxActivity.class);
+                checkWps();// 检测是否开启了WPS模式
             }
         } else {
             to(DataPlanRxActivity.class);
         }
+    }
+
+    /**
+     * 检测是否开启了WPS模式
+     */
+    private void checkWps() {
+        WpsHelper wpsHelper = new WpsHelper();
+        wpsHelper.setOnWpsListener(attr -> to(attr ? HomeRxActivity.class : WifiInitRxActivity.class));
+        wpsHelper.setOnErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.setOnResultErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.getWpsStatus();
     }
 
     /**

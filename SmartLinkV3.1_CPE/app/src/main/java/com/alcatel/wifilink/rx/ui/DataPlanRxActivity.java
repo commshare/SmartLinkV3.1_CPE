@@ -24,6 +24,7 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.WpsHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -226,9 +227,21 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
             // --> 主页
             to(HomeRxActivity.class);
         } else {
-            // wifi初始向导页
-            to(WifiInitRxActivity.class);
+            // 检测是否开启了WPS模式
+            checkWps();
+
         }
+    }
+
+    /**
+     * 检测是否开启了WPS模式
+     */
+    private void checkWps() {
+        WpsHelper wpsHelper = new WpsHelper();
+        wpsHelper.setOnWpsListener(attr -> to(attr ? HomeRxActivity.class : WifiInitRxActivity.class));
+        wpsHelper.setOnErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.setOnResultErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.getWpsStatus();
     }
 
     /**

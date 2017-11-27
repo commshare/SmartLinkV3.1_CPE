@@ -20,6 +20,7 @@ import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.WpsHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -215,7 +216,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
                             if (SP.getInstance(WizardRxActivity.this).getBoolean(Cons.WIFIINIT_RX, false)) {
                                 to(HomeRxActivity.class);
                             } else {
-                                to(WifiInitRxActivity.class);
+                                checkWps();
                             }
                         } else {
                             to(WanModeRxActivity.class);
@@ -250,6 +251,17 @@ public class WizardRxActivity extends BaseActivityWithBack {
     }
 
     /**
+     * 检测是否开启了WPS模式
+     */
+    private void checkWps() {
+        WpsHelper wpsHelper = new WpsHelper();
+        wpsHelper.setOnWpsListener(attr -> to(attr ? HomeRxActivity.class : WifiInitRxActivity.class));
+        wpsHelper.setOnErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.setOnResultErrorListener(attr -> to(HomeRxActivity.class));
+        wpsHelper.getWpsStatus();
+    }
+
+    /**
      * 点击了SIM卡模式
      */
     private void clickSimRl() {
@@ -269,7 +281,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
                             if (SP.getInstance(WizardRxActivity.this).getBoolean(Cons.WIFIINIT_RX, false)) {
                                 to(HomeRxActivity.class);
                             } else {
-                                to(WifiInitRxActivity.class);
+                                checkWps();// 检测是否为WPS,true:则不允许进入wifi修改界面
                             }
                         } else {
                             to(DataPlanRxActivity.class);
