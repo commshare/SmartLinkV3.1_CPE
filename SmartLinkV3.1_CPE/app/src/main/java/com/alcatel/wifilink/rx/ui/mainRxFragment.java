@@ -39,7 +39,6 @@ import com.alcatel.wifilink.ui.view.DynamicWave;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.WaveHelper;
 import com.gelitenight.waveview.library.WaveView;
-import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import butterknife.BindView;

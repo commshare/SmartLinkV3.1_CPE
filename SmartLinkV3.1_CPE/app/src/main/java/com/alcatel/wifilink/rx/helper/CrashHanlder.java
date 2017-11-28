@@ -12,14 +12,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 public class CrashHanlder implements Thread.UncaughtExceptionHandler {
-    
+
     private Thread.UncaughtExceptionHandler mDefaultHandler;// 自身接口
     private static CrashHanlder INSTANCE = new CrashHanlder();// CrashHandler实例
     private Context mContext;
 
     private CrashHanlder() {
     }
-
     public static CrashHanlder getInstance() {
         return INSTANCE;
     }
