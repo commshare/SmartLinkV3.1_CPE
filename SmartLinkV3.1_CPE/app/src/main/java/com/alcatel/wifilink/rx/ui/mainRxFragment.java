@@ -1,11 +1,11 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +63,8 @@ public class mainRxFragment extends Fragment {
     RelativeLayout rlSimConnected;// SIM卡已连接(面板)
     @BindView(R.id.bt_mainrx_simConnected)
     WaveView btSimConnected;// SIM卡已连接(波浪视图)
+    @BindView(R.id.bt_mainrx_simLocked)
+    Button btSimLocked;// SIM卡被锁定状态
     @BindView(R.id.tv_mainrx_usedUnit)
     TextView tvUsedUnit;// 已使用流量单位
     @BindView(R.id.tv_mainrx_usedData)
@@ -98,8 +100,9 @@ public class mainRxFragment extends Fragment {
     private String noUsagePlan;
     private String useOf;
     private int WAN_CONNECT_MODE = 0;// wan口连接模式
-    private int SIM_DISCONNECT_MODE = 1;// SIM卡未连接模式
+    private int SIM_DISCONNECT_MODE = 1;// SIM卡未连接模式(已解锁)
     private int SIM_CONNECT_MODE = 2;// SIM卡连接模式
+    private int SIM_LOCKED = 3;// SIM被锁定状态
     private WaveHelper waveButton;// 波浪辅助类
     private String circlrDotColor = "#3798f4";// 圆环颜色
     private String behindColor_nor = "#AA39e99d";// 圆环波浪底色(正常)
@@ -134,10 +137,11 @@ public class mainRxFragment extends Fragment {
     private BoardWanHelper wanHelper;
     private BoardWanHelper wanHelperClick;
     private BoardSimHelper simHelper;
-    private NetworkInfoHelper networkHelper;
-    private ConnectStatusHelper connStatuHelper;
     private BoardSimHelper simHelper_simNotConnect;
     private BoardSimHelper simHelper_simConnect;
+    private BoardSimHelper simHelper_simLocked;
+    private NetworkInfoHelper networkHelper;
+    private ConnectStatusHelper connStatuHelper;
     private HomeRxActivity activity;
     private Class[] fragmentClazz;// fragment集合(在HomeRxActivity)
     private String unlockSim_title;
@@ -146,6 +150,7 @@ public class mainRxFragment extends Fragment {
     private String confirm_text;
     private SweetAlertDialog dialog;
     private int usageLimit;// 默认的流量限度(用于显示波浪颜色)
+    private ProgressDialog pgdWait;
 
 
     @Nullable
@@ -155,6 +160,8 @@ public class mainRxFragment extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         activity = (HomeRxActivity) getActivity();
         fragmentClazz = activity.clazz;
+        // 全局等待
+        pgdWait = OtherUtils.showProgressPop(getActivity());
         initRes();
         initView();
         startTimer();
@@ -177,6 +184,16 @@ public class mainRxFragment extends Fragment {
         gb_unit = getString(R.string.gb_text);
         noUsagePlan = getString(R.string.no_month_plan);
         useOf = getString(R.string.used_of);
+        signal_2G = getString(R.string.home_network_type_2g);
+        signal_3G = getString(R.string.home_network_type_3g);
+        signal_3G_plus = getString(R.string.home_network_type_3g_plus);
+        signal_4G = getString(R.string.home_network_type_4g);
+        signal_text = getString(R.string.signal);
+        connected_text = getString(R.string.access_lable);
+        unlockSim_title = getString(R.string.sim_unlocked);
+        unlockSim_content = getString(R.string.home_pin_locked_notice);
+        cancel_text = getString(R.string.cancel);
+        confirm_text = getString(R.string.confirm_unit);
         blue_color = getResources().getColor(R.color.mg_blue);
         gray_color = getResources().getColor(R.color.gray);
         signal0 = getResources().getDrawable(R.drawable.home_4g_none);
@@ -186,20 +203,10 @@ public class mainRxFragment extends Fragment {
         signal4 = getResources().getDrawable(R.drawable.home_4g4);
         signal5 = getResources().getDrawable(R.drawable.home_4g5);
         signalR = getResources().getDrawable(R.drawable.home_4g_r);
-        signals = new Drawable[]{signal0, signal1, signal2, signal3, signal4, signal5, signalR};
-        signal_2G = getString(R.string.home_network_type_2g);
-        signal_3G = getString(R.string.home_network_type_3g);
-        signal_3G_plus = getString(R.string.home_network_type_3g_plus);
-        signal_4G = getString(R.string.home_network_type_4g);
-        signal_text = getString(R.string.signal);
         connected_none = getResources().getDrawable(R.drawable.device_none);
         connected_more = getResources().getDrawable(R.drawable.device_more);
-        connected_text = getString(R.string.access_lable);
-        buttonsView = new View[]{btWanConnect, btSimUnConnected, rlSimConnected};
-        unlockSim_title = getString(R.string.sim_unlocked);
-        unlockSim_content = getString(R.string.home_pin_locked_notice);
-        cancel_text = getString(R.string.cancel);
-        confirm_text = getString(R.string.confirm_unit);
+        signals = new Drawable[]{signal0, signal1, signal2, signal3, signal4, signal5, signalR};
+        buttonsView = new View[]{btWanConnect, btSimUnConnected, rlSimConnected, btSimLocked};
     }
 
     private void initView() {
@@ -220,7 +227,6 @@ public class mainRxFragment extends Fragment {
         timer = new TimerHelper(getActivity()) {
             @Override
             public void doSomething() {
-                Logger.v("ma_check:" + "mainrxfragment--> startTimer");
                 getWan();  /* 1.先走wan口 */
             }
         };
@@ -259,6 +265,8 @@ public class mainRxFragment extends Fragment {
      * 显示wan口模式视图
      */
     private void wanFirst() {
+        // 0.隐藏等待
+        OtherUtils.hideProgressPop(pgdWait);
         // 1.显示UI
         buttonUi(WAN_CONNECT_MODE);// 显示wan口按钮
         tvNetworkType.setVisibility(View.VISIBLE);
@@ -277,9 +285,9 @@ public class mainRxFragment extends Fragment {
         }
         simHelper.setOnNownListener(simStatus -> simNotReady());
         simHelper.setOnSimReadyListener(result -> simReady());
-        simHelper.setOnSimLockListener(simStatus -> simNotReady());
-        simHelper.setOnPinRequireListener(result -> simNotReady());
-        simHelper.setOnpukRequireListener(result -> simNotReady());
+        simHelper.setOnSimLockListener(simStatus -> pinPukSimLock());
+        simHelper.setOnPinRequireListener(result -> pinPukSimLock());
+        simHelper.setOnpukRequireListener(result -> pinPukSimLock());
         simHelper.setOnpukTimeoutListener(result -> simNotReady());
         simHelper.setOnInitingListener(simStatus -> simNotReady());
         simHelper.setOnDetectedListener(simStatus -> simNotReady());
@@ -289,9 +297,25 @@ public class mainRxFragment extends Fragment {
     }
 
     /**
+     * sim卡被锁定
+     */
+    private void pinPukSimLock() {
+        // 0.隐藏等待
+        OtherUtils.hideProgressPop(pgdWait);
+        // 1.显示UI
+        buttonUi(SIM_LOCKED);// SIM卡锁定状态
+        // 2.获取注册状态(在SIM卡状态未达到CONNECTED之前切勿使用GetNetworkInfo这个接口)
+        getNetworkRegister();
+        // 3.获取设备数
+        getDevice();
+    }
+
+    /**
      * SIM卡已准备
      */
     private void simReady() {
+        // 0.隐藏等待
+        OtherUtils.hideProgressPop(pgdWait);
         if (connStatuHelper == null) {
             connStatuHelper = new ConnectStatusHelper();
         }
@@ -310,6 +334,20 @@ public class mainRxFragment extends Fragment {
         getDevice();
         // 3. 获取流量使用情况
         getUsage();
+    }
+
+    /**
+     * SIM卡未连接(但已经解锁)
+     */
+    private void simNotReady() {
+        // 0.隐藏等待
+        OtherUtils.hideProgressPop(pgdWait);
+        // 1.显示UI
+        buttonUi(SIM_DISCONNECT_MODE);// SIM卡未连接状态
+        // 2.获取注册状态(在SIM卡状态未达到CONNECTED之前切勿使用GetNetworkInfo这个接口)
+        getNetworkRegister();
+        // 3.获取设备数
+        getDevice();
     }
 
     /**
@@ -360,17 +398,6 @@ public class mainRxFragment extends Fragment {
         });
     }
 
-    /**
-     * SIM卡未连接
-     */
-    private void simNotReady() {
-        // 1.显示UI
-        buttonUi(SIM_DISCONNECT_MODE);// SIM卡未连接状态
-        // 2.获取注册状态(在SIM卡状态未达到CONNECTED之前切勿使用GetNetworkInfo这个接口)
-        getNetworkRegister();
-        // 3.获取设备数
-        getDevice();
-    }
 
     /**
      * 获取注册状态
@@ -458,27 +485,51 @@ public class mainRxFragment extends Fragment {
         dialogDismiss();
     }
 
-    @OnClick({R.id.bt_mainrx_wanConnect, R.id.bt_mainrx_simUnConnected, R.id.bt_mainrx_simConnected, R.id.iv_mainrx_signal, R.id.tv_mainrx_signal, R.id.iv_mainrx_connectedPeople, R.id.tv_mainrx_connectedPeople})
+    @OnClick({R.id.bt_mainrx_simLocked,// sim卡锁定
+                     R.id.bt_mainrx_wanConnect,// wan口连接
+                     R.id.bt_mainrx_simUnConnected,// sim未连接
+                     R.id.bt_mainrx_simConnected,// sim卡连接
+                     R.id.iv_mainrx_signal,// 信号图标
+                     R.id.tv_mainrx_signal,// 信号文本
+                     R.id.iv_mainrx_connectedPeople,// 连接数图标
+                     R.id.tv_mainrx_connectedPeople})// 连接数文本
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_mainrx_wanConnect:// 点击wan口
                 clickWhenWanConnect();
                 break;
-            case R.id.bt_mainrx_simUnConnected:// sim卡(未连接)点击
+            case R.id.bt_mainrx_simUnConnected:// sim卡(未连接, 但已经解锁)点击
                 clickWhenSimNotConnect();
                 break;
             case R.id.bt_mainrx_simConnected:// sim 卡(连接)点击
                 clickWhenSimConnect();
                 break;
+            case R.id.bt_mainrx_simLocked:// sim卡锁定
+                clickWhenSimLocked();
+                break;
             case R.id.iv_mainrx_connectedPeople:// 连接数
             case R.id.tv_mainrx_connectedPeople:
                 to(ActivityDeviceManager.class, false);
                 break;
+
         }
     }
 
     /**
-     * WAN口连接后点击该按钮
+     * SIM卡被锁定时点击了该按钮
+     */
+    private void clickWhenSimLocked() {
+        // 检测SIM卡状态
+        simHelper_simLocked = new BoardSimHelper(getActivity());
+        simHelper_simLocked.setOnPinRequireListener(result -> showPinDialog());// PIN
+        simHelper_simLocked.setOnpukRequireListener(result -> showPukDialog());// PUK
+        simHelper_simLocked.setOnpukTimeoutListener(result -> showPukTimeoutTip());// PUK
+        simHelper_simLocked.setOnSimReadyListener(result -> ConnectSettingHelper.toConnect(getActivity()));// to connect
+        simHelper_simLocked.boardNormal();
+    }
+
+    /**
+     * WAN口连接后点击了该按钮
      */
     private void clickWhenWanConnect() {
         if (wanHelperClick == null) {
@@ -496,7 +547,7 @@ public class mainRxFragment extends Fragment {
     }
 
     /**
-     * SIM卡连接后点击该按钮
+     * SIM卡连接后点击了该按钮
      */
     private void clickWhenSimConnect() {
         // 检测SIM卡状态
@@ -511,7 +562,7 @@ public class mainRxFragment extends Fragment {
     }
 
     /**
-     * SIM卡未连接时,点击此按钮的操作
+     * SIM卡未连接时,点击了该按钮的操作
      */
     private void clickWhenSimNotConnect() {
         // 检测SIM卡状态
