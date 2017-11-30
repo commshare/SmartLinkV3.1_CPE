@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;

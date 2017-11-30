@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.ConnectivityUtils;
 import com.alcatel.wifilink.common.DataValue;
 import com.alcatel.wifilink.common.ENUM.SecurityMode;

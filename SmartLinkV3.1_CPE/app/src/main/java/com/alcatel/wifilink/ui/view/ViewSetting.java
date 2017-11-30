@@ -15,7 +15,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.activity.SettingAboutActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;

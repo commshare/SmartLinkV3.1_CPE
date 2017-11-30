@@ -15,8 +15,8 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.sim.helper.SimPukEmptyHelper;
 import com.alcatel.wifilink.business.sim.helper.SimPukHelper;
-import com.alcatel.wifilink.common.CA;
-import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.SP;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

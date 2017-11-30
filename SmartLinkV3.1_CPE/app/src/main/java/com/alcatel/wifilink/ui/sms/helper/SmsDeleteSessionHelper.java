@@ -1,7 +1,5 @@
 package com.alcatel.wifilink.ui.sms.helper;
 
-import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SMSDeleteParam;

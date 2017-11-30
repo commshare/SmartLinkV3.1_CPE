@@ -1,11 +1,10 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.os.Bundle;
-import android.view.Window;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.CA;
-import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;

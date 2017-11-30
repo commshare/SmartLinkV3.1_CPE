@@ -11,7 +11,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;

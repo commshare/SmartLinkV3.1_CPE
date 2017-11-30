@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.CA;
-import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.art.zok.autoview.AutoViewPager;

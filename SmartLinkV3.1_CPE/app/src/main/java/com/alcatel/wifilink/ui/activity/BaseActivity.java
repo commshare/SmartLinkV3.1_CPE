@@ -25,7 +25,7 @@ import com.alcatel.wifilink.common.ENUM.SIMState;
 import com.alcatel.wifilink.common.ENUM.UserLoginStatus;
 import com.alcatel.wifilink.common.ErrorCode;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 

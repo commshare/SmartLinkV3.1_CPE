@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
-import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;

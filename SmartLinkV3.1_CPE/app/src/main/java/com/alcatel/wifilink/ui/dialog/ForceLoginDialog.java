@@ -33,7 +33,7 @@ import com.alcatel.wifilink.common.Const;
 import com.alcatel.wifilink.common.DataValue;
 import com.alcatel.wifilink.common.ErrorCode;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.ui.dialog.ErrorDialog.OnClickBtnCancel;
 import com.alcatel.wifilink.ui.dialog.ErrorDialog.OnClickBtnRetry;

@@ -35,7 +35,7 @@ import com.alcatel.wifilink.common.ENUM.OVER_DISCONNECT_STATE;
 import com.alcatel.wifilink.common.ENUM.OVER_TIME_STATE;
 import com.alcatel.wifilink.common.ENUM.SIMState;
 import com.alcatel.wifilink.common.MessageUti;
-import com.alcatel.wifilink.common.SP;
+import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 
 import java.text.DecimalFormat;

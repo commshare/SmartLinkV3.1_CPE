@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.SP;
 
 import org.angmarch.views.NiceSpinner;
 

@@ -32,7 +32,7 @@ import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.common.DensityUtils;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
 import com.alcatel.wifilink.common.ToastUtil;
-import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SMSDeleteParam;

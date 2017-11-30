@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.network.NetworkInfos;

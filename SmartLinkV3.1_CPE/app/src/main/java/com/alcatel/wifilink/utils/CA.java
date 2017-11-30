@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.common;/**
+package com.alcatel.wifilink.utils;/**
  * Created by Administrator on 2016/11/17.
  */
 

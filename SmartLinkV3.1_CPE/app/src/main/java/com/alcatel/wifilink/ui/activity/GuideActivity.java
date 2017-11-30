@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.ui.wizard.allsetup.WizardActivity;
 import com.alcatel.wifilink.utils.OtherUtils;
 

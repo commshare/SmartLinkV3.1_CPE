@@ -33,7 +33,7 @@ import com.alcatel.wifilink.business.BusinessManager;
 import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.business.FeatureVersionManager;
 import com.alcatel.wifilink.business.user.LoginHelper;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.Const;
 import com.alcatel.wifilink.common.DataValue;

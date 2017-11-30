@@ -1,10 +1,7 @@
 package com.alcatel.wifilink.ui.sms.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,7 +14,7 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SMSContentList;
@@ -29,7 +26,6 @@ import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.sms.adapter.SmsDetatilAdapter;
@@ -51,9 +47,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static android.R.id.home;
-import static android.R.id.list;
 
 public class SmsDetailActivity extends BaseActivityWithBack implements View.OnClickListener, SmsDetatilAdapter.OnSmsSelectedListener, SmsDetatilAdapter.OnSmsLongClickListener, SmsDetatilAdapter.OnSendSuccessListener {
 

@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.CA;
-import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;
@@ -18,8 +18,6 @@ import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.orhanobut.logger.Logger;
-
-import java.security.interfaces.RSAKey;
 
 /**
  * Created by qianli.ma on 2017/11/16 0016.

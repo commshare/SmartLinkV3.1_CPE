@@ -21,11 +21,8 @@ import android.widget.EditText;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
-import com.alcatel.wifilink.common.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.DataUti;
-import com.alcatel.wifilink.common.SP;
-import com.alcatel.wifilink.common.ToastUtil_m;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.API;

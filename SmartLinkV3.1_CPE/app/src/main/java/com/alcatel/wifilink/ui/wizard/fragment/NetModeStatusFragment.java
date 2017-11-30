@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
 

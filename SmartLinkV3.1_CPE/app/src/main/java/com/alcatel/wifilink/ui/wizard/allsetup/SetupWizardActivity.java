@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.CPEConfig;
-import com.alcatel.wifilink.common.CA;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.ui.activity.BaseActivity;
 import com.alcatel.wifilink.ui.activity.MainActivity;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;

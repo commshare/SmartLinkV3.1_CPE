@@ -23,7 +23,7 @@ import com.alcatel.wifilink.business.wanguide.NetModeCommitHelper;
 import com.alcatel.wifilink.business.wanguide.NetModeUiHelper;
 import com.alcatel.wifilink.business.wanguide.StatusBean;
 import com.alcatel.wifilink.business.wanguide.WanInfo;
-import com.alcatel.wifilink.common.ToastUtil_m;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
 import com.alcatel.wifilink.ui.wizard.helper.FraHelper;
 import com.alcatel.wifilink.ui.wizard.helper.FragmentEnum;
