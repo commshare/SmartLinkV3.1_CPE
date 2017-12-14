@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.network.API;
@@ -39,7 +41,7 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     @BindView(R.id.no_sms)
     TextView noSms;
 
-    private HomeActivity activity;
+    private HomeRxActivity activity;
     private View inflate;
     private SmsRcvAdapter smsRcvAdapter;
     private TimerHelper timerHelper;
@@ -54,7 +56,7 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     }
 
     public SmsFragments(Activity activity) {
-        this.activity = (HomeActivity) activity;
+        this.activity = (HomeRxActivity) activity;
     }
 
     @Nullable
@@ -62,9 +64,23 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflate = View.inflate(getActivity(), R.layout.fragment_sms_update, null);
         unbinder = ButterKnife.bind(this, inflate);
+        resetUi();
         initView();
         initEvent();
         return inflate;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            resetUi();
+        }
+    }
+
+    private void resetUi() {
+        activity.tabFlag = Cons.TAB_SMS;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     /* **** initView **** */

@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.rx.helper;
+package com.alcatel.wifilink.rx.helper.business;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,6 +9,8 @@ import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
 /**

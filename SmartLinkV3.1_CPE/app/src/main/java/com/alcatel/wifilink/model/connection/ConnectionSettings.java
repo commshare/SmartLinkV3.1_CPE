@@ -1,10 +1,12 @@
 package com.alcatel.wifilink.model.connection;
 
+import com.alcatel.wifilink.rx.bean.DeepCloneBean;
+
 /**
  * Created by tao.j on 2017/6/16.
  */
 
-public class ConnectionSettings {
+public class ConnectionSettings extends DeepCloneBean{
     int ConnectMode;
     int RoamingConnect;
     int PdpType;

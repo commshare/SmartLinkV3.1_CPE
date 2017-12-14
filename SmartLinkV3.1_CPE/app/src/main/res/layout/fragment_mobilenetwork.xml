@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_mobilenetwork_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%sh">
+
+        <ImageView
+            android:id="@+id/iv_mobilenetwork_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <TextView
+            android:id="@+id/tv_mobilenetwork_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_mobile_network"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="27%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- Scroll view -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/rl_mobilenetwork_banner">
+
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- mobile data -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_mobileData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/usage_setting_mobile_data"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:id="@+id/iv_mobilenetwork_mobileData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:src="@drawable/switch_off"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="70%h" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dip"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.5"
+                    android:background="@color/gray" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- connect mode -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_connMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_mobilenetwork_mobileData"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/setting_network_connect_mode"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:id="@+id/iv_mobilenetwork_connMode_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:rotation="90"
+                    android:src="@drawable/btn_play_n"
+                    app:layout_heightPercent="30%h"
+                    app:layout_widthPercent="50%h" />
+
+                <TextView
+                    app:layout_textSizePercent="27%h"
+                    android:id="@+id/tv_mobilenetwork_connMode_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:layout_toStartOf="@id/iv_mobilenetwork_connMode_arrow"
+                    android:text="@string/setting_network_mode_auto" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dip"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.5"
+                    android:background="@color/gray" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- data roaming -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_dataRomaing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_mobilenetwork_connMode"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/usage_setting_roaming"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:id="@+id/iv_mobilenetwork_dataRoaming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:src="@drawable/switch_off"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="70%h" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dip"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.5"
+                    android:background="@color/gray" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- set data plan -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_setDataPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_mobilenetwork_dataRomaing"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/setting_set_data_plan"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:src="@drawable/sms_next"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="20%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- split1 -->
+            <View
+                android:id="@+id/v_mobilenetwork_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_10dip"
+                android:layout_below="@id/rl_mobilenetwork_setDataPlan"
+                android:alpha="0.2"
+                android:background="@color/gray" />
+
+            <!-- mode -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_mobilenetwork_1"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/setting_network_mode"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:id="@+id/iv_mobilenetwork_mode_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:rotation="90"
+                    android:src="@drawable/btn_play_n"
+                    app:layout_heightPercent="30%h"
+                    app:layout_widthPercent="50%h" />
+
+                <TextView
+                    app:layout_textSizePercent="27%h"
+                    android:id="@+id/tv_mobilenetwork_mode_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:layout_toStartOf="@id/iv_mobilenetwork_mode_arrow"
+                    android:text="@string/setting_network_mode_auto" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dip"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.5"
+                    android:background="@color/gray" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- profile -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_mobilenetwork_mode"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/profile"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:src="@drawable/sms_next"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="20%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- split2 -->
+            <View
+                android:id="@+id/v_mobilenetwork_2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_10dip"
+                android:layout_below="@id/rl_mobilenetwork_profile"
+                android:alpha="0.2"
+                android:background="@color/gray" />
+
+            <!-- sim pin -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_simPin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_mobilenetwork_2"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/qs_hint_sim_pin"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:id="@+id/iv_mobilenetwork_simPin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:src="@drawable/switch_off"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="70%h" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dip"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.5"
+                    android:background="@color/gray" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- change sim pin -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_changeSimPin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_mobilenetwork_simPin"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/change_pin"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    android:src="@drawable/sms_next"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="20%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- split3 -->
+            <View
+                android:id="@+id/v_mobilenetwork_3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_10dip"
+                android:layout_below="@id/rl_mobilenetwork_changeSimPin"
+                android:alpha="0.2"
+                android:background="@color/gray" />
+
+            <!-- sim number -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_simNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_mobilenetwork_3"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/setting_sim_number"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <TextView
+                    android:id="@+id/tv_mobilenetwork_simNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    app:layout_textSizePercent="27%h" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dip"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.5"
+                    android:background="@color/gray" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- imsi -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/rl_mobilenetwork_imsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_mobilenetwork_simNum"
+                app:layout_heightPercent="9%sh">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_15dip"
+                    android:text="@string/setting_imsi"
+                    android:textColor="@color/black"
+                    app:layout_textSizePercent="27%h" />
+
+                <TextView
+                    android:textColor="@color/gray"
+                    android:id="@+id/tv_mobilenetwork_imsi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_15dip"
+                    app:layout_textSizePercent="27%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </ScrollView>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_settingpin"
+        app:layout_heightPercent="30%sh">
+
+        <EditText
+            android:id="@+id/et_pop_setttingpin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_etsettingpin"
+            android:hint="@string/enter_sim_pin"
+            android:inputType="numberPassword"
+            android:maxLength="8"
+            android:paddingEnd="@dimen/dimen_15dip"
+            android:paddingStart="@dimen/dimen_15dip"
+            android:textColor="@color/mg_blue"
+            app:layout_heightPercent="25%h"
+            app:layout_marginTopPercent="28%h"
+            app:layout_textSizePercent="8%h"
+            app:layout_widthPercent="80%w" />
+
+        <TextView
+            android:id="@+id/tv_pop_settingpin_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/et_pop_setttingpin"
+            android:layout_below="@id/et_pop_setttingpin"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/mg_blue"
+            app:layout_marginTopPercent="15%h"
+            app:layout_textSizePercent="10%h"
+            app:layout_widthPercent="15%w" />
+
+        <TextView
+            android:id="@+id/tv_pop_settingpin_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_pop_setttingpin"
+            android:layout_marginEnd="@dimen/dimen_30dip"
+            android:layout_toStartOf="@id/tv_pop_settingpin_ok"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/gray"
+            app:layout_marginTopPercent="15%h"
+            app:layout_textSizePercent="10%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

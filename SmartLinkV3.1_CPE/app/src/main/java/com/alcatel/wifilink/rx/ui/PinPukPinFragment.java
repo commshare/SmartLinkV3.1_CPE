@@ -21,8 +21,8 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.BoardSimHelper;
-import com.alcatel.wifilink.rx.helper.WpsHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.WpsHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -240,12 +240,14 @@ public class PinPukPinFragment extends Fragment {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                etPinRx.setText("");
                 toast(R.string.pin_error_waring_title);
                 getRemainTime();
             }
 
             @Override
             public void onError(Throwable e) {
+                etPinRx.setText("");
                 toast(R.string.sim_unlocked_failed);
                 getRemainTime();
             }

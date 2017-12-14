@@ -22,8 +22,8 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.BoardSimHelper;
-import com.alcatel.wifilink.rx.helper.WpsHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.WpsHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.zhy.android.percent.support.PercentRelativeLayout;
@@ -263,12 +263,14 @@ public class PinPukPukFragment extends Fragment {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                etPukRx.setText("");
                 toast(R.string.puk_error_waring_title);
                 getRemainTime();
             }
 
             @Override
             public void onError(Throwable e) {
+                etPukRx.setText("");
                 toast(R.string.puk_unlock_failed);
                 getRemainTime();
             }

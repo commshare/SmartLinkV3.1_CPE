@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.rx.helper;
+package com.alcatel.wifilink.rx.helper.base;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -6,8 +6,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
@@ -17,7 +15,10 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by qianli.ma on 2017/11/16 0016.
@@ -194,6 +195,7 @@ public class BoardWanHelper {
             protected void onSuccess(WanSettingsResult result) {
                 normalNext(result);
                 int status = result.getStatus();
+                Logger.v("ma_sim: wan status: " + result.getStatus());
                 switch (status) {
                     case Cons.CONNECTED:
                         connectedNext(result);

@@ -28,7 +28,7 @@ import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;

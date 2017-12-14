@@ -12,6 +12,7 @@ import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.annotation.ArrayRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -39,6 +40,7 @@ import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +48,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -63,6 +66,35 @@ public class OtherUtils {
     public static List<Object> homeTimerList = new ArrayList<>();// 仅存放自动退出定时器
     public static List<PopupWindows> popList = new ArrayList<>();
     public static OnHeartBeatListener onHeartBeatListener;
+
+    /**
+     * 根据SP读取到的值获取数组中的字符
+     *
+     * @param arr     需要匹配的字符数组
+     * @param include 数组中可能包含的字符
+     * @return
+     */
+    public static String getAlert(String[] arr, int include) {
+        String alert = "90%";
+        for (String s : arr) {
+            if (s.contains(String.valueOf(include))) {
+                alert = s;
+                break;
+            }
+        }
+        return alert;
+    }
+
+    /**
+     * 获取字符数组资源
+     *
+     * @param context
+     * @return
+     */
+    public static String[] getResArr(Context context, @ArrayRes int resId) {
+        return context.getResources().getStringArray(resId);
+    }
+
 
     /**
      * 隐藏软键盘
@@ -620,6 +652,19 @@ public class OtherUtils {
     public static ProgressDialog showProgressPop(Context context) {
         ProgressDialog pgd = new ProgressDialog(context);
         pgd.setMessage(context.getString(R.string.connecting));
+        pgd.setCanceledOnTouchOutside(false);
+        pgd.show();
+        return pgd;
+    }
+
+    /**
+     * 显示等待进度条
+     *
+     * @param context
+     */
+    public static ProgressDialog showProgressPop(Context context, String content) {
+        ProgressDialog pgd = new ProgressDialog(context);
+        pgd.setMessage(content);
         pgd.setCanceledOnTouchOutside(false);
         pgd.show();
         return pgd;

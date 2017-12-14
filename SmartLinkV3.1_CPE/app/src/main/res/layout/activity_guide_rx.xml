@@ -15,8 +15,20 @@
         app:indicatorHeight="8dp"
         app:indicatorPadding="8dp"
         app:indicatorWidth="8dp"
+        app:indicatorContainerID="@+id/indicator_guiderx"
         app:intervalTime="2000"
         app:selectedDrawable="@drawable/scroll_point_checked"
-        app:unselectedDrawable="@drawable/scroll_point_unchecked" />
+        app:unselectedDrawable="@drawable/scroll_point_unchecked" >
+
+        <LinearLayout
+            android:id="@id/indicator_guiderx"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"/>
+        
+    </com.art.zok.autoview.AutoViewPager>
 
 </com.zhy.android.percent.support.PercentRelativeLayout>

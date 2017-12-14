@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e7e7e8">
+
+    <!-- banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_set_data_plan"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- monthly data limit -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_monthly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_setPlan_rx_banner"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_15dip"
+            android:text="@string/usage_setting_monthlysataplan"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_monthly_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/sms_next"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="15%h" />
+
+        <TextView
+            android:id="@+id/tv_setPlan_rx_monthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_toStartOf="@id/iv_setPlan_rx_monthly_to"
+            android:text="0GB"
+            android:textColor="@color/color_light_gray"
+            app:layout_textSizePercent="27%h" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.4"
+            android:background="@color/gray" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- billing cycle -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_billing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_setPlan_rx_monthly"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_15dip"
+            android:text="@string/usage_setting_billingday"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_billing_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:rotation="90"
+            android:src="@drawable/btn_play_n"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_setPlan_rx_billing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_toStartOf="@id/iv_setPlan_rx_billing_to"
+            android:text="@string/day_1"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.4"
+            android:background="@color/gray" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- usage alert -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_usageAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_setPlan_rx_billing"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_15dip"
+            android:text="@string/usage_setting_usagealert"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_usageAlert_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:rotation="90"
+            android:src="@drawable/btn_play_n"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_setPlan_rx_usageAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_toStartOf="@id/iv_setPlan_rx_usageAlert_to"
+            android:text="90%"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.4"
+            android:background="@color/gray" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- auto disconnect -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_autoDisconnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_setPlan_rx_usageAlert"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_15dip"
+            android:text="@string/auto_disconnect"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_autoDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/switch_off"
+            app:layout_heightPercent="35%h"
+            app:layout_widthPercent="70%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- split -->
+    <View
+        android:id="@+id/v_setPlan_rx_split"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/rl_setPlan_rx_autoDisconnect"
+        android:alpha="0.2"
+        android:background="@color/gray" />
+
+    <!-- Time limit -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_timelimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/v_setPlan_rx_split"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_15dip"
+            android:text="@string/usage_setting_timelimit"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_timelimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/switch_off"
+            app:layout_heightPercent="35%h"
+            app:layout_widthPercent="70%h" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.4"
+            android:background="@color/gray" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- set time limit -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_setPlan_rx_setTimelimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_setPlan_rx_timelimit"
+        android:background="@color/white"
+        app:layout_heightPercent="9%h">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_15dip"
+            android:text="@string/usage_setting_settimelimit"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="27%h" />
+
+        <ImageView
+            android:id="@+id/iv_setPlan_rx_setTimelimit_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:src="@drawable/sms_next"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="15%h" />
+
+        <TextView
+            android:id="@+id/tv_setPlan_rx_setTimelimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_toStartOf="@id/iv_setPlan_rx_setTimelimit_to"
+            android:text="0m"
+            android:textColor="@color/color_light_gray"
+            app:layout_textSizePercent="27%h" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.4"
+            android:background="@color/gray" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

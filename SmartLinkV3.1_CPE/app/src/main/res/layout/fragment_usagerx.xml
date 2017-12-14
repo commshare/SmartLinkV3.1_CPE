@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <!-- banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_usage_rx_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_usage_rx_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/monthly_data_usage"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- home network -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_usage_rx_homeNetwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_usage_rx_banner"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_usage_rx_homeNetwork_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/home_connected_ic_home"
+            app:layout_heightPercent="50%h"
+            app:layout_marginLeftPercent="15%h"
+            app:layout_widthPercent="50%h" />
+
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/iv_usage_rx_homeNetwork_logo"
+            android:gravity="center"
+            app:layout_marginLeftPercent="20%h">
+
+            <TextView
+                android:id="@+id/tv_usage_rx_homeNetwork_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_network"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="30%h" />
+
+            <TextView
+                android:id="@+id/tv_usage_rx_homeNetwork_traffic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_usage_rx_homeNetwork_title"
+                android:text="0MB / 0GB"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="25%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_usage_rx_homeNetwork_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:text="0h"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- roaming -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_usage_rx_roaming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_usage_rx_homeNetwork"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_usage_rx_roaming_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/home_connected_ic_roaming"
+            app:layout_heightPercent="50%h"
+            app:layout_marginLeftPercent="15%h"
+            app:layout_widthPercent="50%h" />
+
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/iv_usage_rx_roaming_logo"
+            android:gravity="center"
+            app:layout_marginLeftPercent="20%h">
+
+            <TextView
+                android:id="@+id/tv_usage_rx_roaming_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/usage_setting_roaming"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="30%h" />
+
+            <TextView
+                android:id="@+id/tv_usage_rx_roaming_traffic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_usage_rx_roaming_title"
+                android:text="0MB"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="25%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_usage_rx_roaming_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:text="0h"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <Button
+        android:id="@+id/bt_usage_rx_resetStatist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_usage_rx_roaming"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bt_login_selector"
+        android:text="@string/reset_statistics"
+        android:textColor="@color/white"
+        app:layout_heightPercent="8%h"
+        app:layout_marginTopPercent="5%h"
+        app:layout_textSizePercent="2.8%h"
+        app:layout_widthPercent="80%w" />
+
+    <TextView
+        android:id="@+id/tv_usage_rx_mobileNetworkSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bt_usage_rx_resetStatist"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/mobile_network_settings"
+        android:textColor="@color/gray"
+        app:layout_heightPercent="5%h"
+        app:layout_marginTopPercent="3%h"
+        app:layout_textSizePercent="2.5%h" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

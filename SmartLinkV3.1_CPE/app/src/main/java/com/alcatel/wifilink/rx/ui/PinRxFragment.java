@@ -14,23 +14,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.SP;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.SP;
+import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.github.ikidou.fragmentBackHandler.BackHandlerHelper;
+import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class PinRxFragment extends Fragment {
+public class PinRxFragment extends Fragment implements FragmentBackHandler{
+// public class PinRxFragment extends Fragment  {
 
     @BindView(R.id.et_pin_rx)
     EditText etPinRx;
@@ -62,6 +65,7 @@ public class PinRxFragment extends Fragment {
         activity = (HomeRxActivity) getActivity();// HomeRx
         inflate = View.inflate(getActivity(), R.layout.fragment_pinpukpin, null);
         unbinder = ButterKnife.bind(this, inflate);
+        resetUI();
         initRes();
         initUi();
         return inflate;
@@ -71,7 +75,14 @@ public class PinRxFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             getRemainTime();
-        }
+            resetUI();
+        } 
+    }
+
+    private void resetUI() {
+        activity.tabFlag = Cons.TAB_PIN;
+        activity.llNavigation.setVisibility(View.GONE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -179,15 +190,16 @@ public class PinRxFragment extends Fragment {
         boardSimHelper.setOnPinRequireListener(this::unlockPinRequest);
         boardSimHelper.setOnpukRequireListener(result -> toPukRx());
         boardSimHelper.setOnpukTimeoutListener(result -> toPukRx());
-        boardSimHelper.setOnSimReadyListener(result -> toMainRx());
+        boardSimHelper.setOnSimReadyListener(result -> toOtherRx());
         boardSimHelper.boardNormal();
     }
 
     /**
      * 跳转
      */
-    private void toMainRx() {
-        toFragment(activity.clazz[0]);
+    private void toOtherRx() {
+        int position = SP.getInstance(getActivity()).getInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+        toFragment(activity.clazz[position]);
     }
 
     /**
@@ -215,7 +227,7 @@ public class PinRxFragment extends Fragment {
                     SP.getInstance(getActivity()).putBoolean(Cons.PIN_REMEM_FLAG_RX, isRememPin);
                 }
                 // 进入其他界面
-                toMainRx();
+                toOtherRx();
             }
 
             @Override
@@ -243,5 +255,12 @@ public class PinRxFragment extends Fragment {
 
     public void to(Class ac) {
         CA.toActivity(getActivity(), ac, false, true, false, 0);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        int anInt = SP.getInstance(getActivity()).getInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+        activity.fraHelpers.transfer(activity.clazz[anInt]);
+        return true;
     }
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_pop_conner">
+
+    <EditText
+        android:id="@+id/et_pop_simpin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:hint="@string/qs_item_pin_code"
+        android:inputType="numberPassword"
+        android:maxLength="8"
+        android:paddingEnd="@dimen/dimen_10dip"
+        android:paddingStart="@dimen/dimen_10dip"
+        android:textColor="@color/mg_blue"
+        app:layout_heightPercent="8%sh"
+        app:layout_marginTopPercent="5%sh"
+        app:layout_textSizePercent="2.5%sh"
+        app:layout_widthPercent="80%sw" />
+
+    <View
+        android:id="@+id/v_pop_simpin"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@id/et_pop_simpin"
+        android:layout_centerHorizontal="true"
+        android:background="@color/mg_blue"
+        app:layout_widthPercent="80%sw" />
+
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_pop_simpin_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/v_pop_simpin"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        app:layout_heightPercent="8%sh"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_widthPercent="80%sw">
+
+        <TextView
+            android:id="@+id/tv_pop_simpin_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            app:layout_textSizePercent="32%h" />
+
+        <TextView
+            android:id="@+id/tv_pop_simpin_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/mg_blue"
+            app:layout_textSizePercent="32%h" />
+
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ll_pop_simpin_buttons"
+        app:layout_marginTopPercent="3%sh" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

@@ -327,7 +327,7 @@ public class SystemManager extends BaseManager {
             ////SimpleDateFormat startTemp = new SimpleDateFormat(
             ////Const.DATE_FORMATE);
             ////Calendar caNow = Calendar.getInstance();
-            ////String strNow = startTemp.format(caNow.getTime());
+            ////String strNow = startTemp.format(caNow.getUsedTimeForSec());
             ////if (!(BusinessManager.getInstance()
             ////.getUsageSettings().m_strStartBillDate
             ////.compareTo(strNow) <= 0 && BusinessManager

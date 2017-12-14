@@ -55,7 +55,7 @@
 
         <!-- 新的产生crash的提示界面 -->
         <activity
-            android:name=".rx.helper.CrashDialog"
+            android:name=".rx.helper.base.CrashDialog"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -220,6 +220,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingNetworkActivity"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

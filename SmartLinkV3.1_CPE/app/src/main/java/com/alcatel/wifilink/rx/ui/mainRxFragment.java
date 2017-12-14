@@ -24,14 +24,13 @@ import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.BoardSimHelper;
-import com.alcatel.wifilink.rx.helper.BoardWanHelper;
-import com.alcatel.wifilink.rx.helper.ConnectSettingHelper;
-import com.alcatel.wifilink.rx.helper.ConnectStatusHelper;
-import com.alcatel.wifilink.rx.helper.NetworkInfoHelper;
-import com.alcatel.wifilink.rx.helper.UsageHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardWanHelper;
+import com.alcatel.wifilink.rx.helper.base.ConnectSettingHelper;
+import com.alcatel.wifilink.rx.helper.base.ConnectStatusHelper;
+import com.alcatel.wifilink.rx.helper.base.NetworkInfoHelper;
+import com.alcatel.wifilink.rx.helper.base.UsageHelper;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
-import com.alcatel.wifilink.ui.activity.UsageActivity;
 import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
@@ -39,6 +38,7 @@ import com.alcatel.wifilink.ui.view.DynamicWave;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.WaveHelper;
 import com.gelitenight.waveview.library.WaveView;
+import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import butterknife.BindView;
@@ -64,6 +64,9 @@ public class mainRxFragment extends Fragment {
     WaveView btSimConnected;// SIM卡已连接(波浪视图)
     @BindView(R.id.bt_mainrx_simLocked)
     Button btSimLocked;// SIM卡被锁定状态
+    @BindView(R.id.bt_mainrx_simNown)
+    Button btSimNown;// SIM卡被锁定状态
+
     @BindView(R.id.tv_mainrx_usedUnit)
     TextView tvUsedUnit;// 已使用流量单位
     @BindView(R.id.tv_mainrx_usedData)
@@ -102,6 +105,7 @@ public class mainRxFragment extends Fragment {
     private int SIM_DISCONNECT_MODE = 1;// SIM卡未连接模式(已解锁)
     private int SIM_CONNECT_MODE = 2;// SIM卡连接模式
     private int SIM_LOCKED = 3;// SIM被锁定状态
+    private int SIM_NOWN = 4;// SIM被拔出
     private WaveHelper waveButton;// 波浪辅助类
     private String circlrDotColor = "#3798f4";// 圆环颜色
     private String behindColor_nor = "#AA39e99d";// 圆环波浪底色(正常)
@@ -155,16 +159,75 @@ public class mainRxFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View inflate = one();
+        return inflate;
+    }
+
+    private View one() {
         inflate = View.inflate(getActivity(), R.layout.fragment_mainrx, null);
         unbinder = ButterKnife.bind(this, inflate);
         activity = (HomeRxActivity) getActivity();
         fragmentClazz = activity.clazz;
-        // 全局等待
-        pgdWait = OtherUtils.showProgressPop(getActivity());
+        SP.getInstance(getActivity()).putInt(Cons.TAB_FRA,Cons.TAB_MAIN);
+        showPgd();
         initRes();
+        resetUi();
         initView();
+        initHelper();
         startTimer();
         return inflate;
+                
+    }
+
+    /**
+     * 全局等待
+     */
+    private void showPgd() {
+        if (pgdWait == null) {
+            pgdWait = OtherUtils.showProgressPop(getActivity());
+        } else {
+            pgdWait.show();
+        }
+    }
+
+    private void initHelper() {
+        wanHelper = new BoardWanHelper(getActivity());
+        wanHelperClick = new BoardWanHelper(getActivity());
+        simHelper = new BoardSimHelper(getActivity());
+        simHelper_simNotConnect = new BoardSimHelper(getActivity());
+        simHelper_simConnect = new BoardSimHelper(getActivity());
+        simHelper_simLocked = new BoardSimHelper(getActivity());
+        connStatuHelper = new ConnectStatusHelper();
+
+        // 定时获取WAN口状态
+        wanHelper.setOnResultError(error -> getSim());// 出错
+        wanHelper.setOnError(e -> getSim());// 出错
+        wanHelper.setOnConnetedNextListener(wanResult -> wanFirst());// 显示wan
+        wanHelper.setOnDisConnetedNextListener(wanResult -> getSim());// 获取sim
+        wanHelper.setOnDisconnetingNextListener(wanResult -> getSim());// 获取sim
+
+        // 定时获取sim状态
+        simHelper.setOnNownListener(simStatus -> {
+            simNotReady();
+        });
+        simHelper.setOnSimReadyListener(result -> simReady());
+        simHelper.setOnSimLockListener(simStatus -> pinPukSimLock());
+        simHelper.setOnPinRequireListener(result -> pinPukSimLock());
+        simHelper.setOnpukRequireListener(result -> pinPukSimLock());
+        simHelper.setOnpukTimeoutListener(result -> simNotReady());
+        simHelper.setOnInitingListener(simStatus -> simNotReady());
+        simHelper.setOnDetectedListener(simStatus -> simNotReady());
+        simHelper.setOnNownListener(simStatus -> simNown());
+        simHelper.setOnRollRequestOnError(e -> simNotReady());
+        simHelper.setOnRollRequestOnResultError(error -> simNotReady());
+
+        // 定时获取连接状态
+        connStatuHelper.setOnConnected(result -> buttonUi(SIM_CONNECT_MODE));
+        connStatuHelper.setOnConnecting(result -> buttonUi(SIM_DISCONNECT_MODE));
+        connStatuHelper.setOnDisConnected(result -> buttonUi(SIM_DISCONNECT_MODE));
+        connStatuHelper.setOnDisConnecting(result -> buttonUi(SIM_DISCONNECT_MODE));
+        connStatuHelper.setOnResultError(error -> buttonUi(SIM_DISCONNECT_MODE));
+        connStatuHelper.setOnError(error -> buttonUi(SIM_DISCONNECT_MODE));
     }
 
     @Override
@@ -173,8 +236,16 @@ public class mainRxFragment extends Fragment {
             stopTimer();
             dialogDismiss();
         } else {
+            SP.getInstance(getActivity()).putInt(Cons.TAB_FRA,Cons.MAIN);
             startTimer();
+            resetUi();
         }
+    }
+
+    private void resetUi() {
+        activity.tabFlag = Cons.TAB_MAIN;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.GONE);
     }
 
 
@@ -205,7 +276,7 @@ public class mainRxFragment extends Fragment {
         connected_none = getResources().getDrawable(R.drawable.device_none);
         connected_more = getResources().getDrawable(R.drawable.device_more);
         signals = new Drawable[]{signal0, signal1, signal2, signal3, signal4, signal5, signalR};
-        buttonsView = new View[]{btWanConnect, btSimUnConnected, rlSimConnected, btSimLocked};
+        buttonsView = new View[]{btWanConnect, btSimUnConnected, rlSimConnected, btSimLocked, btSimNown};
     }
 
     private void initView() {
@@ -248,15 +319,8 @@ public class mainRxFragment extends Fragment {
      * 先获取WAN口状态
      */
     private void getWan() {
-        if (wanHelper == null) {
-            wanHelper = new BoardWanHelper(getActivity());
-        }
+        Logger.v("ma_sim: " + "getwan()");
          /* 2.wan口无效后再走sim卡 */
-        wanHelper.setOnResultError(error -> getSim());// 出错
-        wanHelper.setOnError(e -> getSim());// 出错
-        wanHelper.setOnConnetedNextListener(wanResult -> wanFirst());// 显示wan
-        wanHelper.setOnDisConnetedNextListener(wanResult -> getSim());// 获取sim
-        wanHelper.setOnDisconnetingNextListener(wanResult -> getSim());// 获取sim
         wanHelper.boardTimer();
     }
 
@@ -279,20 +343,22 @@ public class mainRxFragment extends Fragment {
      * 获取sim卡状态
      */
     private void getSim() {
-        if (simHelper == null) {
-            simHelper = new BoardSimHelper(getActivity());
-        }
-        simHelper.setOnNownListener(simStatus -> simNotReady());
-        simHelper.setOnSimReadyListener(result -> simReady());
-        simHelper.setOnSimLockListener(simStatus -> pinPukSimLock());
-        simHelper.setOnPinRequireListener(result -> pinPukSimLock());
-        simHelper.setOnpukRequireListener(result -> pinPukSimLock());
-        simHelper.setOnpukTimeoutListener(result -> simNotReady());
-        simHelper.setOnInitingListener(simStatus -> simNotReady());
-        simHelper.setOnDetectedListener(simStatus -> simNotReady());
-        simHelper.setOnRollRequestOnError(e -> simNotReady());
-        simHelper.setOnRollRequestOnResultError(error -> simNotReady());
+        Logger.v("ma_sim: " + "sim going");
         simHelper.boardTimer();
+    }
+
+    /**
+     * SIM卡没有插入时显示
+     */
+    private void simNown() {
+        // 0.隐藏等待
+        OtherUtils.hideProgressPop(pgdWait);
+        // 1.显示UI
+        buttonUi(SIM_NOWN);// SIM卡未插入
+        // 2.获取注册状态(在SIM卡状态未达到CONNECTED之前切勿使用GetNetworkInfo这个接口)
+        getNetworkRegister();
+        // 3.获取设备数
+        getDevice();
     }
 
     /**
@@ -315,17 +381,6 @@ public class mainRxFragment extends Fragment {
     private void simReady() {
         // 0.隐藏等待
         OtherUtils.hideProgressPop(pgdWait);
-        if (connStatuHelper == null) {
-            connStatuHelper = new ConnectStatusHelper();
-        }
-        connStatuHelper.setOnConnected(result -> {
-            buttonUi(SIM_CONNECT_MODE);
-        });
-        connStatuHelper.setOnConnecting(result -> buttonUi(SIM_DISCONNECT_MODE));
-        connStatuHelper.setOnDisConnected(result -> buttonUi(SIM_DISCONNECT_MODE));
-        connStatuHelper.setOnDisConnecting(result -> buttonUi(SIM_DISCONNECT_MODE));
-        connStatuHelper.setOnResultError(error -> buttonUi(SIM_DISCONNECT_MODE));
-        connStatuHelper.setOnError(error -> buttonUi(SIM_DISCONNECT_MODE));
         connStatuHelper.getStatus();
         // 1.获取注册状态
         getNetworkRegister();
@@ -390,9 +445,15 @@ public class mainRxFragment extends Fragment {
             }
 
             private void usageError() {
-                tvUsedUnit.setText(mb_unit);
-                tvUsedData.setText("-");
-                tvUsedTotal.setText(getString(R.string.used_of) + " -");
+                if (tvUsedUnit != null) {
+                    tvUsedUnit.setText(mb_unit);
+                }
+                if (tvUsedData != null) {
+                    tvUsedData.setText("-");
+                }
+                if (tvUsedTotal != null) {
+                    tvUsedTotal.setText(getString(R.string.used_of) + " -");
+                }
             }
         });
     }
@@ -467,9 +528,13 @@ public class mainRxFragment extends Fragment {
              * 状态错误 | 状态不良 使用此UI
              */
             private void noneConnected() {
-                ivConnectedPeople.setImageDrawable(connected_none);
-                tvConnectedPeople.setText(NONE_TEXT);
-                tvConnectedPeople.setTextColor(gray_color);
+                if (ivConnectedPeople != null) {
+                    ivConnectedPeople.setImageDrawable(connected_none);
+                }
+                if (tvConnectedPeople != null) {
+                    tvConnectedPeople.setText(NONE_TEXT);
+                    tvConnectedPeople.setTextColor(gray_color);
+                }
             }
 
         });
@@ -498,6 +563,9 @@ public class mainRxFragment extends Fragment {
                 clickWhenWanConnect();
                 break;
             case R.id.bt_mainrx_simUnConnected:// sim卡(未连接, 但已经解锁)点击
+                clickWhenSimNotConnect();
+                break;
+            case R.id.bt_mainrx_simNown:// sim未插入
                 clickWhenSimNotConnect();
                 break;
             case R.id.bt_mainrx_simConnected:// sim 卡(连接)点击
@@ -531,9 +599,6 @@ public class mainRxFragment extends Fragment {
      * WAN口连接后点击了该按钮
      */
     private void clickWhenWanConnect() {
-        if (wanHelperClick == null) {
-            wanHelperClick = new BoardWanHelper(getActivity());
-        }
         /* 2.wan口无效后再走sim卡 */
         wanHelperClick.setOnResultError(error -> toast(R.string.restart_device_tip));// 出错
         wanHelperClick.setOnError(e -> toast(R.string.restart_device_tip));// 出错
@@ -555,7 +620,7 @@ public class mainRxFragment extends Fragment {
         simHelper_simConnect.setOnpukRequireListener(result -> showPukDialog());// PUK
         simHelper_simConnect.setOnpukTimeoutListener(result -> showPukTimeoutTip());// PUK
         simHelper_simConnect.setOnSimReadyListener(result -> {
-            to(UsageActivity.class, false);
+            activity.fraHelpers.transfer(fragmentClazz[6]);
         });// to usage
         simHelper_simConnect.boardNormal();
     }
@@ -602,7 +667,9 @@ public class mainRxFragment extends Fragment {
      */
     private void toPukFragment(SweetAlertDialog dialog) {
         dialog.dismiss();
-        changeFragment(fragmentClazz[5]);
+        // 提交当前fragment标记以作为"上一次"跳转标记
+        SP.getInstance(getActivity()).putInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+        changeFragment(fragmentClazz[5], Cons.TAB_PUK);
     }
 
     /**
@@ -627,7 +694,8 @@ public class mainRxFragment extends Fragment {
      */
     private void toPinFragment(SweetAlertDialog dialog) {
         dialog.dismiss();
-        changeFragment(fragmentClazz[4]);
+        SP.getInstance(getActivity()).putInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+        changeFragment(fragmentClazz[Cons.TAB_PIN], Cons.TAB_PIN);
     }
 
     /**
@@ -646,8 +714,8 @@ public class mainRxFragment extends Fragment {
      *
      * @param clazz
      */
-    public void changeFragment(Class clazz) {
-        activity.fraHelpers.transfer(clazz);
+    public void changeFragment(Class clazz, int flag) {
+        activity.transferUi(flag);
     }
 
     /**

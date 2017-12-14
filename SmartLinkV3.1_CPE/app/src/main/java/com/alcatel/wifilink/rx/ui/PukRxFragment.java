@@ -22,9 +22,10 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import butterknife.BindView;
@@ -36,7 +37,7 @@ import butterknife.Unbinder;
  * Created by qianli.ma on 2017/11/21 0021.
  */
 
-public class PukRxFragment extends Fragment {
+public class PukRxFragment extends Fragment implements FragmentBackHandler{
 
     @BindView(R.id.et_puk_rx)
     EditText etPukRx;
@@ -76,10 +77,12 @@ public class PukRxFragment extends Fragment {
         activity = (HomeRxActivity) getActivity();
         inflate = View.inflate(getActivity(), R.layout.fragment_pinpukpuk, null);
         unbinder = ButterKnife.bind(this, inflate);
+        resetUI();
         initRes();
         initUi();
         return inflate;
     }
+
 
     private void initRes() {
         red_color = getResources().getColor(R.color.red);
@@ -103,7 +106,14 @@ public class PukRxFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             getRemainTime();
+            resetUI();
         }
+    }
+
+    private void resetUI() {
+        activity.tabFlag = Cons.TAB_PUK;
+        activity.llNavigation.setVisibility(View.GONE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -221,12 +231,8 @@ public class PukRxFragment extends Fragment {
         boardSimHelper.setOnPinRequireListener(result -> toPinRx());
         boardSimHelper.setOnpukRequireListener(result -> unlockPukRequest());
         boardSimHelper.setOnpukTimeoutListener(this::pukTimeout);
-        boardSimHelper.setOnSimReadyListener(result -> toMainRx());
+        boardSimHelper.setOnSimReadyListener(result -> toOtherRx());
         boardSimHelper.boardNormal();
-    }
-
-    private void toMainRx() {
-        toFragment(activity.clazz[0]);
     }
 
     private void pukTimeout(SimStatus result) {
@@ -239,15 +245,15 @@ public class PukRxFragment extends Fragment {
         API.get().unlockPuk(puk, pin, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
-                // 是否勾选了记住PIN
+                // 1.是否勾选了记住PIN
                 boolean isRememPin = ivPukRemempinRxCheckbox.getDrawable() == check_pic ? true : false;
                 if (isRememPin) {
                     String pin = OtherUtils.getEdContent(etPukResetpinRx);
                     SP.getInstance(getActivity()).putString(Cons.PIN_REMEM_STR_RX, pin);
                     SP.getInstance(getActivity()).putBoolean(Cons.PIN_REMEM_FLAG_RX, isRememPin);
                 }
-                // 进入其他界面
-                toMainRx();
+                // 2.进入其他界面
+                toOtherRx();
             }
 
             @Override
@@ -262,6 +268,11 @@ public class PukRxFragment extends Fragment {
                 getRemainTime();
             }
         });
+    }
+
+    private void toOtherRx() {
+        int position = SP.getInstance(getActivity()).getInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+        toFragment(activity.clazz[position]);
     }
 
     private void toPinRx() {
@@ -282,4 +293,10 @@ public class PukRxFragment extends Fragment {
         CA.toActivity(getActivity(), ac, false, true, false, 0);
     }
 
+    @Override
+    public boolean onBackPressed() {
+        int anInt = SP.getInstance(getActivity()).getInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+        activity.fraHelpers.transfer(activity.clazz[anInt]);
+        return true;
+    }
 }

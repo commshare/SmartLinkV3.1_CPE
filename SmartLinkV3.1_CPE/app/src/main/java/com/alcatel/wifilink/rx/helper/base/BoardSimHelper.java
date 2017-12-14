@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.rx.helper;
+package com.alcatel.wifilink.rx.helper.base;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -200,15 +200,18 @@ public class BoardSimHelper {
                 int simState = result.getSIMState();
                 switch (simState) {
                     case Cons.NONE:
+                        Logger.v("ma_sim:  " + "nown");
                         nownStatusNext(result);
                         break;
                     case Cons.DETECTED:
                         detectedNext(result);
                         break;
                     case Cons.PIN_REQUIRED:
+                        Logger.v("ma_sim:  " + "pin");
                         pinRequireNext(result);
                         break;
                     case Cons.PUK_REQUIRED:
+                        Logger.v("ma_sim:  " + "puk");
                         pukRequireNext(result);
                         break;
                     case Cons.SIMLOCK:
@@ -220,6 +223,7 @@ public class BoardSimHelper {
                     case Cons.ILLEGAL:
                         break;
                     case Cons.READY:
+                        Logger.v("ma_sim:  " + "ready");
                         simReadyNext(result);
                         break;
                     case Cons.INITING:

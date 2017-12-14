@@ -24,8 +24,8 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
-import com.alcatel.wifilink.rx.helper.CheckBoard;
-import com.alcatel.wifilink.rx.helper.WpsHelper;
+import com.alcatel.wifilink.rx.helper.base.CheckBoard;
+import com.alcatel.wifilink.rx.helper.base.WpsHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.Constants;
@@ -33,8 +33,6 @@ import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.net.SocketTimeoutException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,7 +154,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                 otherUtils.setOnSwVersionListener(needToEncrypt -> toLogin(needToEncrypt));
                 otherUtils.getDeviceSwVersion();
             }
-        }.checkBoard(this, LoginRxActivity.class);
+        }.checkBoard(this, LoginRxActivity.class, RefreshWifiRxActivity.class);
     }
 
     /**
@@ -387,10 +385,14 @@ public class LoginRxActivity extends BaseActivityWithBack {
         API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
+                String content = "";
                 int remainingTimes = result.getLoginRemainingTimes();
-                String tips = getString(R.string.login_psd_error_msg);
+                String noRemain = getString(R.string.login_login_time_used_out_msg);
+                String remain = getString(R.string.login_psd_error_msg);
+                String tips = remain;
                 String remainTips = String.format(tips, remainingTimes);
-                ToastUtil_m.show(LoginRxActivity.this, remainTips);
+                content = remainingTimes <= 0 ? noRemain : remainTips;
+                ToastUtil_m.show(LoginRxActivity.this, content);
             }
         });
     }
@@ -402,54 +404,10 @@ public class LoginRxActivity extends BaseActivityWithBack {
         // 重启设备
         new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)// 类型
                 .setTitleText(getString(R.string.warning))// 警告
-                .setContentText(getString(R.string.This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone))// 描述
-                .setCancelText(getString(R.string.cancel))// 取消
+                .setContentText(getString(R.string.reset_tip))// 描述
                 .setConfirmText(getString(R.string.ok))// 确定
-                .showCancelButton(true)// 设置取消按钮
-                .setCancelClickListener(Dialog::dismiss)// 设置取消监听
-                .setConfirmClickListener(this::resetDevice)// 设置确定监听
+                .setConfirmClickListener(Dialog::dismiss)// 设置确定监听
                 .show();
 
-    }
-
-    /**
-     * 重启设备
-     */
-    private void resetDevice(SweetAlertDialog dialog) {
-        dialog.dismiss();
-        new CheckBoard() {
-            @Override
-            public void successful() {
-                pgd = OtherUtils.showProgressPop(LoginRxActivity.this);
-                API.get().resetDevice(new MySubscriber() {
-                    @Override
-                    protected void onSuccess(Object result) {
-                        OtherUtils.hideProgressPop(pgd);
-                        ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_success));
-                        LoginRxActivity.this.finish();
-                        OtherUtils.kill();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        OtherUtils.hideProgressPop(pgd);
-                        if (e instanceof SocketTimeoutException) {
-                            Log.v("ma_couldn_connect", "loginrx resetDevice error: " + e.getMessage());
-                            ToastUtil_m.show(LoginRxActivity.this, getString(R.string.connect_failed));
-                            CA.toActivity(LoginRxActivity.this, RefreshWifiRxActivity.class, false, true, false, 0);
-                        } else {
-                            ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_failed));
-                        }
-                    }
-
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        System.out.println("ma_rx_loging: " + error.getMessage() + ":" + error.getCode());
-                        OtherUtils.hideProgressPop(pgd);
-                        ToastUtil_m.show(LoginRxActivity.this, getString(R.string.setting_reset_failed));
-                    }
-                });
-            }
-        }.checkBoard(this, LoginRxActivity.class);
     }
 }

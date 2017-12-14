@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.rx.helper;
+package com.alcatel.wifilink.rx.helper.base;
 
 import com.alcatel.wifilink.model.wlan.WlanSetting;
 import com.alcatel.wifilink.network.API;

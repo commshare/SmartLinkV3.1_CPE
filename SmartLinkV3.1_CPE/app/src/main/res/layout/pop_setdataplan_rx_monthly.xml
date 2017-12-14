@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_pop_setPlan_rx_monthly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_heightPercent="9%sh"
+        app:layout_marginTopPercent="3%sh">
+
+        <EditText
+            android:id="@+id/et_pop_setPlan_rx_monthly_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/et_underline_settimelimit"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textColor="@color/black"
+            app:layout_heightPercent="90%h"
+            app:layout_textSizePercent="30%h"
+            app:layout_widthPercent="30%w" />
+
+        <com.zhy.android.percent.support.PercentLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/et_pop_setPlan_rx_monthly_num"
+            app:layout_heightPercent="90%h"
+            app:layout_widthPercent="30%w">
+
+            <TextView
+                android:id="@+id/tv_pop_setPlan_rx_monthly_mb"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/mb_text"
+                android:textColor="@color/mg_blue"
+                app:layout_textSizePercent="30%h" />
+
+            <TextView
+                android:id="@+id/tv_pop_setPlan_rx_monthly_gb"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/gb_text"
+                android:textColor="@color/gray"
+                app:layout_textSizePercent="30%h" />
+
+        </com.zhy.android.percent.support.PercentLinearLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_pop_setPlan_rx_blank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_pop_setPlan_rx_monthly"
+        android:layout_centerHorizontal="true"
+        android:text="@string/if_blank_data_unlimited"
+        app:layout_marginTopPercent="2%sh"
+        app:layout_textSizePercent="2.7%sh" />
+
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_pop_setPlan_monthly_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_pop_setPlan_rx_blank"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        app:layout_heightPercent="7%sh"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_widthPercent="80%sw">
+
+        <TextView
+            android:id="@+id/tv_pop_setPlan_rx_monthly_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_pop_setPlan_rx_blank"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/gray"
+            app:layout_textSizePercent="40%h" />
+
+        <TextView
+            android:id="@+id/tv_pop_setPlan_rx_monthly_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv_pop_setPlan_rx_blank"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/dialog_ok"
+            android:textColor="@color/mg_blue"
+            app:layout_textSizePercent="40%h" />
+
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@id/ll_pop_setPlan_monthly_button"
+        app:layout_marginTopPercent="3%sh" />
+</com.zhy.android.percent.support.PercentRelativeLayout>

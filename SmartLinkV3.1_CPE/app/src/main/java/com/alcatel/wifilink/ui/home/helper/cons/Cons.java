@@ -25,12 +25,18 @@ public class Cons {
     public static int SECURITY_WPA = 2;
     public static int SECURITY_WPA2 = 3;
     public static int SECURITY_WPA_WPA2 = 4;
-    public static int TAB_HOME = 0;
+
+    public static String TAB_FRA = "TAB_FRA";
+    public static int TAB_MAIN = 0;
     public static int TAB_WIFI = 1;
     public static int TAB_SMS = 2;
     public static int TAB_SETTING = 3;
     public static int TAB_PIN = 4;
     public static int TAB_PUK = 5;
+    public static int TAB_USAGE = 6;
+    public static int TAB_MOBILE_NETWORK = 7;
+    public static int TAB_SET_DATA_PLAN = 8;
+
     public static String USAGE_LIMIT = "USAGE_LIMIT";
 
 
@@ -106,8 +112,8 @@ public class Cons {
     public static final int LTE_TDD = 14;
     public static final int CDMA_Ehrpd = 15;
 
-    public static int ROAMING = 0;
-    public static int NOROAMING = 1;
+    public final static int ROAMING = 0;
+    public final static int NOROAMING = 1;
 
     public static final int NOSERVICE = -1;
     public static final int LEVEL_0 = 0;
@@ -190,8 +196,6 @@ public class Cons {
     public static final String WPS_IS_WORKING = "050503";
     public static final String GET_SYSTEM_STATUS_FAIL = "050503";
 
-    public static final int PIN_ENABLE_VERIFIED = 2;
-
     public static final int AUTO = 0;
     public static final int MANUAL = 1;
 
@@ -202,5 +206,37 @@ public class Cons {
     public static final int REGISTER_SUCCESSFUL = 2;
     public static final int REGISTRATION_FAILED = 3;
 
+    /* upgrade */
+    public static final int CHECKING = 0;
+    public static final int NEW_VERSION = 1;
+    public static final int NO_NEW_VERSION = 2;
+    public static final int NO_CONNECT = 3;
+    public static final int SERVICE_NOT_AVAILABLE = 4;
+    public static final int CHECK_ERROR = 5;
 
+    /* network setting */
+    public static final int AUTO_MODE = 0;
+    public static final int ONLY_2G = 1;
+    public static final int ONLY_3G = 2;
+    public static final int ONLY_LTE = 3;
+    public static final int GSM_LTE = 4;
+    public static final int UMTS_LTE = 5;
+    public static final int GSM_UMTS = 6;
+    public static final int CDMA_EVDO = 7;
+    public static final int LTE_CDMA_EVDO = 8;
+    public static final int EVDO_ONLY = 9;
+    public static final int CDMA_EHRPD = 10;
+    public static final int CDMA_ONLY_1X_SPRINT = 11;
+
+    /* roaming connect */
+    public static final int WHEN_ROAM_NOT_CONNECT = 0;
+    public static final int WHEN_ROAM_CAN_CONNECT = 1;
+
+    /* pin states */
+    public static final int PINSTATES_UNKNOWN = 0;
+    public static final int PINSTATES_ENABLE_BUT_NOT_VERIFIED = 1;
+    public static final int PINSTATES_PIN_ENABLE_VERIFIED = 2;
+    public static final int PINSTATES_PIN_DISABLE = 3;
+    public static final int PINSTATES_PUK_REQUIRED = 4;
+    public static final int PINSTATES_PUK_TIMES_USED_OUT = 5;
 }

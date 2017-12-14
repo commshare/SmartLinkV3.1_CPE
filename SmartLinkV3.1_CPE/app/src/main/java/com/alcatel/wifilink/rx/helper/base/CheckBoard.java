@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.rx.helper;
+package com.alcatel.wifilink.rx.helper.base;
 
 import android.app.Activity;
 
@@ -37,7 +37,7 @@ public abstract class CheckBoard {
      * @param ori    调用的ac
      * @param target 出错时的目标ac
      */
-    public void checkBoard(Activity ori, Class target) {
+    public void checkBoard(Activity ori, Class... target) {
         // 检测wifi是否有连接
         if (OtherUtils.isWifiConnect(ori)) {
             // 请求接口前
@@ -54,7 +54,7 @@ public abstract class CheckBoard {
                     allError();
                     onResultErrors(error);// 请求接口中途错误
                     // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
-                    CA.toActivity(ori, target, false, true, false, 0);
+                    CA.toActivity(ori, target[0], false, true, false, 0);
                 }
 
                 @Override
@@ -62,14 +62,14 @@ public abstract class CheckBoard {
                     allError();
                     onErrors(e);// 请求接口错误溢出
                     // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
-                    CA.toActivity(ori, target, false, true, false, 0);
+                    CA.toActivity(ori, target[0], false, true, false, 0);
                 }
             });
         } else {
             // wifi掉线
             if (ori != null) {
                 // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
-                CA.toActivity(ori, target, false, true, false, 0);
+                CA.toActivity(ori, target[1], false, true, false, 0);
             }
         }
     }

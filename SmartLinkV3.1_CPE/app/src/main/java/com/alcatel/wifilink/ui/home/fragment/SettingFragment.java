@@ -3,6 +3,7 @@ package com.alcatel.wifilink.ui.home.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,9 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.Constants;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.fileexplorer.Util;
 import com.alcatel.wifilink.model.connection.ConnectionState;
 import com.alcatel.wifilink.model.system.SystemInfo;
@@ -41,25 +40,29 @@ import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
+import com.alcatel.wifilink.rx.helper.base.UpgradeHelper;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.AboutActivity;
 import com.alcatel.wifilink.ui.activity.EthernetWanConnectionActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
 import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
 import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
-import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.net.SocketTimeoutException;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -113,18 +116,23 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     private TextView mMobileNetworkWanSocket;
     private TimerHelper checkTimer;
     private HomeRxActivity activity;
-
+    private ProgressDialog pgd;
+    private CheckBoardLogin checkBoardLogin;
+    private UpgradeHelper upgradeHelper;
+    private SweetAlertDialog sweetAlertDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (HomeRxActivity) getActivity();
         m_view = View.inflate(getActivity(), R.layout.fragment_home_setting, null);
+        resetUi();
         init();
         initEvent();
         startTimer();
         return m_view;
     }
+
 
     @Override
     public void onDestroyView() {
@@ -144,7 +152,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             stopTimer();
         } else {
             startTimer();
+            resetUi();
         }
+    }
+
+    private void resetUi() {
+        activity.tabFlag = Cons.TAB_SETTING;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     private void stopTimer() {
@@ -287,7 +302,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 goSettingLanguagePage();
                 break;
             case R.id.setting_firmware_upgrade:
-                requestGetWanSettingRequest();
+                clickUpgrade();// 点击升级
                 break;
             case R.id.setting_restart:
                 popDialogFromBottom(RESTART_RESET);
@@ -306,6 +321,42 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 点击升级
+     */
+    private void clickUpgrade() {
+        pgd = OtherUtils.showProgressPop(getActivity());
+        upgradeHelper = new UpgradeHelper(getActivity());
+        upgradeHelper.setOnNormalListener(attr -> OtherUtils.hideProgressPop(pgd));
+        upgradeHelper.setOnNewVersionListener(attr -> showUpgradeUi());
+        upgradeHelper.getNewVersion();
+    }
+
+    /**
+     * 显示升级UI
+     */
+    private void showUpgradeUi() {
+        sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)// 升级提示
+                                   .setTitleText(getString(R.string.setting_upgrade))// title
+                                   .setContentText(getString(R.string.setting_upgrade_firmware_warning))// content
+                                   .setCancelText(getString(R.string.cancel))// cancel
+                                   .setConfirmText(getString(R.string.ok))// ok
+                                   .setConfirmClickListener(dialog -> {
+                                       dialog.dismiss();// 消隐
+                                       goToUpgrade();// 执行升级逻辑
+                                   }).showCancelButton(true)// cancel
+                                   .setCancelClickListener(Dialog::dismiss);// 设置按钮点击时间
+        sweetAlertDialog.show();
+    }
+
+    /**
+     * 执行升级操作
+     */
+    private void goToUpgrade() {
+        // TODO: 2017/12/1 0001 执行升级操作
+    }
+
+
     private void requestGetConnectionStatus() {
         API.get().getConnectionState(new MySubscriber<ConnectionState>() {
             @Override
@@ -315,7 +366,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 } else {
                     ToastUtil_m.show(activity, getString(R.string.setting_upgrade_no_connection));
                 }
-
             }
 
             @Override
@@ -329,8 +379,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 super.onFailure();
             }
         });
-
-
     }
 
     private void requestGetWanSettingRequest() {
@@ -632,7 +680,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/octet-stream"), file);
         // RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        // TODO: 2017/8/11 多添加一个参数 [ _TclRequestVerificationToken ]
+        // TOAT: 2017/8/11 多添加一个参数 [ _TclRequestVerificationToken ]
         MultipartBody.Part body = MultipartBody.Part.createFormData("iptUpload", file.getName(), requestFile);
         API.get().uploadFile(new Subscriber() {
             @Override
@@ -1043,7 +1091,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                         });
                     }
                 }, 10 * 1000);
-
             }
 
             @Override
@@ -1061,8 +1108,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-
-
     }
 
     private void requestGetDeviceUpgradeState() {
@@ -1109,8 +1154,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private void goToMobileNetworkSettingPage() {
         // to setting network activity
-        Intent intent = new Intent(activity, SettingNetworkActivity.class);
-        activity.startActivity(intent);
+        // Intent intent = new Intent(activity, SettingNetworkActivity.class);
+        // activity.startActivity(intent);
+        // TOAT: 测试mobile network fragment
+        activity.fraHelpers.transfer(activity.clazz[7]);
     }
 
     private void goEthernetWanConnectionPage() {

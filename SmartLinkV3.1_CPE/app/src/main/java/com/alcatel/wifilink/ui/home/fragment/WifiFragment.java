@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
@@ -21,20 +22,22 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.wlan.AP;
-import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.ENUM;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
+import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 
 import static android.app.Activity.RESULT_OK;
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
@@ -91,9 +94,23 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     private String[] mWpaEncryptionSettings;
     private String[] mWepEncryptionSettings;
     private TimerHelper wifiTimer;
+    private HomeRxActivity activity;
 
     public WifiFragment() {
 
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            resetUi();
+        }
+    }
+
+    private void resetUi() {
+        activity.tabFlag = Cons.TAB_WIFI;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -111,6 +128,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        activity = (HomeRxActivity) getActivity();
+        resetUi();
         return inflater.inflate(R.layout.wifi_settings, container, false);
     }
 

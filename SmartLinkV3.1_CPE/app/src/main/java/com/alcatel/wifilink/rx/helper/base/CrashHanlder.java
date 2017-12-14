@@ -1,15 +1,8 @@
-package com.alcatel.wifilink.rx.helper;
+package com.alcatel.wifilink.rx.helper.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.util.Log;
-
-import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 
 public class CrashHanlder implements Thread.UncaughtExceptionHandler {
 

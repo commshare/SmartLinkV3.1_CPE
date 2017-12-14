@@ -5,15 +5,11 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alcatel.wifilink.model.sms.SMSStorageState;
-import com.alcatel.wifilink.model.wlan.WlanSetting;
-import com.alcatel.wifilink.model.wlan.WlanStatus;
-import com.alcatel.wifilink.utils.Constants;
-import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.model.Usage.UsageParams;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageRecordParam;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
+import com.alcatel.wifilink.model.Usage.UsageSettings;
 import com.alcatel.wifilink.model.battery.BatteryState;
 import com.alcatel.wifilink.model.connection.ConnectionMode;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
@@ -45,6 +41,7 @@ import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SMSDeleteParam;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
+import com.alcatel.wifilink.model.sms.SMSStorageState;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
 import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.model.sms.SmsSingle;
@@ -60,14 +57,19 @@ import com.alcatel.wifilink.model.user.NewPasswdParams;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.model.wlan.LanSettings;
+import com.alcatel.wifilink.model.wlan.WlanSetting;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanState;
+import com.alcatel.wifilink.model.wlan.WlanStatus;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.downloadfile.DownloadProgressInterceptor;
 import com.alcatel.wifilink.network.downloadfile.DownloadProgressListener;
+import com.alcatel.wifilink.rx.helper.base.HttpLoggerInterceptor;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
+import com.alcatel.wifilink.utils.Constants;
+import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.HostnameUtils;
 import com.alcatel.wifilink.utils.Logs;
@@ -181,6 +183,10 @@ public class API {
     }
 
     private OkHttpClient buildOkHttpClient() {
+        // OKGO
+        HttpLoggerInterceptor malogger = new HttpLoggerInterceptor("MALOGGER");
+        malogger.setPrintLevel(HttpLoggerInterceptor.Level.BODY);
+        // OKhttp
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -214,7 +220,8 @@ public class API {
         
         /* google play request online ssl verify */
         builder.hostnameVerifier(HostnameUtils.getVerify());
-        builder.addInterceptor(httpLoggingInterceptor);
+        // builder.addInterceptor(httpLoggingInterceptor);
+        builder.addInterceptor(malogger);
         return builder.build();
     }
 
@@ -545,9 +552,17 @@ public class API {
     public void setUsageSetting(UsageSetting usageSettingParams, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageSettingParams)));
     }
+    
+    public void setUsageSettings(UsageSettings us, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, us)));
+    }
 
     public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
         subscribe(subscriber, smartLinkApi.getUsageSetting(new RequestBody(Methods.GET_USAGESETTING)));
+    }
+
+    public void getUsageSettings(MySubscriber<UsageSettings> subscriber) {
+        subscribe(subscriber, smartLinkApi.getUsageSettings(new RequestBody(Methods.GET_USAGESETTING)));
     }
 
     public void getNetworkInfo(MySubscriber<NetworkInfos> subscriber) {
@@ -725,6 +740,9 @@ public class API {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<UsageSetting>> getUsageSetting(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<UsageSettings>> getUsageSettings(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<NetworkInfos>> getNetworkInfo(@Body RequestBody requestBody);

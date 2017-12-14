@@ -101,7 +101,21 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/home_btn_connected_nor"
-            android:text="@string/pop_sim_locked"
+            android:text="@string/IDS_PIN_LOCKED"
+            android:textColor="@color/mg_blue"
+            android:visibility="gone"
+            app:layout_heightPercent="100%w"
+            app:layout_textSizePercent="12%h"
+            app:layout_widthPercent="100%w" />
+
+        <!-- sim卡锁定状态 -->
+        <Button
+            android:id="@+id/bt_mainrx_simNown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/home_btn_connected_nor"
+            android:text="@string/home_no_sim"
             android:textColor="@color/mg_blue"
             android:visibility="gone"
             app:layout_heightPercent="100%w"

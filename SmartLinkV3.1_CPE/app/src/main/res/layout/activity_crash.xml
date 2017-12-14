@@ -57,7 +57,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/dimen_10dip"
                     android:layout_marginStart="@dimen/dimen_10dip"
-                    android:text="连接超时,你的手机与你的设备已经断开连接,检查你的设备信号是否正常,请重启你的设备或者WIFI,再重新登陆APP."
+                    android:text="@string/crash_tip"
                     android:textColor="@color/red"
                     app:layout_textSizePercent="2%sh" />
             </com.zhy.android.percent.support.PercentRelativeLayout>

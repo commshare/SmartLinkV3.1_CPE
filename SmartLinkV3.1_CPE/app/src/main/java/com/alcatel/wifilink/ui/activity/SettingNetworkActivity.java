@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.appwidget.PopupWindows;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.utils.SP;
@@ -87,6 +89,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     private Drawable switchOff;
     private ProgressDialog pgd;
     private boolean isRoaming;
+    private PopupWindows popPin;
+    private EditText et_settingPin;
+    private TextView ok_settingPin;
+    private TextView cancel_settingPin;
+    private View iv_settingPin;
+    private View rl_settingPin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +228,11 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         mNewSimPin = (EditText) findViewById(R.id.new_sim_pin);
         mConfirmNewSimPin = (EditText) findViewById(R.id.confirm_new_sim_pin);
 
+        rl_settingPin = findViewById(R.id.rl_pop_setttingPin);
+        iv_settingPin = findViewById(R.id.iv_pop_setting_bg);
+        et_settingPin = (EditText) findViewById(R.id.et_pop_setttingpin);
+        ok_settingPin = (TextView) findViewById(R.id.tv_pop_settingpin_ok);
+        cancel_settingPin = (TextView) findViewById(R.id.tv_pop_settingpin_cancel);
     }
 
     private void setDefaultLimit(AppCompatSpinner mUsageAlertSpinner, int usageLimit_default) {
@@ -418,13 +431,17 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().changePinState(pinCode, enable, new MySubscriber() {
             @Override
             protected void onSuccess(Object result) {
+                rl_settingPin.setVisibility(View.GONE);
                 mSimPinCompat.setChecked(enable == 1);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                et_settingPin.setText("");
+                OtherUtils.hideKeyBoard(SettingNetworkActivity.this);
                 int remainTimes = mSimStatus.getPinRemainingTimes() - 1;
-                Toast.makeText(SettingNetworkActivity.this, error.getMessage() + " " + getString(R.string.can_also_enter_times, remainTimes + ""), Toast.LENGTH_SHORT).show();
+                String content = getString(R.string.pin_error_waring_title) + "\n" + getString(R.string.can_also_enter_times, remainTimes + "");
+                Toast.makeText(SettingNetworkActivity.this, content, Toast.LENGTH_SHORT).show();
                 getSimStatus();
             }
 
@@ -439,7 +456,12 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         API.get().getSimStatus(new MySubscriber<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
-                // PinState: 0: unknown 1: enable but not verified 2: PIN enable verified 3: PIN disable 4: PUK required 5: PUK times used out;
+                // PinState: 0: unknown
+                // 1: enable but not verified
+                // 2: PIN enable verified
+                // 3: PIN disable
+                // 4: PUK required
+                // 5: PUK times used out;
                 mSimStatus = result;
                 if (result.getPinState() == 2) {
                     mSimPinCompat.setChecked(true);
@@ -583,12 +605,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 }
                 break;
             case R.id.network_sim_pin_switch:
-                if (mSimStatus.getPinRemainingTimes() == 0) {
-                    CA.toActivity(this, PukUnlockActivity.class, false, true, false, 0);
-                    return;
-                }
-                mSimPinCompat.setChecked(mSimPinCompat.isChecked() ? false : true);
-                showSimPinEnableDialog();
+                changePinStatus();
                 break;
             case R.id.relativelayout_network_profile:
                 showProfileLinkDialog();
@@ -596,6 +613,21 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             default:
                 break;
         }
+    }
+
+    /**
+     * 修改PIN状态
+     */
+    private void changePinStatus() {
+        BoardSimHelper boardSimHelper = new BoardSimHelper(this);
+        boardSimHelper.setOnNownListener(simStatus -> toast(R.string.home_no_sim));
+        boardSimHelper.setOnPinRequireListener(result -> {
+            showSimPinEnableDialog();
+        });
+        boardSimHelper.setOnpukRequireListener(result -> {
+            
+        });
+        boardSimHelper.setOnpukTimeoutListener(result -> toast(R.string.Home_PukTimes_UsedOut));
     }
 
     private void modifyRoam() {
@@ -718,9 +750,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     } else if (radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()) {
                         mUsageSetting.setUnit(Constants.UsageSetting.UNIT_GB);
                     }
-                    // else if (radioButtonKb.getId() == radioGroup.getCheckedRadioButtonId()) {
-                    //     mUsageSetting.setUnit(Constants.UsageSetting.UNIT_KB);
-                    // }
                     int dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
                     mUsageSetting.setMonthlyPlan((Long.parseLong(mothlyplan) * dataPlanByte));
                     setUsageSetting(mUsageSetting);
@@ -768,20 +797,29 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void showSimPinEnableDialog() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View v = inflater.inflate(R.layout.dialog_set_sim_enable, null);
-        final EditText nameEdit = (EditText) v.findViewById(R.id.et_sim_pin_code);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(v);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                changePinState(nameEdit.getText().toString(), mSimPinCompat.isChecked() ? 0 : 1);
+        rl_settingPin.setVisibility(View.VISIBLE);
+        et_settingPin.setText("");
+        iv_settingPin.setOnClickListener(v -> {
+            OtherUtils.hideKeyBoard(this);
+            rl_settingPin.setVisibility(View.GONE);
+        });
+        ok_settingPin.setOnClickListener(v -> {
+            String edContent = OtherUtils.getEdContent(et_settingPin);
+            if (TextUtils.isEmpty(edContent)) {
+                ToastUtil_m.show(SettingNetworkActivity.this, getString(R.string.not_empty));
+                return;
+            } else if (edContent.length() < 4 || edContent.length() > 8) {
+                ToastUtil_m.show(SettingNetworkActivity.this, getString(R.string.the_pin_code_should_be_4_8_characters));
+                return;
+            } else {
+                OtherUtils.hideKeyBoard(this);
+                changePinState(edContent, mSimPinCompat.isChecked() ? 0 : 1);
             }
         });
-        builder.setNegativeButton(R.string.cancel, null);
-        builder.create();
-        builder.show();
+        cancel_settingPin.setOnClickListener(v -> {
+            OtherUtils.hideKeyBoard(this);
+            rl_settingPin.setVisibility(View.GONE);
+        });
     }
 
     private void showProfileLinkDialog() {
@@ -835,15 +873,6 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         }
 
         changePinCode(newPin, currentPin);
-        //
-        //        mCurrentPassword.setText(null);
-        //        mNewPassword.setText(null);
-        //        mConfirmPassword.setText(null);
-        //
-        //        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //        imm.hideSoftInputFromWindow(mCurrentPassword.getWindowToken(), 0);
-        //        imm.hideSoftInputFromWindow(mNewPassword.getWindowToken(), 0);
-        //        imm.hideSoftInputFromWindow(mConfirmPassword.getWindowToken(), 0);
     }
 
     @Override
@@ -901,6 +930,13 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     @Override
     public void onBackPressed() {
+
+        if (rl_settingPin.getVisibility() == View.VISIBLE) {
+            OtherUtils.hideKeyBoard(this);
+            rl_settingPin.setVisibility(View.GONE);
+            return;
+        }
+
         if (mSetDataPlan.getVisibility() == View.VISIBLE) {
             mSetDataPlan.setVisibility(View.GONE);
             mMobileNetwork.setVisibility(View.VISIBLE);
@@ -914,5 +950,21 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
             return;
         }
         super.onBackPressed();
+    }
+
+    public void toast(int resId) {
+        ToastUtil_m.show(this, resId);
+    }
+
+    public void toastLong(int resId) {
+        ToastUtil_m.showLong(this, resId);
+    }
+
+    public void toast(String content) {
+        ToastUtil_m.show(this, content);
+    }
+
+    public void to(Class ac, boolean isFinish) {
+        CA.toActivity(this, ac, false, isFinish, false, 0);
     }
 }

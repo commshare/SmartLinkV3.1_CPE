@@ -6,14 +6,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.ToastUtil_m;
-import com.alcatel.wifilink.rx.helper.BoardSimHelper;
-import com.alcatel.wifilink.rx.helper.LogoutHelper;
-import com.alcatel.wifilink.rx.helper.SmsHelper;
+import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
+import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.business.SmsHelper;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
@@ -24,8 +24,12 @@ import com.alcatel.wifilink.ui.home.fragment.WifiFragment;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.AppInfo;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.FraHelpers;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.SP;
+import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.github.ikidou.fragmentBackHandler.BackHandlerHelper;
 import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentFrameLayout;
 import com.zhy.android.percent.support.PercentLinearLayout;
@@ -44,15 +48,15 @@ public class HomeRxActivity extends BaseActivityWithBack {
 
     // 顶部banner
     @BindView(R.id.rl_homeRx_banner)
-    PercentRelativeLayout rlBanner;
+    public RelativeLayout rlBanner;
     @BindView(R.id.iv_homeRx_back)
-    ImageView ivBack;
+    public ImageView ivBack;
     @BindView(R.id.tv_homeRx_title)
-    TextView tvTitle;
+    public TextView tvTitle;
     @BindView(R.id.tv_homeRx_logout)
-    TextView tvLogout;
+    public TextView tvLogout;
     @BindView(R.id.iv_homeRx_smsNew)
-    ImageView ivSmsNew;
+    public ImageView ivSmsNew;
 
     // fragment容器
     @BindView(R.id.fl_homeRx_container)
@@ -60,7 +64,7 @@ public class HomeRxActivity extends BaseActivityWithBack {
 
     // 底部navigation
     @BindView(R.id.ll_homeRx_navigation)
-    PercentLinearLayout llNavigation;
+    public LinearLayout llNavigation;
     @BindView(R.id.ll_homeRx_home)
     PercentLinearLayout llHome;// HOME
     @BindView(R.id.iv_homeRx_tab_home)
@@ -89,7 +93,7 @@ public class HomeRxActivity extends BaseActivityWithBack {
     TextView tvTabSetting;
 
     private long mkeyTime; //点击2次返回键的时间
-    private int tabFlag = Cons.TAB_HOME;
+    public int tabFlag = Cons.TAB_MAIN;
     private Drawable home_logo_pre;
     private Drawable home_logo_nor;
     private Drawable wifi_logo_pre;
@@ -106,12 +110,16 @@ public class HomeRxActivity extends BaseActivityWithBack {
     private Drawable[] logo_nors;
     private int container;
     public Class[] clazz = {// 
-            mainRxFragment.class,// main
-            WifiFragment.class,// wifi
-            SmsFragments.class,// sms
-            SettingFragment.class,// setting
-            PinRxFragment.class,// pin
-            PukRxFragment.class};// puk
+            mainRxFragment.class,// main--> 0
+            WifiFragment.class,// wifi--> 1
+            SmsFragments.class,// sms--> 2
+            SettingFragment.class,// setting--> 3
+            PinRxFragment.class,// pin--> 4
+            PukRxFragment.class,// puk--> 5
+            UsageRxFragment.class,// puk--> 6
+            MobileNetworkRxFragment.class, // mobile network--> 7
+            SetDataPlanRxfragment.class// set data plan--> 8
+    };
     public FraHelpers fraHelpers;
     private BoardSimHelper boardSimHelper;
     public static String CURRENT_ACTIVITY;// 当前运行的AC
@@ -162,11 +170,38 @@ public class HomeRxActivity extends BaseActivityWithBack {
     }
 
     private void initFragment() {
-        transferTabAndFragment(Cons.TAB_HOME);
+        transferTabAndFragment(Cons.TAB_MAIN);
     }
 
     @Override
     public void onBackPressed() {
+        // backupPlan();
+        if (!BackHandlerHelper.handleBackPress(this)) {
+            // 主要的4个fragment
+            if ((System.currentTimeMillis() - mkeyTime) > 2000) {
+                mkeyTime = System.currentTimeMillis();
+                toast(R.string.home_exit_app);
+            } else {
+                logout();
+            }
+        }
+    }
+
+    private void backupPlan() {
+        if (tabFlag == Cons.TAB_PIN || tabFlag == Cons.TAB_PUK) {
+            int anInt = SP.getInstance(this).getInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+            fraHelpers.transfer(clazz[anInt]);
+            return;
+        }
+        if (tabFlag == Cons.TAB_USAGE) {
+            fraHelpers.transfer(clazz[Cons.TAB_MAIN]);
+            return;
+        }
+        if (tabFlag == Cons.TAB_MOBILE_NETWORK) {
+            fraHelpers.transfer(clazz[Cons.TAB_SETTING]);
+            return;
+        }
+        // 主要的4个fragment
         if ((System.currentTimeMillis() - mkeyTime) > 2000) {
             mkeyTime = System.currentTimeMillis();
             toast(R.string.home_exit_app);
@@ -303,7 +338,8 @@ public class HomeRxActivity extends BaseActivityWithBack {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_homeRx_back:// 回退(用于PIN|PUK界面)
-                transferTabAndFragment(Cons.TAB_HOME);
+                int position = SP.getInstance(this).getInt(Cons.TAB_FRA, Cons.TAB_MAIN);
+                transferTabAndFragment(position);
                 break;
             case R.id.tv_homeRx_logout:// 登出
                 logout();
@@ -312,7 +348,7 @@ public class HomeRxActivity extends BaseActivityWithBack {
                 to(ActivityNewSms.class, false);
                 break;
             case R.id.ll_homeRx_home:// HOME
-                transferTabAndFragment(Cons.TAB_HOME);
+                transferTabAndFragment(Cons.TAB_MAIN);
                 break;
             case R.id.ll_homeRx_wifi:// WIFI
                 transferTabAndFragment(Cons.TAB_WIFI);
@@ -332,6 +368,7 @@ public class HomeRxActivity extends BaseActivityWithBack {
     private void clickSmsTab() {
         boardSimHelper = new BoardSimHelper(this);
         boardSimHelper.setOnSimReadyListener(result -> transferTabAndFragment(Cons.TAB_SMS));
+        boardSimHelper.setOnNownListener(simStatus -> toast(R.string.not_inserted));
         boardSimHelper.boardNormal();
     }
 
@@ -341,8 +378,6 @@ public class HomeRxActivity extends BaseActivityWithBack {
      * @param tabFlag TAB角标
      */
     public void transferTabAndFragment(int tabFlag) {
-        // 0.缓存标记
-        this.tabFlag = tabFlag;
         // 1.切换图标
         for (int i = 0; i < ivTabs.length; i++) {
             ivTabs[i].setImageDrawable(i == tabFlag ? logo_pres[i] : logo_nors[i]);
@@ -351,14 +386,24 @@ public class HomeRxActivity extends BaseActivityWithBack {
         for (int i = 0; i < tvTabs.length; i++) {
             tvTabs[i].setTextColor(i == tabFlag ? blue_color : gray_color);
         }
-        // 3.切换fragment
+        // 4.切换其他UI
+        transferUi(tabFlag);
+    }
+
+    /**
+     * 切换其他UI
+     *
+     * @param tabFlag
+     */
+    public void transferUi(int tabFlag) {
+        // 1.切换fragment
         fraHelpers.transfer(clazz[tabFlag]);
-        // 4.切换标题栏
-        rlBanner.setVisibility(tabFlag == Cons.TAB_HOME ? View.GONE : View.VISIBLE);
+        // 2.切换标题栏
+        rlBanner.setVisibility(tabFlag == Cons.TAB_MAIN ? View.GONE : View.VISIBLE);
         ivBack.setVisibility(tabFlag == Cons.TAB_PIN | tabFlag == Cons.TAB_PUK ? View.VISIBLE : View.GONE);
         tvLogout.setVisibility(tabFlag == Cons.TAB_SETTING ? View.VISIBLE : View.GONE);
         ivSmsNew.setVisibility(tabFlag == Cons.TAB_SMS ? View.VISIBLE : View.GONE);
-        // 5.显示标题栏文本
+        // 3.显示标题栏文本
         if (tabFlag == Cons.TAB_WIFI) {
             tvTitle.setText(getString(R.string.wifi_settings));
         } else if (tabFlag == Cons.TAB_SMS) {
@@ -366,9 +411,9 @@ public class HomeRxActivity extends BaseActivityWithBack {
         } else if (tabFlag == Cons.TAB_SETTING) {
             tvTitle.setText(getString(R.string.main_setting));
         } else if (tabFlag == Cons.TAB_PIN) {
-            tvTitle.setText(getString(R.string.sim_unlocked));
+            tvTitle.setText(getString(R.string.IDS_PIN_LOCKED));
         } else if (tabFlag == Cons.TAB_PUK) {
-            tvTitle.setText(getString(R.string.sim_unlocked));
+            tvTitle.setText(getString(R.string.IDS_PUK_LOCKED));
         }
     }
 

@@ -9,12 +9,12 @@ import com.alcatel.wifilink.network.API;
 import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
-import com.alcatel.wifilink.rx.helper.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.rx.helper.CheckBoard;
+import com.alcatel.wifilink.rx.helper.base.CheckBoard;
 import com.alcatel.wifilink.utils.FraHelpers;
 
 import org.greenrobot.eventbus.EventBus;

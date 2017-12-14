@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_pop_conner"
+    android:orientation="vertical">
+
+    <!-- input content -->
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_pop_setPlan_rx_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_heightPercent="9%sh"
+        app:layout_marginTopPercent="3%sh">
+
+        <EditText
+            android:id="@+id/et_pop_setPlan_rx_settimelimit_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_underline_settimelimit"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="2"
+            app:layout_heightPercent="80%h"
+            app:layout_textSizePercent="27%h"
+            app:layout_widthPercent="20%w" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:text="@string/hr_s"
+            app:layout_textSizePercent="27%h" />
+
+        <EditText
+            android:id="@+id/et_pop_setPlan_rx_settimelimit_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:background="@drawable/et_underline_settimelimit"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="2"
+            app:layout_heightPercent="80%h"
+            app:layout_textSizePercent="27%h"
+            app:layout_widthPercent="20%w" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:text="@string/min_s"
+            app:layout_textSizePercent="27%h" />
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <!-- split -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ll_pop_setPlan_rx_input"
+        android:layout_marginEnd="@dimen/dimen_15dip"
+        android:layout_marginStart="@dimen/dimen_15dip"
+        android:alpha="0.5"
+        android:background="@color/gray"
+        app:layout_marginTopPercent="3%sh" />
+
+    <!-- button -->
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_pop_setPlan_settimelimit_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_15dip"
+        android:layout_marginStart="@dimen/dimen_15dip"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_heightPercent="9%sh"
+        app:layout_marginTopPercent="3%sh">
+
+        <TextView
+            android:id="@+id/tv_pop_setPlan_rx_settimelimit_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            app:layout_textSizePercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_pop_setPlan_rx_settimelimit_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="@color/mg_blue"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_marginTopPercent="3%sh" />
+
+</com.zhy.android.percent.support.PercentLinearLayout>
