@@ -2,8 +2,8 @@ package com.alcatel.wifilink.rx.helper.base;
 
 import android.util.Log;
 
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
@@ -25,7 +25,7 @@ public class ConnectStatusHelper {
      * 获取连接状态
      */
     public void getStatus() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 Log.v("ma_simconnect", "result: " + result.getConnectionStatus());

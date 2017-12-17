@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.device.other.BlockModel;
 import com.alcatel.wifilink.model.device.response.BlockList;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.devicec.fragment.block.BlockAdapter;
@@ -84,7 +84,7 @@ public class DeviceBlockFragment extends Fragment {
 
     /* **** updateBlockDeviceUI **** */
     private void updateBlockDeviceUI() {
-        API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
+        RX.getInstant().getBlockDeviceList(new ResponseObject<BlockList>() {
             @Override
             protected void onSuccess(BlockList result) {
                 blockModelList = ModelHelper.getBlockModel(result);

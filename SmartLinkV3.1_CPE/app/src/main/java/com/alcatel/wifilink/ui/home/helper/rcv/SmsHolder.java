@@ -17,6 +17,7 @@ public class SmsHolder extends RecyclerView.ViewHolder {
 
     public RelativeLayout rl_sms;// 总布局
     public ImageView iv_smsPoint;// 未读小点
+    public ImageView iv_smsLongClickPoint;// 长按小点
     public RelativeLayout rl_smsInfo;// 内容区
     public TextView tv_smsPhone;// 电话号码
     public TextView tv_smsCount;// 信息数量
@@ -28,6 +29,7 @@ public class SmsHolder extends RecyclerView.ViewHolder {
         super(itemView);
         rl_sms = (RelativeLayout) itemView.findViewById(R.id.rl_sms);
         iv_smsPoint = (ImageView) itemView.findViewById(R.id.iv_smsPoint);
+        iv_smsLongClickPoint = (ImageView) itemView.findViewById(R.id.iv_smsLongClickPoint);
         rl_smsInfo = (RelativeLayout) itemView.findViewById(R.id.rl_smsInfo);
         tv_smsPhone = (TextView) itemView.findViewById(R.id.tv_smsPhone);
         tv_smsCount = (TextView) itemView.findViewById(R.id.tv_smsCount);

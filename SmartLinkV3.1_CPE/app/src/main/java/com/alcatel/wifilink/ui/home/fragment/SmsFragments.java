@@ -14,19 +14,22 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.model.sms.SMSContactList;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.rx.bean.SMSContactSelf;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.utils.ToastUtil_m;
-import com.alcatel.wifilink.model.sms.SMSContactList;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.rcv.SmsRcvAdapter;
 import com.alcatel.wifilink.ui.sms.helper.SmsDeletePop;
 import com.alcatel.wifilink.ui.sms.helper.SmsDeleteSessionHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,12 +43,15 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     Unbinder unbinder;
     @BindView(R.id.no_sms)
     TextView noSms;
+    @BindView(R.id.tv_sms_batchDeteled)
+    TextView tvSmsBatchDeteled;
 
     private HomeRxActivity activity;
     private View inflate;
     private SmsRcvAdapter smsRcvAdapter;
     private TimerHelper timerHelper;
-    private SMSContactList smsContactList;
+    private SMSContactList smsContactList;// 不带有长按标记的联系人集合
+    private List<SMSContactSelf> smsContactSelfList = new ArrayList<>();// 带有长按标记的联系人集合
     private SmsDeletePop deletePop;
     private RippleView tv_delete_cancel;
     private RippleView tv_delete_confirm;
@@ -78,15 +84,22 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     }
 
     private void resetUi() {
-        activity.tabFlag = Cons.TAB_SMS;
-        activity.llNavigation.setVisibility(View.VISIBLE);
-        activity.rlBanner.setVisibility(View.VISIBLE);
+        if (activity != null) {
+            activity.tabFlag = Cons.TAB_SMS;
+            activity.llNavigation.setVisibility(View.VISIBLE);
+            activity.rlBanner.setVisibility(View.VISIBLE);
+        } else {
+            ((HomeRxActivity)getActivity()).tabFlag = Cons.TAB_SMS;
+            ((HomeRxActivity)getActivity()).llNavigation.setVisibility(View.VISIBLE);
+            ((HomeRxActivity)getActivity()).rlBanner.setVisibility(View.VISIBLE);   
+        }
+        
     }
 
     /* **** initView **** */
     private void initView() {
         rcvSms.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        smsRcvAdapter = new SmsRcvAdapter(getActivity(), smsContactList);
+        smsRcvAdapter = new SmsRcvAdapter(getActivity(), smsContactSelfList);
         rcvSms.setAdapter(smsRcvAdapter);
     }
 
@@ -123,7 +136,7 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
                 getSmsContactList();
             }
         };
-        timerHelper.start(2000);
+        timerHelper.start(5000);
         OtherUtils.timerList.add(timerHelper);
     }
 
@@ -143,6 +156,9 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_sms_batchDeteled:
+                // TODO: 2017/12/17 0017
+                break;
             case R.id.tv_smsdetail_detele_cancel:
                 if (deletePop != null) {
                     deletePop.getPop().dismiss();
@@ -159,11 +175,12 @@ public class SmsFragments extends Fragment implements View.OnClickListener {
     /* **** getSmsContactList **** */
     private void getSmsContactList() {
         // get sms list
-        API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
+        RX.getInstant().getSMSContactList(0, new ResponseObject<SMSContactList>() {
             @Override
             protected void onSuccess(SMSContactList result) {
                 smsContactList = result;
-                smsRcvAdapter.notifys(smsContactList);
+                smsContactSelfList = OtherUtils.getSMSSelfList(smsContactList);
+                smsRcvAdapter.notifys(smsContactSelfList);
                 //SmsCountHelper.setSmsCount(getActivity(), HomeActivity.mTvHomeMessageCount);
                 noSms.setVisibility(smsContactList.getSMSContactList().size() > 0 ? View.GONE : View.VISIBLE);
             }

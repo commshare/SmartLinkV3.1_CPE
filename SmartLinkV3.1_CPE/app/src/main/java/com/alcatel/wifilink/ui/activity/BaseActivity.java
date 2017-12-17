@@ -262,7 +262,7 @@ public abstract class BaseActivity extends BaseFragmentActivity {
     //    	}
     //		
     //    	ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);    	
-    //    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+    //    	ComponentName cn = am.getRunningTasks(1).getInstant(0).topActivity;
     //    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
     //    		LoginDialog.setAlreadyLogin(false);
     //    	}  

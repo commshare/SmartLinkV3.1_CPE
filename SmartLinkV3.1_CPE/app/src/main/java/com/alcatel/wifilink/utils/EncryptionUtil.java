@@ -1,8 +1,6 @@
 package com.alcatel.wifilink.utils;
 
-import static android.R.attr.key;
-import static com.alcatel.wifilink.network.API.AUTHORIZATION_KEY;
-import static com.alcatel.wifilink.network.API.USER_KEY;
+import static com.alcatel.wifilink.network.RX.USER_KEY;
 
 /**
  * Created by tao.j on 2017/6/22.

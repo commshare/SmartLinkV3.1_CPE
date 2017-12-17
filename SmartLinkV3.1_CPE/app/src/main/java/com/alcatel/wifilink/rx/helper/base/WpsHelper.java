@@ -1,8 +1,8 @@
 package com.alcatel.wifilink.rx.helper.base;
 
 import com.alcatel.wifilink.model.wlan.WlanSetting;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
@@ -17,7 +17,7 @@ public class WpsHelper {
      */
     public void getWpsStatus() {
 
-        API.get().getWlanSetting(new MySubscriber<WlanSetting>() {
+        RX.getInstant().getWlanSetting(new ResponseObject<WlanSetting>() {
             @Override
             protected void onSuccess(WlanSetting result) {
                 WlanSetting.AP2GBean ap2G = result.getAP2G();

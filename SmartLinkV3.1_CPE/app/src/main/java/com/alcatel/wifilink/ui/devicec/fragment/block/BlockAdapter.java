@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.device.other.BlockModel;
 import com.alcatel.wifilink.model.device.response.BlockList;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.devicec.helper.FragmentDeviceEnum;
 
@@ -60,7 +60,7 @@ public class BlockAdapter extends RecyclerView.Adapter<BlockHolder> {
 
     /* setDeviceUnlock */
     private void setDeviceUnlock(String strDeviceName, String strMac, int position) {
-        API.get().setDeviceUnblock(strDeviceName, strMac, new MySubscriber() {
+        RX.getInstant().setDeviceUnblock(strDeviceName, strMac, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 blockModelList.remove(position);

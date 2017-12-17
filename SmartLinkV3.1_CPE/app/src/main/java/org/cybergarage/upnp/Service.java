@@ -65,7 +65,7 @@
 *	04/12/06
 *		- Added setUserData() and getUserData() to set a user original data object.
 *	09/18/2010 Robin V. <robinsp@gmail.com>
-*		- Fixed getSCPDNode() not to occur recursive http get requests.
+*		- Fixed getSCPDNode() not to occur recursive http getInstant requests.
 *
 ******************************************************************/
 

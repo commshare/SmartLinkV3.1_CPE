@@ -31,7 +31,7 @@ public class HttpSharing {
 		}
 	}
 
-	/*******************get ftp setting******************************************************************************************/
+	/*******************getInstant ftp setting******************************************************************************************/
 	public static class GetFtpSetting extends BaseRequest {	
 
 		public GetFtpSetting(IHttpFinishListener callback) {
@@ -83,7 +83,7 @@ public class HttpSharing {
 	}
 
 	
-	/******************** get samba setting **************************************************************************************/
+	/******************** getInstant samba setting **************************************************************************************/
 	public static class GetSambaSetting extends BaseRequest {	
 
 		public GetSambaSetting(IHttpFinishListener callback) {
@@ -120,7 +120,7 @@ public class HttpSharing {
 	}
 
 	
-	/******************** get DLNA setting **************************************************************************************/
+	/******************** getInstant DLNA setting **************************************************************************************/
 	public static class GetDlnaSetting extends BaseRequest {	
 
 		public GetDlnaSetting(IHttpFinishListener callback) {

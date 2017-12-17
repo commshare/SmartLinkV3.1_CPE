@@ -16,14 +16,12 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SmsInitState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.activity.ActivitySmsDetail;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsAdapter;
-import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsNumHelper;
 
 import java.util.ArrayList;
@@ -65,12 +63,12 @@ public class SmsFragment extends Fragment implements AdapterView.OnItemClickList
     }
 
     /* -------------------------------------------- 1.START TIMER -------------------------------------------- */
-    /* **** 1.start time to get sms info **** */
+    /* **** 1.start time to getInstant sms info **** */
     private void startTimer() {
         timerHelper = new TimerHelper(getActivity()) {
             @Override
             public void doSomething() {
-                // get all status
+                // getInstant all status
                 getSmsAllStatus();
             }
         };
@@ -80,15 +78,15 @@ public class SmsFragment extends Fragment implements AdapterView.OnItemClickList
     /* **** 2.getSmsAllStatus **** */
     private void getSmsAllStatus() {
         /* check the sms status is completed */
-        API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
+        RX.getInstant().getSmsInitState(new ResponseObject<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 int state = result.getState();
                 /* sms init completed */
                 if (state == Cons.SMS_COMPLETE) {
-                    // get sms unread count 
+                    // getInstant sms unread count 
                     RefreshNewSmsNumber();
-                    // get sms list
+                    // getInstant sms list
                     getSmsList();
 
                 } else if (state == Cons.SMS_INITING) {
@@ -112,10 +110,10 @@ public class SmsFragment extends Fragment implements AdapterView.OnItemClickList
 
     /* **** getSmsContactList **** */
     private void getSmsList() {
-        API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
+        RX.getInstant().getSMSContactList(0, new ResponseObject<SMSContactList>() {
             @Override
             protected void onSuccess(SMSContactList result) {/* set sms list ui visible */
-                // 1. get sms lists
+                // 1. getInstant sms lists
                 smsContactList = result.getSMSContactList();
                 // 2. show effect ui
                 showSmsEffectUi(smsContactList);

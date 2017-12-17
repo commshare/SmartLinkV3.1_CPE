@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.wlan.LanSettings;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 
 public class AboutActivity extends BaseActivityWithBack implements View.OnClickListener {
@@ -56,7 +56,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
     }
 
     private void getDataFromNet() {
-        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+        RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
 
 
             @Override
@@ -96,7 +96,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
                 dismissLoadingDialog();
             }
         });
-        API.get().getLanSettings(new MySubscriber<LanSettings>() {
+        RX.getInstant().getLanSettings(new ResponseObject<LanSettings>() {
             @Override
             protected void onSuccess(LanSettings result) {
                 mManagementIpTxt.setText(result.getIPv4IPAddress().isEmpty() ? "0.0.0.0" : result.getIPv4IPAddress());

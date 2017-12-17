@@ -18,7 +18,7 @@
 *	09/02/03
 *		- Giordano Sassaroli <sassarol@cefriel.it> / Suzan Foster
 *		- Problem : NullpointerException thrown for devices whose description use absolute urls
-*		- Error : the presence of a base url is not mandatory, the API code makes the assumption that control and event subscription urls are relative. 
+*		- Error : the presence of a base url is not mandatory, the RX code makes the assumption that control and event subscription urls are relative. 
 *		  If the baseUrl is not present, the request host and port should be extracted from the control/subscription url
 *		- Description: The method setRequestHost/setService should be changed as follows
 *	02/17/04
@@ -32,7 +32,7 @@
 *		  the port specified by the controlUrl or eventSubUrl node should be used, else no response will be returned 
 *		  (oddly, there was a response returned even on port 80, but with empty body tags. but the correct response 
 *		  finally came from port 5440).
-*		- Fixed to get the port from the control url when it is absolute.
+*		- Fixed to getInstant the port from the control url when it is absolute.
 *	03/20/04
 *		- Thanks for Thomas Schulz <tsroyale at users.sourceforge.net>
 *		- Fixed setRequestHost() for Sony's UPnP stack when the URLBase has the path.

@@ -4,11 +4,12 @@ import android.content.Context;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.Usage.UsageSettings;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by qianli.ma on 2017/12/13 0013.
@@ -26,7 +27,7 @@ public class UsageSettingHelper {
      * 获取流量设置
      */
     public void getUsageSetting() {
-        API.get().getUsageSettings(new MySubscriber<UsageSettings>() {
+        RX.getInstant().getUsageSettings(new ResponseObject<UsageSettings>() {
             @Override
             protected void onSuccess(UsageSettings result) {
                 getSuccessNext(result);
@@ -71,10 +72,10 @@ public class UsageSettingHelper {
      * @param us
      */
     public void setUsageSetting(UsageSettings us) {
-        API.get().setUsageSettings(us, new MySubscriber() {
+        RX.getInstant().setUsageSettings(us, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
-                API.get().getUsageSettings(new MySubscriber<UsageSettings>() {
+                RX.getInstant().getUsageSettings(new ResponseObject<UsageSettings>() {
                     @Override
                     protected void onSuccess(UsageSettings result) {
                         setSuccessNext(result);
@@ -82,29 +83,32 @@ public class UsageSettingHelper {
 
                     @Override
                     public void onError(Throwable e) {
+                        Logger.t("ma_setusagesetting").v(e.getMessage());
                         toast(R.string.connect_failed);
                         errorNext(e);
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        Logger.t("ma_setusagesetting").v(error.getMessage());
                         toast(R.string.connect_failed);
                         resultErrorNext(error);
                     }
                 });
-               
+
             }
 
             @Override
             public void onError(Throwable e) {
+                Logger.t("ma_setusagesetting").v(e.getMessage());
                 toast(R.string.connect_failed);
                 errorNext(e);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                Logger.t("ma_setusagesetting").v(error.getMessage());
                 resultErrorNext(error);
-                toast(R.string.connect_failed);
             }
         });
     }
@@ -146,7 +150,7 @@ public class UsageSettingHelper {
             onResutlErrorListener.resultError(attr);
         }
     }
-    
+
     private OnErrorListener onErrorListener;
 
     // 接口OnErrorListener

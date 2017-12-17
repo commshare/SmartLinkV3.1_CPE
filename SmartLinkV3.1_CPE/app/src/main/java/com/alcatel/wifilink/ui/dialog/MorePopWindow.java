@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.activity.UsageSettingActivity;
 import com.alcatel.wifilink.utils.DataUtils;
 
@@ -66,7 +66,7 @@ public class MorePopWindow extends PopupWindow implements OnClickListener {
 
     /* **** clearUsageRecord **** */
     private void clearUsageRecord() {
-        API.get().setUsageRecordClear(DataUtils.getCurrent(), new MySubscriber() {
+        RX.getInstant().setUsageRecordClear(DataUtils.getCurrent(), new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
 

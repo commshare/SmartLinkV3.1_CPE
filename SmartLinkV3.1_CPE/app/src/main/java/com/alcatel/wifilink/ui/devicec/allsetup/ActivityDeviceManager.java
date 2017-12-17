@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.device.response.BlockList;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.devicec.helper.FraDeviceHelper;
 import com.alcatel.wifilink.ui.devicec.helper.FragmentDeviceEnum;
@@ -51,7 +51,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
         initActionbar();
         // init fragment 
         toFragment(FragmentDeviceEnum.CONNECT);
-        // get block count
+        // getInstant block count
         getblockCount();
     }
 
@@ -61,7 +61,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
 
     /* **** getblockCount **** */
     private void getblockCount() {
-        API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
+        RX.getInstant().getBlockDeviceList(new ResponseObject<BlockList>() {
             @Override
             protected void onSuccess(BlockList result) {
                 blockSize = result.getBlockList().size();
@@ -113,7 +113,7 @@ public class ActivityDeviceManager extends BaseActivityWithBack implements OnCli
     }
 
     private void checkBlockList() {
-        API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
+        RX.getInstant().getBlockDeviceList(new ResponseObject<BlockList>() {
             @Override
             protected void onSuccess(BlockList result) {
                 if (result.getBlockList().size() > 0) {

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.waveprogress.WaveLoadingView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
@@ -23,8 +25,6 @@ import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
 import com.alcatel.wifilink.ui.activity.SimUnlockActivity;
@@ -145,7 +145,7 @@ public class Mainfragment_new extends Fragment {
             pinTimer = new TimerHelper(getActivity()) {
                 @Override
                 public void doSomething() {
-                    API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+                    RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
                             SimUnlockActivity.isPinUnlock = false;
@@ -227,7 +227,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取流量 */
     private void getTraffic() {
-        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+        RX.getInstant().getUsageRecord(DataUtils.getCurrent(), new ResponseObject<UsageRecord>() {
             @Override
             protected void onSuccess(UsageRecord result) {
                 // 月流量计划
@@ -242,7 +242,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取与network相关 */
     private void getNetworkSome() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int connStatus = result.getConnectionStatus();
@@ -269,7 +269,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取漫游状态 */
     private void getRoaming() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
                 //  0:roaming 1: no roaming
@@ -290,7 +290,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取信号类型:4G|3G... */
     private void getsignalType() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
                 networkType = result.getNetworkType();
@@ -312,7 +312,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取信号强度 */
     private void getSignalStrength() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
                 signalStrength = result.getSignalStrength();
@@ -334,7 +334,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取网络类型:移动|电信... */
     private void getNetWorkName() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
                 String nn = String.valueOf(result.getNetworkName());
@@ -359,7 +359,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取连接设备数 */
     private void getDevices() {
-        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+        RX.getInstant().getConnectedDeviceList(new ResponseObject<ConnectedList>() {
             @Override
             protected void onSuccess(ConnectedList result) {
                 deviceCount = result.getConnectedList().size();
@@ -382,7 +382,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取WAN口 */
     private void getWanStatus() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 switch (result.getStatus()) {
@@ -423,7 +423,7 @@ public class Mainfragment_new extends Fragment {
     /* 获取SIM卡状态 */
     private void getSimStates() {
         if (!isWanOrSim) {// 非wan口连接状态--> 进行SIM状态获取
-            API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                 @Override
                 protected void onSuccess(SimStatus result) {
                     int simState = result.getSIMState();
@@ -458,7 +458,7 @@ public class Mainfragment_new extends Fragment {
 
     /* 获取拨号连接状态 */
     private void getConnStatus() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int connectionStatus = result.getConnectionStatus();
@@ -646,7 +646,7 @@ public class Mainfragment_new extends Fragment {
      */
     private void simConnect() {
 
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -661,14 +661,14 @@ public class Mainfragment_new extends Fragment {
             progressDialog = OtherUtils.showProgressPop(getActivity());
         }
         // 发送连接请求
-        API.get().connect(new MySubscriber() {
+        RX.getInstant().connect(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 connTimer = new TimerHelper(getActivity()) {
                     @Override
                     public void doSomething() {
                         // 获取连接状态
-                        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+                        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
                             @Override
                             protected void onSuccess(ConnectionStates result) {
                                 int connStatus = result.getConnectionStatus();

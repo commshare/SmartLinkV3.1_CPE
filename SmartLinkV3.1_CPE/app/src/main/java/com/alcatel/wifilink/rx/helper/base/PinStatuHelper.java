@@ -4,13 +4,9 @@ import android.app.Activity;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
-
-import java.security.interfaces.RSAKey;
 
 /**
  * Created by qianli.ma on 2017/12/12 0012.

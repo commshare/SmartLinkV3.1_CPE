@@ -5,8 +5,8 @@ import android.text.TextUtils;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.PinStatuHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -71,10 +71,10 @@ public class ChangePinHelper {
         }
 
         // 提交
-        API.get().unlockPin(currentCode, new MySubscriber() {
+        RX.getInstant().unlockPin(currentCode, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
-                API.get().changePinCode(refreshCode, currentCode, new MySubscriber() {
+                RX.getInstant().changePinCode(refreshCode, currentCode, new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
                         Logger.t("ma_changpin").v("changpincode");
@@ -117,7 +117,7 @@ public class ChangePinHelper {
             toast(R.string.setting_failed);
         }
         // 获取剩余次数
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() == Cons.PIN_REQUIRED) {

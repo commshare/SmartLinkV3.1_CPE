@@ -44,7 +44,7 @@ public class DeviceAdapter extends BaseAdapter{
 
 	/**
 	 * Since the data comes from an array, just returning the index is
-	 * sufficent to get at the data. If we were using a more complex data
+	 * sufficent to getInstant at the data. If we were using a more complex data
 	 * structure, we would return whatever object represents one row in the
 	 * list.
 	 * 

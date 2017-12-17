@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.common.ToastUtil;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
 
 import static com.alcatel.wifilink.R.id.text_advanced_settings_2g;
@@ -263,7 +262,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     }
 
     private void requestWlanSettings() {
-        API.get().getWlanSettings(new MySubscriber<WlanSettings>() {
+        RX.getInstant().getWlanSettings(new ResponseObject<WlanSettings>() {
             @Override
             protected void onSuccess(WlanSettings result) {
                 mWlanSettings = result;
@@ -278,7 +277,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
     }
 
 //    private void requestWlanState() {
-//        API.get().getWlanState(new MySubscriber<WlanState>() {
+//        RX.getInstant().getWlanState(new ResponseObject<WlanState>() {
 //            @Override
 //            protected void onSuccess(WlanState result) {
 //                mIs2GAPEnabled = result.isAP2GEnabled();
@@ -295,7 +294,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 //    }
 
     private void requestWlanSupportMode() {
-        API.get().getWlanSupportMode(new MySubscriber<WlanSupportAPMode>() {
+        RX.getInstant().getWlanSupportMode(new ResponseObject<WlanSupportAPMode>() {
             @Override
             protected void onSuccess(WlanSupportAPMode result) {
                 updateUIWithSupportMode(result.getWlanSupportAPMode());
@@ -332,7 +331,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
 //        boolean is2GEnabled = mWifi2GSwitch.isChecked();
 //        boolean is5GEnabled = mWifi5GSwitch.isChecked();
 //        WlanState wlanState = new WlanState(is2GEnabled, is5GEnabled);
-//        API.get().setWlanState(wlanState, new MySubscriber() {
+//        RX.getInstant().setWlanState(wlanState, new ResponseObject() {
 //            @Override
 //            protected void onSuccess(Object result) {
 //
@@ -486,7 +485,7 @@ public class ViewWifiSettings extends BaseViewImpl implements CompoundButton.OnC
             }
         }
 
-        API.get().setWlanSettings(newSettings, new MySubscriber() {
+        RX.getInstant().setWlanSettings(newSettings, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil.showMessage(m_context, m_context.getString(R.string.success));

@@ -1,8 +1,8 @@
 package com.alcatel.wifilink.rx.helper.base;
 
 import com.alcatel.wifilink.model.network.Network;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.NetworkRegisterState;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -22,7 +22,7 @@ public class NetworkSettingHelper {
      */
     public void getNetworkSetting() {
         // 先获取注册状态
-        API.get().getNetworkRegisterState(new MySubscriber<NetworkRegisterState>() {
+        RX.getInstant().getNetworkRegisterState(new ResponseObject<NetworkRegisterState>() {
             @Override
             protected void onSuccess(NetworkRegisterState result) {
                 if (result.getRegist_state() == Cons.REGISTER_SUCCESSFUL) {
@@ -45,7 +45,7 @@ public class NetworkSettingHelper {
     }
 
     private void getnetworkSetting() {
-        API.get().getNetworkSettings(new MySubscriber<Network>() {
+        RX.getInstant().getNetworkSettings(new ResponseObject<Network>() {
             @Override
             protected void onSuccess(Network result) {
                 normalNetworkNext(result);

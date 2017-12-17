@@ -18,11 +18,11 @@
 *	09/02/03
 *		- Giordano Sassaroli <sassarol@cefriel.it>
 *		- Problem : NullpointerException thrown for devices whose description use absolute urls
-*		- Error : the presence of a base url is not mandatory, the API code makes the assumption that control and event subscription urls are relative. If the baseUrl is not present, the request host and port should be extracted from the control/subscription url
+*		- Error : the presence of a base url is not mandatory, the RX code makes the assumption that control and event subscription urls are relative. If the baseUrl is not present, the request host and port should be extracted from the control/subscription url
 *		- Description: The method setRequestHost/setService should be changed as follows
 *	06/11/04
 *		- Markus Thurner <markus.thurner@fh-hagenberg.at> (06/11/2004)
-*		- Changed setServie() to get the host address from the SSDP Location field when the URLBase is null.
+*		- Changed setServie() to getInstant the host address from the SSDP Location field when the URLBase is null.
 *	12/06/04
 *		- Grzegorz Lehmann <grzegorz.lehmann@dai-labor.de>
 *		- Stefano Lenzi <kismet-sl@users.sourceforge.net>

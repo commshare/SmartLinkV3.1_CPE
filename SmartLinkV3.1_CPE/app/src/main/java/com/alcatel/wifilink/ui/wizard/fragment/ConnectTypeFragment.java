@@ -25,8 +25,8 @@ import com.alcatel.wifilink.common.MessageUti;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.activity.MainActivity;
 import com.alcatel.wifilink.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.wifilink.ui.dialog.AutoLoginProgressDialog;
@@ -94,7 +94,7 @@ public class ConnectTypeFragment extends Fragment implements View.OnClickListene
         mBusinessMgr = BusinessManager.getInstance();
         mHandler = new Handler();
 
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
 
@@ -103,7 +103,7 @@ public class ConnectTypeFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 // WAN口状态drawable视图
@@ -111,7 +111,7 @@ public class ConnectTypeFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 // 登陆状态
@@ -196,7 +196,7 @@ public class ConnectTypeFragment extends Fragment implements View.OnClickListene
 
         // 获取SIM状态
 
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -419,7 +419,7 @@ public class ConnectTypeFragment extends Fragment implements View.OnClickListene
             sim = test;
         } else {
 
-            API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                 @Override
                 protected void onSuccess(SimStatus result) {
                     getActivity().runOnUiThread(() -> {

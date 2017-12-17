@@ -8,11 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.CheckBoard;
 import com.alcatel.wifilink.utils.OtherUtils;
@@ -54,7 +54,7 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
     private void checkBorads() {
         boolean iswifi = OtherUtils.isWifiConnect(this);
         if (iswifi) {
-            API.get().getLoginState(new MySubscriber<LoginState>() {
+            RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                 @Override
                 protected void onSuccess(LoginState result) {
                     to(LoginRxActivity.class, true);

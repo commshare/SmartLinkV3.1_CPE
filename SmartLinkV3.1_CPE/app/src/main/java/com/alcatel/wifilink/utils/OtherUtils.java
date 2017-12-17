@@ -24,11 +24,13 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.DataUti;
+import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.rx.bean.SMSContactSelf;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
@@ -40,7 +42,6 @@ import com.orhanobut.logger.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -188,7 +188,7 @@ public class OtherUtils {
                 // is wifi effect?
                 boolean isWifi = OtherUtils.isWifiConnect(oriActivity);
                 if (isWifi) {
-                    API.get().heartBeat(new MySubscriber() {
+                    RX.getInstant().heartBeat(new ResponseObject() {
                         @Override
                         protected void onSuccess(Object result) {
                             if (onHeartBeatListener != null) {
@@ -219,6 +219,24 @@ public class OtherUtils {
         // 出错, 跳转到目标界面
         Log.v("ma_couldn_connect", "otherutils startHeartBeat error");
         CA.toActivity(oriActivity, acTimeout, false, true, false, 0);
+    }
+
+    /**
+     * 获取短信联系人列表并添加长按标记
+     *
+     * @param smsContactList
+     * @return
+     */
+    public static List<SMSContactSelf> getSMSSelfList(SMSContactList smsContactList) {
+        List<SMSContactSelf> smscs = new ArrayList<>();
+        for (SMSContactList.SMSContact smsContact : smsContactList.getSMSContactList()) {
+            // 新建自定义SMS Contact对象
+            SMSContactSelf scs = new SMSContactSelf();
+            scs.setSmscontact(smsContact);
+            scs.setLongClick(false);
+            smscs.add(scs);
+        }
+        return smscs;
     }
 
 
@@ -328,7 +346,7 @@ public class OtherUtils {
      * 是否为定制的版本
      */
     public void isCustomVersion() {
-        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+        RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
                 String customId = result.getSwVersion().split("_")[1];
@@ -354,7 +372,7 @@ public class OtherUtils {
 
         // 1.需要加密的定制版本
         String needEncryptVersionCustomId = Cons.CUSTOM_ID_1;
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 // 字段值为1: 一定需要加密
@@ -370,7 +388,7 @@ public class OtherUtils {
 
             /* 访问systeminfo接口 */
             private void getSystemInfoImpl() {
-                API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+                RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
                     @Override
                     protected void onSuccess(SystemInfo result) {
                         // 2.获取当前版本
@@ -407,7 +425,7 @@ public class OtherUtils {
         List<String> needEncryptVersions = new ArrayList<String>();
         needEncryptVersions.add("HH70");
         // 2.获取当前版本
-        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+        RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
                 if (onHwVersionListener != null) {

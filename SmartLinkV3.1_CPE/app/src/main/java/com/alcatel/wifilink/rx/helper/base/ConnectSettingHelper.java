@@ -6,10 +6,10 @@ import android.util.Log;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
 import com.alcatel.wifilink.network.NetworkRegisterState;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
@@ -28,7 +28,7 @@ public class ConnectSettingHelper {
      * 获取漫游时是否允许连接的状态
      */
     public void getConnWhenRoam() {
-        API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+        RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
             @Override
             protected void onSuccess(ConnectionSettings result) {
                 int roamingConnect = result.getRoamingConnect();
@@ -96,7 +96,7 @@ public class ConnectSettingHelper {
      * 切断连接
      */
     public void toDisConnect() {
-        API.get().getNetworkRegisterState(new MySubscriber<NetworkRegisterState>() {
+        RX.getInstant().getNetworkRegisterState(new ResponseObject<NetworkRegisterState>() {
             @Override
             protected void onSuccess(NetworkRegisterState result) {
                 int state = result.getRegist_state();
@@ -133,7 +133,7 @@ public class ConnectSettingHelper {
      */
     public void toConnect() {
         // 1.检测sim卡的注册状态
-        API.get().getNetworkRegisterState(new MySubscriber<NetworkRegisterState>() {
+        RX.getInstant().getNetworkRegisterState(new ResponseObject<NetworkRegisterState>() {
             @Override
             protected void onSuccess(NetworkRegisterState result) {
                 int state = result.getRegist_state();
@@ -267,7 +267,7 @@ public class ConnectSettingHelper {
      */
     private void connectOrDisconnect(boolean needConn) {
         if (needConn) {
-            API.get().connect(new MySubscriber() {
+            RX.getInstant().connect(new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     connSuccessNext(result);
@@ -284,7 +284,7 @@ public class ConnectSettingHelper {
                 }
             });
         } else {
-            API.get().disConnect(new MySubscriber() {
+            RX.getInstant().disConnect(new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     disconnSuccessNext(result);
@@ -345,7 +345,7 @@ public class ConnectSettingHelper {
      * 获取连接状态
      */
     public void getConnSettingStatus() {
-        API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+        RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
             @Override
             protected void onSuccess(ConnectionSettings result) {
                 connResultNext(result);
@@ -471,13 +471,13 @@ public class ConnectSettingHelper {
      */
     public static void toConnect(Activity activity) {
         Log.v("ma_clickConn", "begin");
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int status = result.getConnectionStatus();
                 Log.v("ma_clickConn", "conn status:" + status);
                 if (status == Cons.DISCONNECTED | status == Cons.DISCONNECTING) {
-                    API.get().connect(new MySubscriber() {
+                    RX.getInstant().connect(new ResponseObject() {
                         @Override
                         protected void onSuccess(Object result) {
                             Log.v("ma_clickConn", "success");

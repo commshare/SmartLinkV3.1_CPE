@@ -18,6 +18,17 @@
             android:layout_alignStart="@+id/view"
             android:layout_alignTop="@+id/imageView2" />
 
+        <!-- **** unread point **** -->
+        <ImageView
+            android:id="@+id/iv_smsLongClickPoint"
+            android:layout_width="@dimen/dimen_15dip"
+            android:layout_height="@dimen/dimen_15dip"
+            android:layout_alignLeft="@+id/view"
+            android:layout_alignStart="@+id/view"
+            android:layout_alignTop="@+id/imageView2"
+            android:src="@drawable/checkbox_android_off"
+            android:visibility="gone" />
+
         <!-- **** sms info **** -->
         <RelativeLayout
             android:id="@+id/rl_smsInfo"
@@ -62,8 +73,8 @@
                 android:layout_height="@dimen/dimen_15dip"
                 android:layout_marginLeft="@dimen/dimen_20dip"
                 android:layout_marginStart="@dimen/dimen_20dip"
-                android:layout_toRightOf="@id/tv_smsCount"
                 android:layout_toEndOf="@id/tv_smsCount"
+                android:layout_toRightOf="@id/tv_smsCount"
                 android:src="@drawable/sms_prompt"
                 android:visibility="gone" />
 

@@ -11,8 +11,8 @@ import com.alcatel.wifilink.business.DataConnectManager;
 import com.alcatel.wifilink.common.CPEConfig;
 import com.alcatel.wifilink.common.MessageUti;
 import com.alcatel.wifilink.model.user.LoginResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 
 public class AutoLoginProgressDialog {
@@ -45,7 +45,7 @@ public class AutoLoginProgressDialog {
 
             String loginUsername = CPEConfig.getInstance().getLoginUsername();
             String loginPassword = CPEConfig.getInstance().getLoginPassword();
-            API.get().login(loginUsername, loginPassword, new MySubscriber<LoginResult>() {
+            RX.getInstant().login(loginUsername, loginPassword, new ResponseObject<LoginResult>() {
                 @Override
                 protected void onSuccess(LoginResult result) {
                     s_callback.onLoginSuccess();

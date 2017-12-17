@@ -1,12 +1,8 @@
 package com.alcatel.wifilink.rx.helper.business;
 
-import android.app.Activity;
-import android.content.Context;
-
-import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.network.NetworkInfos;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.NetworkRegisterState;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -25,7 +21,7 @@ public class RoamingHelper {
      * 获取漫游状态
      */
     public void getRoamingStatus() {
-        API.get().getNetworkRegisterState(new MySubscriber<NetworkRegisterState>() {
+        RX.getInstant().getNetworkRegisterState(new ResponseObject<NetworkRegisterState>() {
             @Override
             protected void onSuccess(NetworkRegisterState result) {
                 int regist_state = result.getRegist_state();
@@ -62,7 +58,7 @@ public class RoamingHelper {
      * 获取漫游状态
      */
     private void getNetworkInfo() {
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
                 int roaming = result.getRoaming();

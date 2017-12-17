@@ -295,7 +295,7 @@ public class Go2ContentActivity extends BaseActivity implements OnItemClickListe
 				// TODO Auto-generated method stub
 				showProgress(false);
 				if (list == null){
-					CommonUtil.showToask(Go2ContentActivity.this, "can't get folder...");
+					CommonUtil.showToask(Go2ContentActivity.this, "can't getInstant folder...");
 					return ;
 				}		
 				mContentManager.pushListItem(list);			

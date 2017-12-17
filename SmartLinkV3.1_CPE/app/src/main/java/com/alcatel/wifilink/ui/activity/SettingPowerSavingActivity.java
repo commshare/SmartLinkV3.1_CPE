@@ -93,7 +93,7 @@ public class SettingPowerSavingActivity extends BaseActivity implements OnClickL
 		m_btn_wifi_mode_switch.setOnClickListener(this);
 		//
 		m_pb_waiting = (ProgressBar)findViewById(R.id.pb_power_waiting_progress);
-		//get device name from feature list
+		//getInstant device name from feature list
 		String strDeviceName = BusinessManager.getInstance().getFeatures().getDeviceName();
 		if (0 == strDeviceName.compareToIgnoreCase("Y900")) {
 			m_blShowWifiSleep = false;

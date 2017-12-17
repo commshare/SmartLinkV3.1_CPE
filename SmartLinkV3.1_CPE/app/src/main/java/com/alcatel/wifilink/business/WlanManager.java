@@ -237,7 +237,7 @@ public class WlanManager extends BaseManager {
         }
     }
 
-    // get wlan setting
+    // getInstant wlan setting
     // //////////////////////////////////////////////////////////////////////////////////////////
     public void getWlanSetting() {
         LegacyHttpClient.getInstance().sendPostRequest(
@@ -296,7 +296,7 @@ public class WlanManager extends BaseManager {
                 }));
     }
 
-    //get wlan support mode
+    //getInstant wlan support mode
     public void getWlanSupportMode(DataValue data) {
         String strDeviceName = BusinessManager.getInstance().getFeatures().getDeviceName();
         if (!FeatureVersionManager.getInstance().isSupportApi("Wlan", "GetWlanSupportMode")) {

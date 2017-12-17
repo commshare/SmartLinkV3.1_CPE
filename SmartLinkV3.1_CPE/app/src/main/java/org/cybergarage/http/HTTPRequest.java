@@ -16,7 +16,7 @@
 *	09/02/03
 *		- Giordano Sassaroli <sassarol@cefriel.it>
 *		- Problem : Devices whose description use absolute urls receive wrong http requests
-*		- Error : the presence of a base url is not mandatory, the API code makes the assumption that control and event subscription urls are relative
+*		- Error : the presence of a base url is not mandatory, the RX code makes the assumption that control and event subscription urls are relative
 *		- Description: The method setURI should be changed as follows
 *	02/01/04
 *		- Added URI parameter methods.

@@ -20,12 +20,12 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.ActionbarSetting;
@@ -62,7 +62,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
         // init actionbar
         initActionbar();
 
-        // get controls
+        // getInstant controls
         m_btnSend = (Button) findViewById(R.id.send_btn);
         m_btnSend.setEnabled(false);
         m_btnSend.setOnClickListener(this);
@@ -99,7 +99,6 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
                 String editable = m_etNumber.getText().toString();
                 String str = stringFilter(editable.toString());
                 if (!editable.equals(str)) {
@@ -129,7 +128,6 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
                 String strNumber = m_etNumber.getText() == null ? null : m_etNumber.getText().toString();
                 String strContent = s == null ? null : s.toString();
                 if (strNumber != null && strContent != null && strNumber.length() != 0 && strContent.length() != 0) {
@@ -212,7 +210,6 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
     }
 
     public void onClick(View arg0) {
-        // TODO Auto-generated method stub
         switch (arg0.getId()) {
 
             case R.id.ib_newsms_back:
@@ -256,7 +253,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
                 String num = m_etNumber.getText().toString();
                 ArrayList<String> numList = new ArrayList<>();
                 numList.add(num);
-                API.get().saveSMS(new SMSSaveParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), numList), new MySubscriber() {
+                RX.getInstant().saveSMS(new SMSSaveParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), numList), new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
                         ToastUtil_m.show(ActivityNewSms.this, getString(R.string.sms_save_success));
@@ -305,7 +302,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
             String num = m_etNumber.getText().toString();
             ArrayList<String> numList = new ArrayList<>();
             numList.add(num);
-            API.get().sendSMS(new SMSSendParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), numList), new MySubscriber() {
+            RX.getInstant().sendSMS(new SMSSendParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), numList), new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     getSendSMSResult();
@@ -360,7 +357,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
     }
 
     private void getSendSMSResult() {
-        API.get().GetSendSMSResult(new MySubscriber<SendSMSResult>() {
+        RX.getInstant().GetSendSMSResult(new ResponseObject<SendSMSResult>() {
             @Override
             protected void onSuccess(SendSMSResult result) {
                 //0 : none 1 : sending 2 : sendAgainSuccess 3: fail still sending last message 4 : fail with Memory full 5: fail

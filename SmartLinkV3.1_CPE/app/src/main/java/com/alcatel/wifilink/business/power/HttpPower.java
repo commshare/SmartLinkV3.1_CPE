@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class HttpPower {
 
-	/*get battery state*/
+	/*getInstant battery state*/
 	public static class getBatteryStateRequest extends BaseRequest{
 
 		public getBatteryStateRequest(IHttpFinishListener callback) {
@@ -27,7 +27,7 @@ public class HttpPower {
 		}
 	}
 
-	/*get power saving mode*/
+	/*getInstant power saving mode*/
 	public static class getPowerSavingModeRequest extends BaseRequest{
 
 		public getPowerSavingModeRequest(IHttpFinishListener callback) {

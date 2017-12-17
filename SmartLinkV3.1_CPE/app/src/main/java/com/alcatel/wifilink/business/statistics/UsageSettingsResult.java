@@ -14,7 +14,7 @@ public class UsageSettingsResult extends BaseResult{
 	public int TimeLimitFlag = 0;//The time limit function flage,0: disable 1:enable
 	public int TimeLimitTimes = 0;//The time limit function open, must set the limit time.
 	public int UsedTimes = 0;//The used time that after open time limit function.
-	public int AutoDisconnFlag = 0;//This flage control the disconnection when the usage settings get conditions.0:disable, not auto disconnect 1:enable, auto disconnect
+	public int AutoDisconnFlag = 0;//This flage control the disconnection when the usage settings getInstant conditions.0:disable, not auto disconnect 1:enable, auto disconnect
 
 	
 	@Override

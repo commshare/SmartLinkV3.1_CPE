@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_pop_setting_download_all"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_pop_conner">
+
+    <TextView
+        android:id="@+id/tv_pop_setting_download_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/download_text_dling"
+        android:textColor="@color/black"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_textSizePercent="3%sh" />
+
+    <TextView
+        android:id="@+id/tv_pop_setting_download_per"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10dip"
+        android:layout_toEndOf="@id/tv_pop_setting_download_tip"
+        android:text="0%s"
+        android:textColor="@color/black"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_textSizePercent="3%sh" />
+
+    <!-- 进度条 -->
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        android:id="@+id/pg_pop_setting_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_pop_setting_download_per"
+        android:layout_centerHorizontal="true"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_widthPercent="80%sw"
+
+        app:progress_current="10"
+        app:progress_max="100"
+
+        app:progress_reached_bar_height="5dp"
+        app:progress_reached_color="@color/mg_blue"
+
+        app:progress_text_color="#3498DB"
+        app:progress_text_offset="1dp"
+        app:progress_text_size="10sp"
+        app:progress_text_visibility="invisible"
+
+        app:progress_unreached_bar_height="5dp"
+        app:progress_unreached_color="@color/gray_btn_bg_color" />
+
+    <TextView
+        android:id="@+id/tv_pop_setting_download_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pg_pop_setting_download"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/cancel"
+        app:layout_marginTopPercent="5%sh"
+        app:layout_textSizePercent="3.5%sh"
+        app:layout_widthPercent="60%sw" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1dip"
+        android:layout_below="@id/tv_pop_setting_download_cancel"
+        app:layout_marginTopPercent="3%sh" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

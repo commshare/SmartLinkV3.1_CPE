@@ -18,14 +18,14 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.wlan.AP;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
@@ -166,7 +166,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
     }
 
     private void requestWlanSettings() {
-        API.get().getWlanSettings(new MySubscriber<WlanSettings>() {
+        RX.getInstant().getWlanSettings(new ResponseObject<WlanSettings>() {
             @Override
             protected void onSuccess(WlanSettings result) {
                 mOriginSettings = result;
@@ -183,7 +183,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
 
 
     private void requestWlanSupportMode() {
-        API.get().getWlanSupportMode(new MySubscriber<WlanSupportAPMode>() {
+        RX.getInstant().getWlanSupportMode(new ResponseObject<WlanSupportAPMode>() {
             @Override
             protected void onSuccess(WlanSupportAPMode result) {
                 updateUIWithSupportMode(result.getWlanSupportAPMode());
@@ -473,7 +473,7 @@ public class WifiGuideActivity extends BaseActivityWithBack implements View.OnCl
      * 真正发送请求
      */
     private void setWlanRequest() {
-        API.get().setWlanSettings(mEditedSettings, new MySubscriber() {
+        RX.getInstant().setWlanSettings(mEditedSettings, new ResponseObject() {
 
             @Override
             public void onStart() {

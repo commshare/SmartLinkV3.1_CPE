@@ -5,11 +5,11 @@ import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
@@ -48,7 +48,7 @@ public abstract class CheckBoardLogin {
                 @Override
                 public void successful() {
                     // 2.登陆状态
-                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                    RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
                             if (result.getState() == Cons.LOGOUT) {
@@ -94,7 +94,7 @@ public abstract class CheckBoardLogin {
                 @Override
                 public void successful() {
                     // 2.登陆状态
-                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                    RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
                             if (result.getState() == Cons.LOGOUT) {

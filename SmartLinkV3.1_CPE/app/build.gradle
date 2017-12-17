@@ -11,6 +11,27 @@ android {
 
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+    
+    /* ---------------------------- rise up grade buiding speed start ---------------------------- */
+    if(project.hasProperty('devBuild')){
+        splits.abi.enable = false
+        splits.density.enable = false
+        aaptOptions.cruncherEnabled = false
+    }
+
+    if(project.hasProperty('devBuild')){
+        splits.abi.enable = false
+        splits.density.enable = false
+        aaptOptions.cruncherEnabled = false
+    }
+
+    productFlavors{
+        development{
+            minSdkVersion 19
+            resConfigs ("hdpi")
+        }
+    }
+    /* ---------------------------- rise up grade buiding speed start ---------------------------- */
 
     signingConfigs {
         release {
@@ -125,4 +146,5 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.gelitenight.waveview:waveview:1.0.0'
     compile 'com.github.ikidou:FragmentBackHandler:2.1'
+    compile 'com.daimajia.numberprogressbar:library:1.4@aar'
 }

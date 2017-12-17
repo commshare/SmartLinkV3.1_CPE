@@ -13,10 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -63,7 +63,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        API.get().logout(new MySubscriber() {
+        RX.getInstant().logout(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 
@@ -115,7 +115,7 @@ public class RefreshWifiActivity extends AppCompatActivity {
      */
     private void checkBoardIsConn() {
         // 1.检测接口是否有数据返回--> success连接正确 failed连接不正确
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
 
             @Override
             public void onStart() {

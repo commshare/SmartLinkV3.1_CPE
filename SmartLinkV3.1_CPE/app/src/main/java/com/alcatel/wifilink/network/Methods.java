@@ -71,6 +71,7 @@ public interface Methods {
     String SET_DEVICE_START_UPDATE = "SetDeviceStartUpdate";
     String GET_DEVICE_UPGRADE_STATE = "GetDeviceUpgradeState";
     String SET_FOTA_START_DOWNLOAD = "SetFOTAStartDownload";
+    String SET_DEVICE_UPDATE_STOP = "SetDeviceUpdateStop";
     String GET_FTP_SETTINGS = "GetFtpSettings";
     String GET_SAMBA_SETTINGS = "GetSambaSettings";
     String GET_DLNA_SETTINGS = "GetDLNASettings";

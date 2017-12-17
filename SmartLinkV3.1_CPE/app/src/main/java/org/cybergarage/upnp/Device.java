@@ -1863,7 +1863,7 @@ public class Device implements org.cybergarage.http.HTTPRequestListener, SearchL
 
     /**
      * @param inets The IP that will be used for binding the SSDP service.
-     *              Use <code>null</code> to get the default beahvior
+     *              Use <code>null</code> to getInstant the default beahvior
      */
     public void setSSDPBindAddress(InetAddress[] inets) {
         this.getDeviceData().setSSDPBindAddress(inets);

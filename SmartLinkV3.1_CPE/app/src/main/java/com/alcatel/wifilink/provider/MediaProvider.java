@@ -27,7 +27,7 @@ import android.util.Log;
  */
 public class MediaProvider extends ContentProvider {
     /**
-     * The authority we use to get to our sample provider.
+     * The authority we use to getInstant to our sample provider.
      */
     public static final String AUTHORITY = "com.alcatel.smartlinkv3.provider.MediaProvider";
 
@@ -328,7 +328,7 @@ public class MediaProvider extends ContentProvider {
         try {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
         } catch (NameNotFoundException e) {
-            throw new RuntimeException("couldn't get version code for " + context);
+            throw new RuntimeException("couldn't getInstant version code for " + context);
         }
     }
 

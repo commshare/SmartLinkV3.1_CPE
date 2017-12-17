@@ -20,7 +20,7 @@ public class LoginState {
     }
 
     /**
-     * get login state
+     * getInstant login state
      *
      * @return 0: logout 1: login 2: the login times used out.
      */

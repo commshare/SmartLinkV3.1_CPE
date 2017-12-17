@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
@@ -21,8 +23,6 @@ import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SMSDeleteParam;
 import com.alcatel.wifilink.model.sms.SmsInitState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
@@ -137,7 +137,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                 break;
             case R.id.tv_smsdetail_detele_cancel:// click cancel
                 resetLongClickFlag();// 1. reset the status ui
-                getSmsContents(false);// 2. get data again
+                getSmsContents(false);// 2. getInstant data again
                 break;
             case R.id.tv_smsdetail_detele_confirm:// click confirm
                 deleteSms();
@@ -282,7 +282,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
     /* **** timertask: getSmsContents **** */
     private void getSmsContents(boolean isSetRcvToLast) {
         // 检测sim卡是否有插入
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() == Cons.READY) {// no sim
@@ -307,12 +307,12 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
     /* **** getContent **** */
     private void getContent(boolean isSetRcvToLast) {
 
-        API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
+        RX.getInstant().getSmsInitState(new ResponseObject<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
                     // 重新获取当前号码是否有未读消息
-                    API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
+                    RX.getInstant().getSMSContactList(0, new ResponseObject<SMSContactList>() {
                         @Override
                         protected void onSuccess(SMSContactList result) {
                             for (SMSContactList.SMSContact scc : result.getSMSContactList()) {
@@ -355,7 +355,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
             private void realToGetContent() {
                 long contactId = smsContact.getContactId();
                 SMSContentParam ssp = new SMSContentParam(0, contactId);
-                API.get().getSMSContentList(ssp, new MySubscriber<SMSContentList>() {
+                RX.getInstant().getSMSContentList(ssp, new ResponseObject<SMSContentList>() {
                     @Override
                     protected void onSuccess(SMSContentList result) {
                         // 1. refresh the list
@@ -410,7 +410,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** sendSms **** */
     private void sendSms() {
-        // 1. get send sms content from et
+        // 1. getInstant send sms content from et
         String content = etSmsdetailSend.getText().toString();
         if (TextUtils.isEmpty(content)) {
             ToastUtil_m.show(this, getString(R.string.sms_empty));
@@ -504,7 +504,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
         // reset the long status
         resetLongClickFlag();
         SMSDeleteParam sdp = new SMSDeleteParam(Cons.DELETE_MORE_SMS, smsIds);
-        API.get().deleteSMS(sdp, new MySubscriber() {
+        RX.getInstant().deleteSMS(sdp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 if (isLongClick) {
@@ -520,6 +520,4 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
             }
         });
     }
-
-
 }

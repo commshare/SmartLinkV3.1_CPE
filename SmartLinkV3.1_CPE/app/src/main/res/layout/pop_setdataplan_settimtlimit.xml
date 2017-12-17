@@ -19,6 +19,7 @@
         app:layout_marginTopPercent="3%sh">
 
         <EditText
+            android:numeric="integer"
             android:id="@+id/et_pop_setPlan_rx_settimelimit_hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
             app:layout_textSizePercent="27%h" />
 
         <EditText
+            android:numeric="integer"
             android:id="@+id/et_pop_setPlan_rx_settimelimit_min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,6 +60,16 @@
             app:layout_textSizePercent="27%h" />
     </com.zhy.android.percent.support.PercentLinearLayout>
 
+    <!-- tip -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/if_blank_data_unlimited"
+        android:textColor="@color/gray"
+        app:layout_marginTopPercent="1%sh"
+        app:layout_textSizePercent="2.5%sh" />
+
     <!-- split -->
     <View
         android:layout_width="match_parent"
@@ -67,7 +79,7 @@
         android:layout_marginStart="@dimen/dimen_15dip"
         android:alpha="0.5"
         android:background="@color/gray"
-        app:layout_marginTopPercent="3%sh" />
+        app:layout_marginTopPercent="2%sh" />
 
     <!-- button -->
     <com.zhy.android.percent.support.PercentLinearLayout
@@ -79,7 +91,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_heightPercent="9%sh"
-        app:layout_marginTopPercent="3%sh">
+        app:layout_marginTopPercent="2%sh">
 
         <TextView
             android:id="@+id/tv_pop_setPlan_rx_settimelimit_cancel"

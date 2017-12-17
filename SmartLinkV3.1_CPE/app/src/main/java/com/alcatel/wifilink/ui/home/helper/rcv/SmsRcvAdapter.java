@@ -6,15 +6,17 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SmsSingle;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.rx.bean.SMSContactSelf;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.sms.activity.SmsDetailActivity;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,17 +32,17 @@ import static com.alcatel.wifilink.ui.home.helper.cons.Cons.UNREAD;
 public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     private Context context;
-    private SMSContactList smsContactListTotal;
-    private List<SMSContactList.SMSContact> smsContactList;
+    private List<SMSContactSelf> smsContactListTotal;
+    private List<SMSContactSelf> smsContactList;
     private OnRcvLongClickListener onRcvLongClickListener;
 
-    public SmsRcvAdapter(Context context, SMSContactList smsContactListTotal) {
+    public SmsRcvAdapter(Context context, List<SMSContactSelf> smsContactListTotal) {
         this.context = context;
         this.smsContactListTotal = smsContactListTotal;
     }
 
-    public void notifys(SMSContactList smsContactList) {
-        this.smsContactListTotal = smsContactList;
+    public void notifys(List<SMSContactSelf> smsContactSelfList) {
+        this.smsContactListTotal = smsContactSelfList;
         notifyDataSetChanged();
     }
 
@@ -54,7 +56,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
         // TOAT: 总方法汇聚
         if (smsContactListTotal != null) {
             // sort by date
-            smsContactList = this.smsContactListTotal.getSMSContactList();
+            smsContactList = this.smsContactListTotal;
             // Collections.sort(smsContactList, new SmsDateSort());
             // set ui
             setSmsPoint(holder, position);// set sms point
@@ -70,12 +72,12 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     @Override
     public int getItemCount() {
-        return smsContactListTotal != null ? smsContactListTotal.getSMSContactList().size() : 0;
+        return smsContactListTotal != null ? smsContactListTotal.size() : 0;
     }
 
     /* **** setSmsPoint **** */
     private void setSmsPoint(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         int smsType = smsContact.getSMSType();
         // 查看缓冲区是否有当前contactid对应的未读短信数量
         int unreadCache = SmsCountHelper.getUnreadCache(smsContact.getContactId());
@@ -95,7 +97,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     /* **** setPhoneNum **** */
     private void setPhoneNum(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         List<String> phoneNumber = smsContact.getPhoneNumber();
         String phone = OtherUtils.stitchPhone(context, phoneNumber);
         holder.tv_smsPhone.setText(phone);
@@ -103,26 +105,26 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     /* **** setSmsCount **** */
     private void setSmsCount(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         holder.tv_smsCount.setText(String.valueOf(smsContact.getTSMSCount()));
     }
 
     /* **** setSmsContent **** */
     private void setSmsContent(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         holder.tv_smsContent.setText(smsContact.getSMSContent());
     }
 
     /* **** setSmsDate **** */
     private void setSmsDate(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         String date = OtherUtils.transferDate(smsContact.getSMSTime());
         holder.tv_smsDate.setText(date);
     }
 
     /* **** setSmsClick **** */
     private void setSmsClick(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         holder.rl_sms.setOnClickListener(v -> {
             // 设置为已读
             setReaded(smsContact);
@@ -144,7 +146,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     /* **** setSmsSendFailed **** */
     private void setSmsSendFailed(SmsHolder holder, int position) {
-        SMSContactList.SMSContact smsContact = smsContactList.get(position);
+        SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         holder.iv_smsSendFailed.setVisibility(smsContact.getSMSType() == Cons.SENT_FAILED ? VISIBLE : GONE);
     }
 
@@ -154,7 +156,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
         // 清空缓冲区短信未读数量
         HomeActivity.smsUnreadMap.put(smsContact.getContactId(), 0);
         // 调用此接口的目的是为了告知路由器该ID下的短信已读
-        API.get().getSingleSMS(smsContact.getSMSId(), new MySubscriber<SmsSingle>() {
+        RX.getInstant().getSingleSMS(smsContact.getSMSId(), new ResponseObject<SmsSingle>() {
             @Override
             protected void onSuccess(SmsSingle result) {
 

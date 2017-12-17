@@ -3,8 +3,8 @@ package com.alcatel.wifilink.rx.helper.business;
 import android.text.TextUtils;
 
 import com.alcatel.wifilink.model.system.SystemInfo;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 
 /**
@@ -19,7 +19,7 @@ public class SimNumImsiHelper {
      * 获取IMSI号以及SIM号
      */
     public void getSimNumAndImsi() {
-        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+        RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
                 String msisdn = result.getMSISDN();

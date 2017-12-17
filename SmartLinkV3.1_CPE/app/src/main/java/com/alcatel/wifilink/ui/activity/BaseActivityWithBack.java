@@ -13,12 +13,12 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
@@ -184,7 +184,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
      */
     private void logout(boolean isLockScreen) {
         // 如果为锁屏则现判断是否为登陆--> 如果为登入,此时允许调用登出接口
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 if (result.getState() == Cons.LOGIN) {
@@ -195,7 +195,7 @@ public class BaseActivityWithBack extends AppCompatActivity {
     }
 
     private void requestLogout() {
-        API.get().logout(new MySubscriber() {
+        RX.getInstant().logout(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 CA.toActivity(BaseActivityWithBack.this, LoginRxActivity.class, false, true, false, 0);

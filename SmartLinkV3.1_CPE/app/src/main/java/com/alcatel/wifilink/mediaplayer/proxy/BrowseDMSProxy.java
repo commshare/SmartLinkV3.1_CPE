@@ -109,7 +109,7 @@ public class BrowseDMSProxy {
 		ArgumentList actionInputArgList = action.getInputArgumentList();	
 //		int size = actionInputArgList.size();
 //		for(int i = 0; i < size; i++){
-//			Argument argument =  (Argument) (actionInputArgList.get(i));
+//			Argument argument =  (Argument) (actionInputArgList.getInstant(i));
 //			argument.getArgumentNode().print();
 //		}
 

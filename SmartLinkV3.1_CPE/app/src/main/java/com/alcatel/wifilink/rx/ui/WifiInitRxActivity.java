@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wlan.WlanSetting;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
@@ -143,7 +143,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
             @Override
             public void afterCheckSuccess(ProgressDialog pgd) {
                 // 2.获取wlan信息
-                API.get().getWlanSetting(new MySubscriber<WlanSetting>() {
+                RX.getInstant().getWlanSetting(new ResponseObject<WlanSetting>() {
                     @Override
                     protected void onSuccess(WlanSetting result) {
                         WifiInitRxActivity.this.result = result;
@@ -372,10 +372,13 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
      * 显示重启提示对话框
      */
     private void showReStartDeviceDialog() {
+        String des1 = getString(R.string.setting_wifi_set_success);
+        String des2 = getString(R.string.connectedlist_will_be_restarted_to_apply_new_settings);
+        String des = des1 + "\n" + des2;
         rebootDialog = new SweetAlertDialog(WifiInitRxActivity.this,// context
                                                    SweetAlertDialog.WARNING_TYPE)// type
                                .setTitleText(getString(R.string.restart))// title
-                               .setContentText(getString(R.string.setting_restore_success))// descript
+                               .setContentText(des)// descript
                                .setCancelText(getString(R.string.cancel))// cancel
                                .setConfirmText(getString(R.string.confirm_unit))// comfirm
                                .showCancelButton(true)// set cancel enable
@@ -391,7 +394,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
         alertDialog.dismiss();
         pgd = OtherUtils.showProgressPop(this);
         // 1.提交设置
-        API.get().setWlanSetting(result, new MySubscriber() {
+        RX.getInstant().setWlanSetting(result, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 // 2.切断wifi

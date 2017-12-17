@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
@@ -20,8 +22,6 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginResult;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.base.CheckBoard;
@@ -176,17 +176,17 @@ public class LoginRxActivity extends BaseActivityWithBack {
         account = needEncrypt ? EncryptionUtil.encryptUser(account) : account;
         passwd = needEncrypt ? EncryptionUtil.encryptUser(passwd) : passwd;
 
-        // get data
+        // getInstant data
         String finalPasswd = passwd;
-        API.get().login(account, passwd, new MySubscriber<LoginResult>() {
+        RX.getInstant().login(account, passwd, new ResponseObject<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult loginResult) {
-                API.get().getLoginState(new MySubscriber<LoginState>() {
+                RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
-                            // get token
-                            API.get().updateToken(loginResult.getToken());
+                            // getInstant token
+                            RX.getInstant().updateToken(loginResult.getToken());
                             // 判断连接的模式从而决定是否进入wizard向导页
                             getConnectMode();
                         }
@@ -242,12 +242,12 @@ public class LoginRxActivity extends BaseActivityWithBack {
      * 检测连接模式
      */
     private void getConnectMode() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 /* 获取WAN口状态 */
                 int wanStatus = result.getStatus();
-                API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
                         /* 获取SIM卡状态 */
@@ -382,7 +382,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
      * 显示剩余次数
      */
     public void showRemainTimes() {
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 String content = "";

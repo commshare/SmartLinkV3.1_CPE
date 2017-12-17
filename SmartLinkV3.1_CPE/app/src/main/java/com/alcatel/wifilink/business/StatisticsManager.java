@@ -99,7 +99,7 @@ public class StatisticsManager extends BaseManager {
             }
         }
 
-        //get usage history when have imsi
+        //getInstant usage history when have imsi
         if (MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET.equals(action)) {
             if (ok) {
                 SimStatusModel simStatus = BusinessManager.getInstance().getSimStatus();
@@ -113,7 +113,7 @@ public class StatisticsManager extends BaseManager {
             }
         }
 
-        // when conneted or disconnected to get usage history or billing day changed
+        // when conneted or disconnected to getInstant usage history or billing day changed
         if (MessageUti.WAN_CONNECT_REQUSET.equals(action) ||
                 MessageUti.WAN_DISCONNECT_REQUSET.equals(action) ||
                 MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET.equals(action) ||

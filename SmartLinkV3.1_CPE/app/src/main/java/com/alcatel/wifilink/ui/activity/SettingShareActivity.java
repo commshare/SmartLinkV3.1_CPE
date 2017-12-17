@@ -3,7 +3,6 @@ package com.alcatel.wifilink.ui.activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
@@ -16,8 +15,8 @@ import com.alcatel.wifilink.model.sharing.DLNASettings;
 import com.alcatel.wifilink.model.sharing.FTPSettings;
 import com.alcatel.wifilink.model.sharing.SambaSettings;
 import com.alcatel.wifilink.model.system.SysStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 
@@ -67,7 +66,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void requestGetSystemStatus() {
-        API.get().getSystemStatus(new MySubscriber<SysStatus>() {
+        RX.getInstant().getSystemStatus(new ResponseObject<SysStatus>() {
             @Override
             protected void onSuccess(SysStatus result) {
                 runOnUiThread(new Runnable() {
@@ -102,7 +101,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void requestGetFTPSettings() {
-        API.get().getFTPSettings(new MySubscriber<FTPSettings>() {
+        RX.getInstant().getFTPSettings(new ResponseObject<FTPSettings>() {
             @Override
             protected void onSuccess(FTPSettings result) {
                 mFTPSwitch.setChecked(result.getFtpStatus() == 1 ? true : false);
@@ -121,7 +120,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void requestGetSambaSettings() {
-        API.get().getSambaSettings(new MySubscriber<SambaSettings>() {
+        RX.getInstant().getSambaSettings(new ResponseObject<SambaSettings>() {
             @Override
             protected void onSuccess(SambaSettings result) {
                 mSambaSwitch.setChecked(result.getSambaStatus() == 1 ? true : false);
@@ -139,7 +138,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
     }
 
     private void requestGetDLNASettings() {
-        API.get().getDLNASettings(new MySubscriber<DLNASettings>() {
+        RX.getInstant().getDLNASettings(new ResponseObject<DLNASettings>() {
             @Override
             protected void onSuccess(DLNASettings result) {
                 mDLNASwitch.setChecked(result.getDlnaStatus() == 1 ? true : false);
@@ -161,7 +160,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         settings.setFtpStatus(mFTPSwitch.isChecked() ? 1 : 0);
         settings.setAnonymous(0);
         settings.setAuthType(0);
-        API.get().setFTPSettings(settings, new MySubscriber() {
+        RX.getInstant().setFTPSettings(settings, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
             }
@@ -183,7 +182,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         settings.setSambaStatus(mSambaSwitch.isChecked() ? 1 : 0);
         settings.setAnonymous(0);
         settings.setAuthType(0);
-        API.get().setSambaSettings(settings, new MySubscriber() {
+        RX.getInstant().setSambaSettings(settings, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
             }
@@ -204,7 +203,7 @@ public class SettingShareActivity extends BaseActivityWithBack implements OnClic
         DLNASettings settings = new DLNASettings();
         settings.setDlnaStatus(mDLNASwitch.isChecked() ? 1 : 0);
         settings.setDlnaName("");
-        API.get().setDLNASettings(settings, new MySubscriber() {
+        RX.getInstant().setDLNASettings(settings, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
             }

@@ -401,7 +401,7 @@ public final class MimeUtils {
 
     /**
      * This isn't what the RI does. The RI doesn't have hard-coded defaults, so supplying your
-     * own "content.types.user.table" means you don't get any of the built-ins, and the built-ins
+     * own "content.types.user.table" means you don't getInstant any of the built-ins, and the built-ins
      * come from "$JAVA_HOME/lib/content-types.properties".
      */
     private static void applyOverrides() {

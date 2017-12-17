@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.common.Constants;
@@ -31,8 +33,6 @@ import com.alcatel.wifilink.model.network.NetworkInfos;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.InternetStatusActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
@@ -169,10 +169,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* -------------------------------------------- 0.GET ALL STATUS -------------------------------------------- */
     // TOAT: all status
-    /* **** get all status **** */
+    /* **** getInstant all status **** */
     private void getStatus() {
         /* **** check the type is wan or sim **** */
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
 
             @Override
             public void onError(Throwable e) {
@@ -289,7 +289,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /* --------------------------------------------- 1.CONNECT BUTTON ---------------------------------------- */
     /* **** injust connect button status **** */
     public void setSimButtonLogo() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             public void onError(Throwable e) {
                 HomeActivity.mTvHomeMessageCount.setVisibility(View.GONE);
@@ -318,12 +318,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* is network can be worked */
     private void getTrafficInfo() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int connstatus = result.getConnectionStatus();
                 if (connstatus == Cons.CONNECTED) {
-                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                    RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
                         @Override
                         public void onError(Throwable e) {
                             // 从PIN码产生的进度条消失
@@ -384,12 +384,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* injudge the network status */
     private void getNetworkedInfo() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int connstatus = result.getConnectionStatus();
                 if (connstatus == Cons.CONNECTED) {
-                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                    RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
                         @Override
                         public void onError(Throwable e) {
                             mRl_main_wait.setVisibility(View.GONE);
@@ -413,7 +413,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         }
                     });
                 } else {
-                    API.get().getWanSeting(new MySubscriber<WanSetting>() {
+                    RX.getInstant().getWanSeting(new ResponseObject<WanSetting>() {
                         @Override
                         protected void onSuccess(WanSetting result) {
                             if (result.getStatus()== Cons.CONNECTED) {
@@ -437,11 +437,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* injudge the connect status */
     private void isConnectStatus() {
-         /* get usage record */
-        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+         /* getInstant usage record */
+        RX.getInstant().getUsageRecord(DataUtils.getCurrent(), new ResponseObject<UsageRecord>() {
             @Override
             protected void onSuccess(UsageRecord result) {
-                // get usage record
+                // getInstant usage record
                 getTrafficData(result);
             }
 
@@ -461,7 +461,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     /* **** settrafficlayout **** */
     private void setTrafficLayout() {
 
-        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+        RX.getInstant().getUsageRecord(DataUtils.getCurrent(), new ResponseObject<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
                 mRl_main_wait.setVisibility(View.GONE);
@@ -469,20 +469,20 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             @Override
             protected void onSuccess(UsageRecord result) {
-                // get traffic data and show
+                // getInstant traffic data and show
                 getTrafficData(result);
             }
         });
     }
 
-    /* get traffic data */
+    /* getInstant traffic data */
     private void getTrafficData(UsageRecord result) {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates conn) {
                 int connstatus = conn.getConnectionStatus();
                 if (connstatus == Cons.CONNECTED) {
-                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                    RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
                         @Override
                         protected void onSuccess(NetworkInfos netInfos) {// TOAT: 加入漫游的判断
                             // 0: roaming 1: no roaming
@@ -517,7 +517,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         } else {// 设置了流量
             long hUseData = result.getHUseData();
             long hMonthlyPlan = result.getMonthlyPlan();
-            // get remain percent
+            // getInstant remain percent
             if (hUseData < hMonthlyPlan) {// 未超出流量: 用户流量 < 月计划流量
                 float percent = (hUseData * 100f / hMonthlyPlan);
                 mConnectedView.setWaveColor(activity.getResources().getColor(R.color.circle_green));
@@ -573,7 +573,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      * 获取月流量单位
      */
     private void getTrafficUnit() {
-        API.get().getUsageSetting(new MySubscriber<UsageSetting>() {
+        RX.getInstant().getUsageSetting(new ResponseObject<UsageSetting>() {
             @Override
             protected void onSuccess(UsageSetting result) {
                 int unit = result.getUnit();
@@ -594,7 +594,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* **** setSignStatus **** */
     private void setSignStatus() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             public void onError(Throwable e) {
                 mRl_main_wait.setVisibility(View.GONE);
@@ -617,12 +617,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* injudge the networkinfo */
     private void issignNetworked() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int connStatus = result.getConnectionStatus();
                 if (connStatus == Cons.CONNECTED) {
-                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                    RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
                         @Override
                         public void onError(Throwable e) {
                             mRl_main_wait.setVisibility(View.GONE);
@@ -732,7 +732,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* **** setAccessDeviceStatus **** */
     private void setAccessDeviceStatus() {
-        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+        RX.getInstant().getConnectedDeviceList(new ResponseObject<ConnectedList>() {
 
             @Override
             public void onError(Throwable e) {
@@ -839,7 +839,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
      * 使用sim连接
      */
     private void TakeSimConnect() {
-        API.get().getWanSeting(new MySubscriber<WanSetting>() {
+        RX.getInstant().getWanSeting(new ResponseObject<WanSetting>() {
             @Override
             protected void onSuccess(WanSetting result) {
                 if (result.getStatus() == Cons.CONNECTED) {
@@ -866,7 +866,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     int count = 0;// 用于计算失败的次数
 
     private void checkConnStatusAndConnect() {
-        API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+        RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
             @Override
             protected void onSuccess(ConnectionStates result) {
                 int connstatus = result.getConnectionStatus();
@@ -930,14 +930,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private void connect() {
         // injudge flag from settingAccount activity
         SP.getInstance(activity).putBoolean(SettingAccountActivity.LOGOUT_FLAG, false);
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
                 if (simState == Cons.PIN_REQUIRED) {
                     showPop();
                 } else if (simState == Cons.READY) {
-                    API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+                    RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
                             int connectStatus = result.getConnectionStatus();
@@ -999,9 +999,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    /* get monthly used */
+    /* getInstant monthly used */
     private void getMonthlyPlan() {
-        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+        RX.getInstant().getUsageRecord(DataUtils.getCurrent(), new ResponseObject<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
                 mRl_main_wait.setVisibility(View.GONE);
@@ -1028,11 +1028,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             clickProgresDialog = OtherUtils.showProgressPop(getActivity());
         }
         if (connectflag) {
-            API.get().connect(new MySubscriber() {
+            RX.getInstant().connect(new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     Logs.v("ma_main_connect", "connect success");
-                    API.get().getConnectionStates(new MySubscriber<ConnectionStates>() {
+                    RX.getInstant().getConnectionStates(new ResponseObject<ConnectionStates>() {
                         @Override
                         protected void onSuccess(ConnectionStates result) {
                             int connectionStatus = result.getConnectionStatus();
@@ -1040,7 +1040,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                                 if (clickProgresDialog != null) {
                                     clickProgresDialog.dismiss();
                                 }
-                                // get monthly used
+                                // getInstant monthly used
                                 getMonthlyPlan();
                                 // set logo button layout
                                 setSimButtonLogo();
@@ -1110,7 +1110,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /* **** SIM卡是否插入 **** */
     private void isSimInsert() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 mRl_main_wait.setVisibility(View.GONE);

@@ -88,7 +88,7 @@ public class PowerManager extends BaseManager {
 		}
 		
 	}
-	//get battery state
+	//getInstant battery state
 	public void getBatteryState(DataValue data){
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {
@@ -103,7 +103,7 @@ public class PowerManager extends BaseManager {
 		}
 	}
 
-	//get power saving mode
+	//getInstant power saving mode
 	public void getPowerSavingModeInfo(DataValue data){
 		boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
 		if (blWifiConnected) {

@@ -6,12 +6,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
@@ -61,7 +61,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
     }
 
     private void heartBeat() {
-        API.get().heartBeat(new MySubscriber() {
+        RX.getInstant().heartBeat(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
 
@@ -77,7 +77,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
 
     private void getStatus() {
         // wan status
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 setWanConnectStatus(result.getStatus() == Cons.CONNECTED);
@@ -90,7 +90,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
         });
 
         // sim status
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -148,7 +148,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
 
     /* 检测SIM卡状态 */
     private void checkSimStatus() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -179,7 +179,7 @@ public class WizardActivity extends BaseActivityWithBack implements View.OnClick
     }
 
     public void logout() {
-        API.get().logout(new MySubscriber() {
+        RX.getInstant().logout(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
 

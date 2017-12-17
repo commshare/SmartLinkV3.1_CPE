@@ -3,8 +3,8 @@ package com.alcatel.wifilink.ui.sms.helper;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.DataUtils;
 
@@ -30,14 +30,14 @@ public abstract class SmsReSendHelper {
 
     public void send() {
         SMSSendParam ssp = new SMSSendParam(-1, scb.getSMSContent(), DataUtils.getCurrent(), phoneNums);
-        API.get().sendSMS(ssp, new MySubscriber() {
+        RX.getInstant().sendSMS(ssp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 getSmsSendStatus();
             }
 
             private void getSmsSendStatus() {
-                API.get().GetSendSMSResult(new MySubscriber<SendSMSResult>() {
+                RX.getInstant().GetSendSMSResult(new ResponseObject<SendSMSResult>() {
                     @Override
                     protected void onSuccess(SendSMSResult result) {
                         int sendStatus = result.getSendStatus();

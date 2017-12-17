@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 
 import butterknife.BindView;
@@ -125,7 +125,7 @@ public class InternetStatusActivity extends BaseActivityWithBack {
      * A2.重新获取wan口信息
      */
     private void getWanInfo() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 runOnUiThread(() -> {

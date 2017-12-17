@@ -5,19 +5,12 @@ import android.view.View;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
-import com.alcatel.wifilink.appwidget.RippleView;
-import com.alcatel.wifilink.model.sms.SMSSendParam;
-import com.alcatel.wifilink.model.sms.SendSMSResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
-import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.utils.DataUtils;
 import com.alcatel.wifilink.utils.ScreenSize;
 
 /**
  * Created by qianli.ma on 2017/7/12.
  */
-
+@Deprecated
 public abstract class SmsTryAgainPop {
 
     private Context context;
@@ -25,7 +18,6 @@ public abstract class SmsTryAgainPop {
 
     public SmsTryAgainPop(Context context) {
         this.context = context;
-        show();
     }
 
     public abstract void getView(View inflate);
@@ -39,8 +31,13 @@ public abstract class SmsTryAgainPop {
         return pop;
     }
 
+    public void dismiss(PopupWindows pop) {
+        if (pop != null) {
+            pop.dismiss();
+        }
+    }
+
     public PopupWindows getPop() {
         return pop;
-
     }
 }

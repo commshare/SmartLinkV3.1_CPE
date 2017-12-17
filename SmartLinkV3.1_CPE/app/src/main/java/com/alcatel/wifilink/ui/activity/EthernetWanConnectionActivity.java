@@ -12,11 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
@@ -89,7 +89,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     }
 
     private void getWanSettings() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 mWanSettingsResult = result;
@@ -129,7 +129,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
     }
 
     private void setWanSettings() {
-        API.get().setWanSettings(mWanSettingsParams, new MySubscriber() {
+        RX.getInstant().setWanSettings(mWanSettingsParams, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(EthernetWanConnectionActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();

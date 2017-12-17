@@ -79,7 +79,7 @@ public class SmsAdapter extends BaseAdapter {
 
 
         // TOAT: info item
-        //SMSSummaryItem smsItem = m_smsContactMessagesLstData.get(position);
+        //SMSSummaryItem smsItem = m_smsContactMessagesLstData.getInstant(position);
         SMSContactList.SMSContact smsContact = smsContacts.get(position);
 
         holder.number.setText(SmsNumHelper.getNew(smsContact.getPhoneNumber()));

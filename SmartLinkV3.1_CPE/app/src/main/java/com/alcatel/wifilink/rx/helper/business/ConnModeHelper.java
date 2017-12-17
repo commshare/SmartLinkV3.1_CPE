@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.ConnectSettingHelper;
 import com.alcatel.wifilink.utils.CA;
@@ -35,11 +35,11 @@ public class ConnModeHelper {
             ConnectionSettings cs = result.deepClone();
             cs.setConnectMode(connMode);// 2.更改连接模式
             // 3.提交请求
-            API.get().setConnectionSettings(cs, new MySubscriber() {
+            RX.getInstant().setConnectionSettings(cs, new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     // 4.再次获取连接模式
-                    API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+                    RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
                         @Override
                         protected void onSuccess(ConnectionSettings result) {
                             connModeSuccessNext(result);

@@ -15,8 +15,8 @@ import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
@@ -99,7 +99,7 @@ public class LoadingActivitys extends AppCompatActivity implements View.OnClickL
      * 获取登陆状态
      */
     private void obtainLoginState() {
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 OtherUtils.hideProgressPop(pd);

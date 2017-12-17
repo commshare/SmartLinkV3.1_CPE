@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.BoardWanHelper;
 import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
@@ -28,6 +28,10 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.zhy.android.percent.support.PercentRelativeLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,10 +103,12 @@ public class WanModeRxActivity extends AppCompatActivity {
     private WanSettingsResult result;
     private BoardWanHelper boardWanHelper;
     private Activity activity;
+    private String flag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         activity = this;
         setContentView(R.layout.activity_wan_mode_rx);
         SmartLinkV3App.getContextInstance().add(this);
@@ -116,11 +122,16 @@ public class WanModeRxActivity extends AppCompatActivity {
         iv_wanmodes = new ImageView[]{ivPppoeCheck, ivDhcpCheck, ivStaticCheck};
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void getFlag(String flag) {
+        this.flag = flag;
+    }
+
     private void initData() {
         if (pgd == null) {
             pgd = OtherUtils.showProgressPop(this);
         }
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 WanModeRxActivity.this.result = result;
@@ -176,6 +187,7 @@ public class WanModeRxActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         OtherUtils.stopHeartBeat(heartTimer);
     }
 
@@ -185,19 +197,23 @@ public class WanModeRxActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        clickToLogout();
+        clickBackButton();
     }
 
     /**
      * 点击返回登陆界面
      */
-    private void clickToLogout() {
-        new LogoutHelper(this) {
-            @Override
-            public void logoutFinish() {
-                to(LoginRxActivity.class);
-            }
-        };
+    private void clickBackButton() {
+        if (Cons.WIZARD_RX.equalsIgnoreCase(flag)) {
+            to(WizardRxActivity.class);
+        } else {
+            new LogoutHelper(this) {
+                @Override
+                public void logoutFinish() {
+                    to(LoginRxActivity.class);
+                }
+            };
+        }
     }
 
     @OnClick({R.id.iv_wanmode_rx_back,// 回退
@@ -215,7 +231,7 @@ public class WanModeRxActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_wanmode_rx_back:// 回退
-                clickToLogout();
+                clickBackButton();
                 break;
             case R.id.tv_wanmode_rx_skip:// 跳过
                 toAc();

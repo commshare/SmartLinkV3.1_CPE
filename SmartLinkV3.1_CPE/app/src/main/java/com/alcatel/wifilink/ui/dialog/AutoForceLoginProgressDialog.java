@@ -13,8 +13,8 @@ import com.alcatel.wifilink.common.DataValue;
 import com.alcatel.wifilink.common.MessageUti;
 import com.alcatel.wifilink.httpservice.BaseResponse;
 import com.alcatel.wifilink.model.user.LoginResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 
@@ -60,7 +60,7 @@ public class AutoForceLoginProgressDialog {
             loginPassword = SmartLinkV3App.getInstance().getLoginPassword();
         }
 
-        API.get().login(loginUsername, loginPassword, new MySubscriber<LoginResult>() {
+        RX.getInstant().login(loginUsername, loginPassword, new ResponseObject<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult result) {
                 if (m_isUserFirstLogin || SmartLinkV3App.getInstance().IsForcesLogin()) {

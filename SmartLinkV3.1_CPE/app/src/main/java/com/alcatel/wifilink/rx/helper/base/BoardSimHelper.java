@@ -6,12 +6,12 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
@@ -60,7 +60,7 @@ public class BoardSimHelper {
             @Override
             public void successful() {
                 // 2.登陆状态
-                API.get().getLoginState(new MySubscriber<LoginState>() {
+                RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState result) {
                         if (result.getState() == Cons.LOGOUT) {
@@ -100,7 +100,7 @@ public class BoardSimHelper {
             @Override
             public void successful() {
                 // 2.登陆状态
-                API.get().getLoginState(new MySubscriber<LoginState>() {
+                RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState result) {
                         if (result.getState() == Cons.LOGOUT) {
@@ -129,7 +129,7 @@ public class BoardSimHelper {
      * 获取sim状态(只获取一次的时候使用)
      */
     private void obtainSimStatusOne() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 Logger.v("getSimStatus: " + result.getSIMState());
@@ -192,7 +192,7 @@ public class BoardSimHelper {
      * 获取sim状态(循环获取的时候使用)
      */
     private void obtainSimStatusRoll() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 Logger.v("ma_sim: " + result.getSIMState());

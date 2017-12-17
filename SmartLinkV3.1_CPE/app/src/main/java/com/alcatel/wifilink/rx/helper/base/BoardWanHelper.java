@@ -9,8 +9,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
@@ -62,7 +62,7 @@ public class BoardWanHelper {
                 @Override
                 public void successful() {
                     // 2.登陆状态
-                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                    RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
                             if (result.getState() == Cons.LOGOUT) {
@@ -105,7 +105,7 @@ public class BoardWanHelper {
                 @Override
                 public void successful() {
                     // 2.登陆状态
-                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                    RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
                             if (result.getState() == Cons.LOGOUT) {
@@ -138,7 +138,7 @@ public class BoardWanHelper {
      * @param wsp
      */
     public void sendWanRequest(WanSettingsParams wsp) {
-        API.get().setWanSettings(wsp, new MySubscriber() {
+        RX.getInstant().setWanSettings(wsp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 reGetWanStatus();// 重复获取WAN口状态
@@ -148,7 +148,7 @@ public class BoardWanHelper {
              * 重复获取WAN口状态
              */
             private void reGetWanStatus() {
-                API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+                RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
                     @Override
                     protected void onSuccess(WanSettingsResult result) {
                         int status = result.getStatus();
@@ -190,7 +190,7 @@ public class BoardWanHelper {
      * 获取wan状态
      */
     private void obtainWanStatusRoll() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 normalNext(result);
@@ -228,7 +228,7 @@ public class BoardWanHelper {
      * 获取wan状态
      */
     private void obtainWanStatus() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 normalNext(result);

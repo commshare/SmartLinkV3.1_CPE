@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.Constants;
 import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.R;
@@ -22,8 +24,6 @@ import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginResult;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.bean.AcBean;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
@@ -72,7 +72,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         mApplyBtn.setOnClickListener(this);
 
         mPasswdEdit = (EditText) findViewById(R.id.login_edit_view);
-        // get remember psd
+        // getInstant remember psd
         String psd_remember = SP.getInstance(this).getString(Cons.LOGIN_PSD, "");
         mPasswdEdit.setText(ischeck ? psd_remember : "");
         mApplyBtn.setEnabled(psd_remember.length() >= 4);
@@ -171,7 +171,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         }
 
         ProgressDialog progressPop = new ProgressUtils(this).getProgressPop(getString(R.string.resetting));
-        API.get().resetDevice(new MySubscriber() {
+        RX.getInstant().resetDevice(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 if (progressPop != null) {
@@ -207,17 +207,17 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
         account = needEncrypt ? EncryptionUtil.encryptUser(account) : account;
         passwd = needEncrypt ? EncryptionUtil.encryptUser(passwd) : passwd;
 
-        // get data
+        // getInstant data
         String finalPasswd = passwd;
-        API.get().login(account, passwd, new MySubscriber<LoginResult>() {
+        RX.getInstant().login(account, passwd, new ResponseObject<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult loginResult) {
-                API.get().getLoginState(new MySubscriber<LoginState>() {
+                RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
-                            // get token
-                            API.get().updateToken(loginResult.getToken());
+                            // getInstant token
+                            RX.getInstant().updateToken(loginResult.getToken());
                             // remember psd
                             SP.getInstance(LoginActivity.this).putString(Cons.LOGIN_PSD, oriPasswd);
                             checkConnectMode();  // 判断连接模式( SIM | WAN )
@@ -271,11 +271,11 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
     // TODO: 2017/7/21  
     private void checkConnectMode() {
 
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 int wanStatus = result.getStatus();// 获取WAN口状态
-                API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
                         int simState = result.getSIMState();// 获取SIM卡状态
@@ -348,7 +348,7 @@ public class LoginActivity extends BaseActivityWithBack implements View.OnClickL
 
     // 显示剩余次数
     private void showRemainTimes() {
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 int remainingTimes = result.getLoginRemainingTimes();

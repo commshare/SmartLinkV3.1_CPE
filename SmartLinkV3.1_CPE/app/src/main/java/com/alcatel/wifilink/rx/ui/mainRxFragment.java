@@ -15,14 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.rx.helper.base.UsageSettingHelper;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
 import com.alcatel.wifilink.model.network.NetworkInfos;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.BoardWanHelper;
@@ -168,7 +169,7 @@ public class mainRxFragment extends Fragment {
         unbinder = ButterKnife.bind(this, inflate);
         activity = (HomeRxActivity) getActivity();
         fragmentClazz = activity.clazz;
-        SP.getInstance(getActivity()).putInt(Cons.TAB_FRA,Cons.TAB_MAIN);
+        SP.getInstance(getActivity()).putInt(Cons.TAB_FRA, Cons.TAB_MAIN);
         showPgd();
         initRes();
         resetUi();
@@ -176,7 +177,7 @@ public class mainRxFragment extends Fragment {
         initHelper();
         startTimer();
         return inflate;
-                
+
     }
 
     /**
@@ -203,6 +204,7 @@ public class mainRxFragment extends Fragment {
         wanHelper.setOnResultError(error -> getSim());// 出错
         wanHelper.setOnError(e -> getSim());// 出错
         wanHelper.setOnConnetedNextListener(wanResult -> wanFirst());// 显示wan
+        wanHelper.setOnConnetingNextListener(wanResult -> getSim());// 获取SIM
         wanHelper.setOnDisConnetedNextListener(wanResult -> getSim());// 获取sim
         wanHelper.setOnDisconnetingNextListener(wanResult -> getSim());// 获取sim
 
@@ -236,7 +238,7 @@ public class mainRxFragment extends Fragment {
             stopTimer();
             dialogDismiss();
         } else {
-            SP.getInstance(getActivity()).putInt(Cons.TAB_FRA,Cons.MAIN);
+            SP.getInstance(getActivity()).putInt(Cons.TAB_FRA, Cons.MAIN);
             startTimer();
             resetUi();
         }
@@ -408,7 +410,7 @@ public class mainRxFragment extends Fragment {
      * 获取流量
      */
     private void getUsage() {
-        API.get().getUsageSetting(new MySubscriber<UsageSetting>() {
+        RX.getInstant().getUsageSetting(new ResponseObject<UsageSetting>() {
             @Override
             protected void onSuccess(UsageSetting result) {
                 // 设置已使用流量 
@@ -505,7 +507,7 @@ public class mainRxFragment extends Fragment {
      * 获取连接设备数
      */
     private void getDevice() {
-        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+        RX.getInstant().getConnectedDeviceList(new ResponseObject<ConnectedList>() {
             @Override
             protected void onSuccess(ConnectedList result) {
                 int deviceSize = result.getConnectedList().size();
@@ -634,7 +636,23 @@ public class mainRxFragment extends Fragment {
         simHelper_simNotConnect.setOnPinRequireListener(result -> showPinDialog());// PIN
         simHelper_simNotConnect.setOnpukRequireListener(result -> showPukDialog());// PUK
         simHelper_simNotConnect.setOnpukTimeoutListener(result -> showPukTimeoutTip());// PUK
-        simHelper_simNotConnect.setOnSimReadyListener(result -> ConnectSettingHelper.toConnect(getActivity()));// to connect
+        simHelper_simNotConnect.setOnSimReadyListener(result -> {
+            // 检测是否超过流量
+            UsageSettingHelper usb = new UsageSettingHelper(getActivity());
+            usb.setOnErrorListener(attr -> toast(R.string.connect_failed));
+            usb.setOnResutlErrorListener(attr -> toast(R.string.connect_failed));
+            usb.setOngetSuccessListener(attr -> {
+                long monthlyPlan = attr.getMonthlyPlan();
+                long usedData = attr.getUsedData();
+                if (usedData >= monthlyPlan && monthlyPlan != 0) {// 超出--> 提示
+                    toast(R.string.home_usage_over_redial_message);
+                } else {// 未超出--> 连接
+                    ConnectSettingHelper.toConnect(getActivity());
+                }
+            });
+            usb.getUsageSetting();
+
+        });// to connect
         simHelper_simNotConnect.boardNormal();
     }
 

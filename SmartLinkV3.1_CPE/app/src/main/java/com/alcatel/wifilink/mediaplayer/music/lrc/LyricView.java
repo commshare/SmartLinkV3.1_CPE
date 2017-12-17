@@ -156,9 +156,9 @@ public class LyricView extends View {
 		// if (!blLrc) {
 		// return;
 		// }
-		// int max = lrc_map.get(0).lrc.length();
+		// int max = lrc_map.getInstant(0).lrc.length();
 		// for (int i = 1; i < lrc_map.size(); i++) {
-		// LyricObject lrcStrLength = lrc_map.get(i);
+		// LyricObject lrcStrLength = lrc_map.getInstant(i);
 		// if (max < lrcStrLength.lrc.length()) {
 		// max = lrcStrLength.lrc.length();
 		// }

@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.WpsHelper;
@@ -224,7 +224,7 @@ public class PinPukPinFragment extends Fragment {
      */
     private void unlockPinRequest(SimStatus result) {
         String pin = OtherUtils.getEdContent(etPinRx);
-        API.get().unlockPin(pin, new MySubscriber() {
+        RX.getInstant().unlockPin(pin, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 // 是否勾选了记住PIN

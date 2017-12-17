@@ -6,8 +6,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageSettings;
 import com.alcatel.wifilink.model.network.NetworkInfos;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.NetworkRegisterState;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -58,7 +58,7 @@ public class UsageHelper {
     }
 
     /**
-     * 获取单位以及换算
+     * 获取单位以及换算(带小数)
      *
      * @param context
      * @param bytes
@@ -142,7 +142,7 @@ public class UsageHelper {
      * 获取流量设置的相关信息(monthly data limit,biilling day,usage alert,auto disconnect....)
      */
     public void getUsageSettingAll() {
-        API.get().getUsageSettings(new MySubscriber<UsageSettings>() {
+        RX.getInstant().getUsageSettings(new ResponseObject<UsageSettings>() {
             @Override
             protected void onSuccess(UsageSettings result) {
                 usageSettingNext(result);
@@ -223,7 +223,7 @@ public class UsageHelper {
      * 获取流量超限状况
      */
     public void getOverUsage() {
-        API.get().getUsageSettings(new MySubscriber<UsageSettings>() {
+        RX.getInstant().getUsageSettings(new ResponseObject<UsageSettings>() {
             @Override
             protected void onSuccess(UsageSettings result) {
                 long monthlyPlan = result.getMonthlyPlan();
@@ -309,15 +309,15 @@ public class UsageHelper {
      */
     public void getRoamingInfo() {
         String currentTime = UsageHelper.getCurrentTime();
-        API.get().getNetworkRegisterState(new MySubscriber<NetworkRegisterState>() {
+        RX.getInstant().getNetworkRegisterState(new ResponseObject<NetworkRegisterState>() {
             @Override
             protected void onSuccess(NetworkRegisterState result) {
                 int regist_state = result.getRegist_state();
                 if (regist_state == Cons.REGISTER_SUCCESSFUL) {
-                    API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+                    RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
                         @Override
                         protected void onSuccess(NetworkInfos networkInfos) {
-                            API.get().getUsageRecord(currentTime, new MySubscriber<UsageRecord>() {
+                            RX.getInstant().getUsageRecord(currentTime, new ResponseObject<UsageRecord>() {
                                 @Override
                                 protected void onSuccess(UsageRecord result) {
                                     if (networkInfos.getRoaming() == Cons.ROAMING) {

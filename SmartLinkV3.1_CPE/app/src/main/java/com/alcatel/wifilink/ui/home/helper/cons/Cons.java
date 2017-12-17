@@ -239,4 +239,9 @@ public class Cons {
     public static final int PINSTATES_PIN_DISABLE = 3;
     public static final int PINSTATES_PUK_REQUIRED = 4;
     public static final int PINSTATES_PUK_TIMES_USED_OUT = 5;
+
+    /* upgrade */
+    public static final int NO_START_UPDATE = 0;
+    public static final int UPDATING = 1;
+    public static final int COMPLETE = 2;
 }

@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.Usage.UsageSettings;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.UsageHelper;
 import com.alcatel.wifilink.ui.activity.SettingNetworkActivity;
@@ -168,7 +168,7 @@ public class UsageRxFragment extends Fragment implements FragmentBackHandler {
      * 已经使用 / 月计划流量
      */
     private void getUsed() {
-        API.get().getUsageSettings(new MySubscriber<UsageSettings>() {
+        RX.getInstant().getUsageSettings(new ResponseObject<UsageSettings>() {
             @Override
             protected void onSuccess(UsageSettings result) {
                 // 已经使用
@@ -249,7 +249,7 @@ public class UsageRxFragment extends Fragment implements FragmentBackHandler {
         dialog.dismiss();
         pgd = OtherUtils.showProgressPop(getActivity());
         String currentTime = UsageHelper.getCurrentTime();
-        API.get().setUsageRecordClear(currentTime, new MySubscriber() {
+        RX.getInstant().setUsageRecordClear(currentTime, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 OtherUtils.hideProgressPop(pgd);

@@ -284,17 +284,17 @@ public class LegacyHttpClient {
                 HttpConnectionParams.setConnectionTimeout(httpParameters, 20 * 1000);
                 HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
 
-                // get default LegacyHttpClient
+                // getInstant default LegacyHttpClient
                 org.apache.http.client.HttpClient httpclient = new DefaultHttpClient(httpParameters);
                 HostnameUtils.setVerifyHostName();
 
-                // get HttpResponse--> 真正提交请求
+                // getInstant HttpResponse--> 真正提交请求
                 // TOIN 2017/6/7 真正提交请求
                 HttpResponse httpResponse = httpclient.execute(httpRequest);
                 // HttpStatus.SC_OK
                 int nStatusCode = httpResponse.getStatusLine().getStatusCode();
                 if (nStatusCode == HttpStatus.SC_OK) {
-                    // get response string
+                    // getInstant response string
                     String response = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
                     JSONObject responseJson = new JSONObject(response);
                     HttpAccessLog.getInstance().writeLogToFile("Response:" + response);

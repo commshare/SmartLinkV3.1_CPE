@@ -4,8 +4,8 @@ import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SMSDeleteParam;
 import com.alcatel.wifilink.model.sms.SmsInitState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public abstract class SmsDeleteSessionHelper {
     /* **** deleteSessionSms **** */
     private void deleteSessionSms() {
         List<Long> smsIds = new ArrayList<>();// 抽取所有需要删除的短信ID
-        API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
+        RX.getInstant().getSmsInitState(new ResponseObject<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 getSessionSmss();// 获取一个会话里的所有短信
@@ -32,10 +32,10 @@ public abstract class SmsDeleteSessionHelper {
             /* 获取一个会话中所有的短信ID */
             private void getSessionSmss() {
                 SMSContentParam scp = new SMSContentParam(0, contactId);
-                API.get().getSMSContentList(scp, new MySubscriber<SMSContentList>() {
+                RX.getInstant().getSMSContentList(scp, new ResponseObject<SMSContentList>() {
                     @Override
                     protected void onSuccess(SMSContentList result) {
-                        // get all smsids
+                        // getInstant all smsids
                         for (SMSContentList.SMSContentBean scb : result.getSMSContentList()) {
                             smsIds.add(scb.getSMSId());
                         }
@@ -46,7 +46,7 @@ public abstract class SmsDeleteSessionHelper {
                     /* 根据短信ID删除 */
                     private void deletSmsByIds() {
                         SMSDeleteParam sdp = new SMSDeleteParam(Cons.DELETE_MORE_SMS, smsIds);
-                        API.get().deleteSMS(sdp, new MySubscriber() {
+                        RX.getInstant().deleteSMS(sdp, new ResponseObject() {
                             @Override
                             protected void onSuccess(Object result) {
                                 deletSuccess();

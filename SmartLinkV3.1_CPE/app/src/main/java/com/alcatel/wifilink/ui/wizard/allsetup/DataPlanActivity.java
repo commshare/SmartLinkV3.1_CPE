@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
@@ -158,7 +158,7 @@ public class DataPlanActivity extends BaseActivityWithBack implements View.OnCli
         us.setAutoDisconnFlag(autoDisconnect);
         us.setMonthlyPlan(data);
         us.setUnit(unit);
-        API.get().setUsageSetting(us, new MySubscriber() {
+        RX.getInstant().setUsageSetting(us, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(DataPlanActivity.this, getString(R.string.succeed));

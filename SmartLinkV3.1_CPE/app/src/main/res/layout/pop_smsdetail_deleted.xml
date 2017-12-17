@@ -1,71 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_pop_conner">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tv_smsdetail_delete_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/dialog_delete_multi_sms_content"
+        android:textColor="@color/mg_blue"
+        app:layout_marginTopPercent="4%sh"
+        app:layout_textSizePercent="2.7%sh" />
+
+    <View
+        android:id="@+id/v_smsdetail_tryagain_split"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dimen_1dip"
+        android:layout_below="@id/tv_smsdetail_delete_title"
+        android:layout_marginLeft="@dimen/dimen_15dip"
+        android:layout_marginRight="@dimen/dimen_15dip"
+        android:alpha="0.5"
+        android:background="@color/gray"
+        app:layout_marginTopPercent="3%sh" />
 
-        <TextView
-            android:id="@+id/tv_smsdetail_delete_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dimen_20dip"
-            android:text="@string/dialog_delete_multi_sms_content"
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_smsdetail_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dip"
+        android:layout_below="@id/v_smsdetail_tryagain_split"
+        android:orientation="horizontal"
+        app:layout_heightPercent="8%sh"
+        app:layout_marginTopPercent="2%sh">
+
+        <com.alcatel.wifilink.appwidget.RippleView
+            android:id="@+id/tv_smsdetail_detele_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/gray"
+            app:alphaFactor="0.8"
+            app:hover="true"
+            app:layout_textSizePercent="33%h"
+            app:rippleColor="@color/pop_cancel" />
+
+        <com.alcatel.wifilink.appwidget.RippleView
+            android:id="@+id/tv_smsdetail_detele_confirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/delete"
             android:textColor="@color/sms_detail_tryagain"
-            android:textSize="@dimen/dimen_textsize_20sp" />
+            app:alphaFactor="0.8"
+            app:hover="true"
+            app:layout_textSizePercent="33%h"
+            app:rippleColor="@color/gray" />
 
-        <View
-            android:id="@+id/v_smsdetail_tryagain_split"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_1dip"
-            android:layout_below="@id/tv_smsdetail_delete_title"
-            android:layout_marginLeft="@dimen/dimen_8dip"
-            android:layout_marginRight="@dimen/dimen_8dip"
-            android:layout_marginTop="@dimen/dimen_20dip"
-            android:alpha="0.5"
-            android:background="@color/gray" />
+    </com.zhy.android.percent.support.PercentLinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_50dip"
-            android:layout_below="@id/v_smsdetail_tryagain_split"
-            android:layout_marginBottom="@dimen/dimen_1dip"
-            android:layout_marginTop="@dimen/dimen_10dip"
-            android:orientation="horizontal">
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_1dip"
+        android:layout_below="@id/ll_smsdetail_buttons"
+        app:layout_marginTopPercent="2%sh" />
 
-            <com.alcatel.wifilink.appwidget.RippleView
-                android:id="@+id/tv_smsdetail_detele_cancel"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/cancel"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/dimen_textsize_18sp"
-                app:alphaFactor="0.8"
-                app:hover="true"
-                app:rippleColor="@color/pop_cancel" />
-
-            <com.alcatel.wifilink.appwidget.RippleView
-                android:id="@+id/tv_smsdetail_detele_confirm"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/delete"
-                android:textColor="@color/sms_detail_tryagain"
-                android:textSize="@dimen/dimen_textsize_18sp"
-                app:alphaFactor="0.8"
-                app:hover="true"
-                app:rippleColor="@color/gray" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

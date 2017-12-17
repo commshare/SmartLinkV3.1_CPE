@@ -3,13 +3,11 @@ package com.alcatel.wifilink.ui.home.allsetup;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
@@ -40,12 +38,12 @@ public class HomeService extends Service {
                 String currentPackName = getPackageName();// 当前类名
                 // 如果当前运行的包名没有包含当前服务的包名,则认为APP被杀死--> 退出
                 if (!allRunningPackage.contains(currentPackName)) {
-                    API.get().getLoginState(new MySubscriber<LoginState>() {
+                    RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
                             OtherUtils.clearAllTimer();
                             if (result.getState() == Cons.LOGIN) {
-                                API.get().logout(new MySubscriber() {
+                                RX.getInstant().logout(new ResponseObject() {
                                     @Override
                                     protected void onSuccess(Object result) {
 

@@ -230,7 +230,7 @@ public class FtpClientProxy {
 
 	public String getParentPathFromURL(String remoteURL) {
 		String parentPath = "";
-		// get file name from the path
+		// getInstant file name from the path
 		String fName = remoteURL.trim();
 		String fileName = fName.substring(fName.lastIndexOf("/") + 1);
 		parentPath = remoteURL.substring(0,

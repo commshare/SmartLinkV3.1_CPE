@@ -14,7 +14,7 @@ public class CPEConfig {
 
     private Context m_context = null;
 
-    // get instance
+    // getInstant instance
     public static CPEConfig getInstance() {
         if (mInstance == null) {
             mInstance = new CPEConfig();

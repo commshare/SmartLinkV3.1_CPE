@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.LoginActivity;
@@ -110,7 +110,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         heartBeatTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                API.get().heartBeat(new MySubscriber() {
+                RX.getInstant().heartBeat(new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
 
@@ -147,7 +147,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
     }
 
     private void initData() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
 
             @Override
             protected void onSuccess(WanSettingsResult result) {
@@ -263,7 +263,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         wsp.setStaticIpAddress(result.getStaticIpAddress());
         wsp.setPppoeMtu(result.getPppoeMtu());
 
-        API.get().setWanSettings(wsp, new MySubscriber() {
+        RX.getInstant().setWanSettings(wsp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 getWanStatus();
@@ -303,7 +303,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
         wsp.setStaticIpAddress(result.getStaticIpAddress());
         wsp.setPppoeMtu(result.getPppoeMtu());
 
-        API.get().setWanSettings(wsp, new MySubscriber() {
+        RX.getInstant().setWanSettings(wsp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 getWanStatus();
@@ -318,7 +318,7 @@ public class WanModeActivity extends BaseActivityWithBack implements View.OnClic
 
     /* 获取WAN口是否连接(迭代调用) */
     private void getWanStatus() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 int status = result.getStatus();

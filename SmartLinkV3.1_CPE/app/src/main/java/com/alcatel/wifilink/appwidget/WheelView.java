@@ -210,7 +210,7 @@ public class WheelView extends ScrollView {
         //        try {
         //            Field field = ScrollView.class.getDeclaredField("mScroller");
         //            field.setAccessible(true);
-        //            OverScroller mScroller = (OverScroller) field.get(this);
+        //            OverScroller mScroller = (OverScroller) field.getInstant(this);
         //
         //
         //            if(mScroller.isFinished()){

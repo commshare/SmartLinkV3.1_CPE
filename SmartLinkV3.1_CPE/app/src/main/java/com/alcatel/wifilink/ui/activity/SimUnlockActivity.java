@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.bean.AcBean;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
@@ -85,7 +85,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** initSimStatus **** */
     private void initSimStatus() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 runOnUiThread(() -> {
@@ -112,7 +112,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onViewClicked() {
 
         // check sim insert
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -185,7 +185,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** unlockPin **** */
     private void unlockPin(String pincode) {
-        API.get().unlockPin(pincode, new MySubscriber() {
+        RX.getInstant().unlockPin(pincode, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 isPinUnlock = true;
@@ -210,7 +210,7 @@ public class SimUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** getRemainTimes **** */
     private void getRemainTimes() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 pinRemainingTimes = result.getPinRemainingTimes();

@@ -5,8 +5,8 @@ import android.widget.ImageView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
@@ -38,6 +38,7 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
     public FraHelpers fraHelper;
     private TimerHelper heartTimer;
     private CheckBoard checkBoard;
+    private String flag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
         heartTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                API.get().heartBeat(new MySubscriber() {
+                RX.getInstant().heartBeat(new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
 
@@ -86,6 +87,11 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
         fraHelper = new FraHelpers(this, allClass, clazz, containId);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void getFlag(String flag) {
+        this.flag = flag;
+    }
+
     @OnClick(R.id.iv_pinpuk_index_rx_banner_back)
     public void onViewClicked() {
         backClick();
@@ -95,12 +101,16 @@ public class PinPukIndexRxActivity extends BaseActivityWithBack {
      * 点击了回退键
      */
     private void backClick() {
-        new LogoutHelper(this) {
-            @Override
-            public void logoutFinish() {
-                to(LoginRxActivity.class);
-            }
-        };
+        if (Cons.WIZARD_RX.equalsIgnoreCase(flag)) {
+            to(WizardRxActivity.class);
+        } else {
+            new LogoutHelper(this) {
+                @Override
+                public void logoutFinish() {
+                    to(LoginRxActivity.class);
+                }
+            };
+        }
     }
 
     @Override

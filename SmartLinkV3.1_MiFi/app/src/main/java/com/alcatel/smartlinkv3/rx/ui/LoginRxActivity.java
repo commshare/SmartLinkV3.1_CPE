@@ -14,10 +14,10 @@ import android.widget.TextView;
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.appwidget.PopupWindows;
 import com.alcatel.smartlinkv3.appwidget.RippleView;
-import com.alcatel.smartlinkv3.business.system.SystemInfo;
 import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.model.SystemResult;
 import com.alcatel.smartlinkv3.rx.tools.API;
 import com.alcatel.smartlinkv3.rx.tools.Cons;
 import com.alcatel.smartlinkv3.rx.tools.Logs;
@@ -133,9 +133,9 @@ public class LoginRxActivity extends BaseRxActivity {
         // 延遲2秒
         btLogin.postDelayed(() -> {
             // 2.0.判断设备版本号
-            API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+            API.get().getSystemResult(new MySubscriber<SystemResult>() {
                 @Override
-                protected void onSuccess(SystemInfo result) {
+                protected void onSuccess(SystemResult result) {
                     checkBoardConn(result.getDeviceName());
                 }
 
@@ -172,6 +172,8 @@ public class LoginRxActivity extends BaseRxActivity {
                 Logs.v("ma_login", "login LoginState");
                 // 判断是否为Y858的旧版本
                 boolean isOld = VersionUtils.isOldVersion(deviceName);
+                // TOAT: 测试阶段把isOld默认
+                isOld = false;
                 if (result.getLoginRemainingTimes() <= 0 & !isOld) {
                     OtherUtils.hideProgressPop(pgd);
                     showResetDeviceDialog(result);// 超过登陆限制次数

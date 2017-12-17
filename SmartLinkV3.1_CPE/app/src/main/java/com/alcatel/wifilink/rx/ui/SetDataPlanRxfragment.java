@@ -194,7 +194,9 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
             rlSetTimelimit.setVisibility(result.getTimeLimitFlag() == Cons.ENABLE ? View.VISIBLE : View.GONE);
             // set time limit
             UsageHelper.Times timelimit_o = UsageHelper.getUsedTimeForMin(getActivity(), result.getTimeLimitTimes());
-            if (timelimit_o.hour.equalsIgnoreCase("0")) {
+            if (timelimit_o.hour.equalsIgnoreCase("0") & timelimit_o.min.equalsIgnoreCase("0")) {
+                tvSetTimelimit.setText("");
+            } else if (timelimit_o.hour.equalsIgnoreCase("0")) {
                 tvSetTimelimit.setText(timelimit_o.min + min);
             } else {
                 tvSetTimelimit.setText(timelimit_o.hour + hour + timelimit_o.min + min);
@@ -280,7 +282,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         TextView tvGb = (TextView) inflate.findViewById(R.id.tv_pop_setPlan_rx_monthly_gb);
         TextView tvCancel = (TextView) inflate.findViewById(R.id.tv_pop_setPlan_rx_monthly_cancel);
         TextView tvOk = (TextView) inflate.findViewById(R.id.tv_pop_setPlan_rx_monthly_ok);
-        etNum.setText("0");
+        etNum.setHint("0");
         tvMb.setOnClickListener(v -> {
             tvMb.setTextColor(blue_color);
             tvGb.setTextColor(gray_color);
@@ -303,7 +305,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         // 非空判断
         if (TextUtils.isEmpty(content)) {
             toast(R.string.not_empty);
-            return;
+            content = "0";
         }
         // 范围鉴定
         int num = Integer.valueOf(content);
@@ -314,9 +316,11 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         // 请求提交
         ProgressDialog pgd = OtherUtils.showProgressPop(getActivity());
         UsageSettingHelper ush = new UsageSettingHelper(getActivity());
+        // 1.先获取一次usage-setting
         ush.setOngetSuccessListener(attr -> {
             attr.setUnit(tvmb.getCurrentTextColor() == blue_color ? Cons.GB : Cons.MB);
             attr.setMonthlyPlan(tvmb.getCurrentTextColor() == blue_color ? num * 1024 * 1024 : num * 1024 * 1024 * 1024);
+            // 2.在提交usage-setting
             UsageSettingHelper ush1 = new UsageSettingHelper(getActivity());
             ush1.setOnSetSuccessListener(attr1 -> pgd.dismiss());
             ush1.setOnErrorListener(attr1 -> pgd.dismiss());
@@ -410,9 +414,11 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         View inflate = View.inflate(getActivity(), R.layout.pop_setdataplan_settimtlimit, null);
         ScreenSize.SizeBean size = ScreenSize.getSize(getActivity());
         int width = (int) (size.width * 0.85f);
-        int height = (int) (size.height * 0.30f);
+        int height = (int) (size.height * 0.29f);
         EditText etHour = (EditText) inflate.findViewById(R.id.et_pop_setPlan_rx_settimelimit_hour);
         EditText etMin = (EditText) inflate.findViewById(R.id.et_pop_setPlan_rx_settimelimit_min);
+        etHour.setHint("0");
+        etMin.setHint("5");
         SetTimeLimitHelper.addEdwatch(etHour, etMin);// 增加监听器
         View cancel = inflate.findViewById(R.id.tv_pop_setPlan_rx_settimelimit_cancel);
         View ok = inflate.findViewById(R.id.tv_pop_setPlan_rx_settimelimit_ok);
@@ -430,12 +436,10 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
     private void setSetTimeLimit(EditText etHour, EditText etMin) {
         String hour_c = OtherUtils.getEdContent(etHour);
         String min_c = OtherUtils.getEdContent(etMin);
-        if (TextUtils.isEmpty(hour_c) & TextUtils.isEmpty(min_c)) {
-            toast(R.string.not_empty);
-            return;
-        } else if (TextUtils.isEmpty(hour_c)) {
+        if (TextUtils.isEmpty(hour_c)) {
             hour_c = "0";
-        } else if (TextUtils.isEmpty(min_c)) {
+        }
+        if (TextUtils.isEmpty(min_c)) {
             min_c = "0";
         }
         pop_setTimelimit.dismiss();
@@ -443,6 +447,24 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         int hour = Integer.valueOf(hour_c);
         int min = Integer.valueOf(min_c);
         int total = hour * 60 + min;
+        // 用户设定的时间如果为0--> 强制关闭time limit按钮功能
+        if (total <= 0) {
+            UsageSettingHelper ush = new UsageSettingHelper(getActivity());
+            ush.setOngetSuccessListener(attr -> {
+                // 强制设定为disable
+                attr.setTimeLimitFlag(Cons.DISABLE);
+                UsageSettingHelper ush1 = new UsageSettingHelper(getActivity());
+                ush1.setOnResutlErrorListener(attr1 -> pgd.dismiss());
+                ush1.setOnErrorListener(attr1 -> pgd.dismiss());
+                ush1.setOnSetSuccessListener(attr1 -> pgd.dismiss());
+                ush1.setUsageSetting(attr);
+            });
+            ush.setOnErrorListener(attr1 -> pgd.dismiss());
+            ush.setOnResutlErrorListener(attr1 -> pgd.dismiss());
+            ush.getUsageSetting();
+            return;
+        }
+        // 用户设定的时间如果不为0--> 则正常提交
         UsageSettingHelper ush = new UsageSettingHelper(getActivity());
         ush.setOngetSuccessListener(attr -> {
             attr.setTimeLimitTimes(total);

@@ -16,11 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.device.other.ConnectModel;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.devicec.fragment.ui.DeviceConnectFragment;
@@ -181,7 +181,7 @@ public class ConnectAdapter extends RecyclerView.Adapter<ConnectHolder> {
 
     /* setDeviceName */
     private void setDeviceName(String strDeviceName, String strMac, int nDeviceType) {
-        API.get().setDeviceName(strDeviceName, strMac, nDeviceType, new MySubscriber() {
+        RX.getInstant().setDeviceName(strDeviceName, strMac, nDeviceType, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
 
@@ -191,7 +191,7 @@ public class ConnectAdapter extends RecyclerView.Adapter<ConnectHolder> {
 
     /* setConnectedDeviceBlock */
     private void setConnectedDeviceBlock(String strDeviceName, String strMac, int position) {
-        API.get().setConnectedDeviceBlock(strDeviceName, strMac, new MySubscriber() {
+        RX.getInstant().setConnectedDeviceBlock(strDeviceName, strMac, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 int oldSize = connectModelList.size();

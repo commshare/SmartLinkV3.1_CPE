@@ -20,13 +20,13 @@ import android.widget.Toast;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.ShareperfrenceUtil;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
@@ -248,7 +248,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
         heartBeatTimer = new TimerHelper(this) {
             @Override
             public void doSomething() {
-                API.get().heartBeat(new MySubscriber() {
+                RX.getInstant().heartBeat(new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
 
@@ -462,7 +462,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
                 refreshUi_fragment(FragmentHomeEnum.WIFI);
                 break;
             case R.id.mRl_home_messagebutton:// sms button
-                API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                     @Override
                     protected void onSuccess(SimStatus result) {
                         // if (result.getSIMState() == Cons.READY && MainFragment.type.equalsIgnoreCase(Cons.TYPE_SIM)) {
@@ -637,7 +637,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** 获取SIM卡状态 **** */
     private void getSimStatus() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -696,7 +696,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** WAN口是否有效 **** */
     public void isWanInsert() {
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 int wanStatus = result.getStatus();
@@ -718,7 +718,7 @@ public class HomeActivity extends BaseActivityWithBack implements View.OnClickLi
 
     /* **** SIM卡是否插入 **** */
     private void isSimInsert() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();

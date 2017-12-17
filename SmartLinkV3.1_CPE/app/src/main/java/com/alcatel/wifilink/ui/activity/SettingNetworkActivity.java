@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.Constants;
@@ -40,8 +42,6 @@ import com.alcatel.wifilink.model.network.Network;
 import com.alcatel.wifilink.model.profile.ProfileList;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.system.SystemInfo;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.OtherUtils;
@@ -258,7 +258,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void connect() {
-        API.get().connect(new MySubscriber() {
+        RX.getInstant().connect(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -281,7 +281,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void disConnect() {
-        API.get().disConnect(new MySubscriber() {
+        RX.getInstant().disConnect(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -304,7 +304,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getConnectionState() {
-        API.get().getConnectionState(new MySubscriber<ConnectionState>() {
+        RX.getInstant().getConnectionState(new ResponseObject<ConnectionState>() {
             @Override
             protected void onSuccess(ConnectionState result) {
                 // 0: disconnected  1: connecting 2: connected 3: disconnecting
@@ -329,7 +329,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         } else if (connectMode == 1) {
             mConnectionSettings.setConnectMode(Constants.ConnectionSettings.CONNECTION_MODE_MANUAL);
         }
-        API.get().setConnectionSettings(mConnectionSettings, new MySubscriber() {
+        RX.getInstant().setConnectionSettings(mConnectionSettings, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -347,7 +347,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getConnectionSettings() {
-        API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+        RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
             @Override
             protected void onSuccess(ConnectionSettings result) {
                 //  0: manual connect 1: auto connect
@@ -376,7 +376,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     private void setNetworkSettings(int networkMode) {
         mNetworkSettings.setNetworkMode(networkMode);
-        API.get().setNetworkSettings(mNetworkSettings, new MySubscriber() {
+        RX.getInstant().setNetworkSettings(mNetworkSettings, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -390,7 +390,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getNetworkModeSettings() {
-        API.get().getNetworkSettings(new MySubscriber<Network>() {
+        RX.getInstant().getNetworkSettings(new ResponseObject<Network>() {
             @Override
             protected void onSuccess(Network result) {
                 //  0: auto mode 1: 2G only 2: 3G only 3: LTE only
@@ -415,7 +415,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     private void getProfileList() {
 
-        API.get().getProfileList(new MySubscriber<ProfileList>() {
+        RX.getInstant().getProfileList(new ResponseObject<ProfileList>() {
             @Override
             protected void onSuccess(ProfileList result) {
                 mTvProfile.setText(result.getProfileName());
@@ -428,7 +428,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void changePinState(String pinCode, int enable) {
-        API.get().changePinState(pinCode, enable, new MySubscriber() {
+        RX.getInstant().changePinState(pinCode, enable, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 rl_settingPin.setVisibility(View.GONE);
@@ -453,7 +453,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getSimStatus() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 // PinState: 0: unknown
@@ -477,7 +477,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getSystemInfo() {
-        API.get().getSystemInfo(new MySubscriber<SystemInfo>() {
+        RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
                 mSimNumberTextView.setText(result.getMSISDN());
@@ -491,7 +491,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void setUsageSetting(UsageSetting usageSetting) {
-        API.get().setUsageSetting(usageSetting, new MySubscriber() {
+        RX.getInstant().setUsageSetting(usageSetting, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 getUsageSetting();
@@ -509,7 +509,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void changePinCode(String newPin, String currentPin) {
-        API.get().changePinCode(newPin, currentPin, new MySubscriber() {
+        RX.getInstant().changePinCode(newPin, currentPin, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingNetworkActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -532,7 +532,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void getUsageSetting() {
-        API.get().getUsageSetting(new MySubscriber<UsageSetting>() {
+        RX.getInstant().getUsageSetting(new ResponseObject<UsageSetting>() {
             @Override
             protected void onSuccess(UsageSetting result) {
                 mUsageSetting = result;
@@ -632,7 +632,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
 
     private void modifyRoam() {
         pgd = OtherUtils.showProgressPop(this);
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() == Cons.READY) {
@@ -641,15 +641,15 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     // mRoamingSwitchCompat.setImageResource(roamCheck ? R.drawable.pwd_switcher_on : R.drawable.pwd_switcher_off);
                     int RoamingConnect = isRoaming ? 1 : 0;// 原来是选中状态--> 显示为未选中
                     // 先获取一次漫游状态
-                    API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+                    RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
                         @Override
                         protected void onSuccess(ConnectionSettings result) {
                             result.setRoamingConnect(RoamingConnect);
                             // 提交
-                            API.get().setConnectionSettings(result, new MySubscriber() {
+                            RX.getInstant().setConnectionSettings(result, new ResponseObject() {
                                 @Override
                                 protected void onSuccess(Object result) {
-                                    API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+                                    RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
                                         @Override
                                         protected void onSuccess(ConnectionSettings result) {
                                             OtherUtils.hideProgressPop(pgd);

@@ -17,12 +17,12 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.business.BusinessManager;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.MessageUti;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.SettingWifiActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.SetupWizardActivity;
@@ -213,7 +213,7 @@ public class PinCodeFragment extends Fragment {
             return;
         }
 
-        API.get().unlockPin(pinPassword, new MySubscriber() {
+        RX.getInstant().unlockPin(pinPassword, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 SP.getInstance(getActivity()).putString(PIN_PASSWORD, pinPassword);

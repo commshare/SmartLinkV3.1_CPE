@@ -9,12 +9,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.CommonUtil;
 import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.network.NetworkInfos;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.ActionbarSetting;
 import com.alcatel.wifilink.utils.DataUtils;
@@ -129,7 +129,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         dialog.setTitle(R.string.reset_monthly_data_usage_statistics);
         dialog.setNegativeButton(R.string.cancel, (dialog1, which) -> dialog1.dismiss());
         dialog.setPositiveButton(R.string.reset, (dialog1, which) -> {
-            API.get().setUsageRecordClear(DataUtils.getCurrent(), new MySubscriber() {
+            RX.getInstant().setUsageRecordClear(DataUtils.getCurrent(), new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     updateUI();
@@ -152,7 +152,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** getUsageRecord **** */
     private void getUsageRecord() {
-        API.get().getUsageRecord(DataUtils.getCurrent(), new MySubscriber<UsageRecord>() {
+        RX.getInstant().getUsageRecord(DataUtils.getCurrent(), new ResponseObject<UsageRecord>() {
             @Override
             public void onError(Throwable e) {
 
@@ -178,7 +178,7 @@ public class UsageActivity extends BaseActivityWithBack implements View.OnClickL
         mTvHomeTime.setText(strCurrDuration);
 
 
-        API.get().getNetworkInfo(new MySubscriber<NetworkInfos>() {
+        RX.getInstant().getNetworkInfo(new ResponseObject<NetworkInfos>() {
             @Override
             protected void onSuccess(NetworkInfos result) {
                 //0: roaming   1: no roaming

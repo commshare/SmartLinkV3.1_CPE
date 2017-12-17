@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
@@ -26,8 +25,8 @@ import com.alcatel.wifilink.common.ENUM;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
@@ -108,9 +107,16 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     private void resetUi() {
-        activity.tabFlag = Cons.TAB_WIFI;
-        activity.llNavigation.setVisibility(View.VISIBLE);
-        activity.rlBanner.setVisibility(View.VISIBLE);
+        if (activity != null) {
+            activity.tabFlag = Cons.TAB_WIFI;
+            activity.llNavigation.setVisibility(View.VISIBLE);
+            activity.rlBanner.setVisibility(View.VISIBLE);
+        } else {
+            ((HomeRxActivity)getActivity()).tabFlag = Cons.TAB_WIFI;
+            ((HomeRxActivity)getActivity()).llNavigation.setVisibility(View.VISIBLE);
+            ((HomeRxActivity)getActivity()).rlBanner.setVisibility(View.VISIBLE);
+        }
+        
     }
 
     @Override
@@ -204,7 +210,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     private void requestWlanSettings() {
-        API.get().getWlanSettings(new MySubscriber<WlanSettings>() {
+        RX.getInstant().getWlanSettings(new ResponseObject<WlanSettings>() {
             @Override
             protected void onSuccess(WlanSettings result) {
                 mOriginSettings = result;
@@ -221,7 +227,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
 
 
     private void requestWlanSupportMode() {
-        API.get().getWlanSupportMode(new MySubscriber<WlanSupportAPMode>() {
+        RX.getInstant().getWlanSupportMode(new ResponseObject<WlanSupportAPMode>() {
             @Override
             protected void onSuccess(WlanSupportAPMode result) {
                 updateUIWithSupportMode(result.getWlanSupportAPMode());
@@ -496,7 +502,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
      * 真正发送请求
      */
     private void setWlanRequest() {
-        API.get().setWlanSettings(mEditedSettings, new MySubscriber() {
+        RX.getInstant().setWlanSettings(mEditedSettings, new ResponseObject() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -533,7 +539,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     private void checkLoginState() {
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 checkLoginState();

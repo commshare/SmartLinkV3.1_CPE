@@ -9,15 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.SP;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.rx.helper.base.WpsHelper;
@@ -25,7 +22,11 @@ import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.SP;
+import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,6 +51,10 @@ public class WizardRxActivity extends BaseActivityWithBack {
     TextView tvSimRx;
     @BindView(R.id.tv_wan_rx)
     TextView tvWanRx;
+    @BindView(R.id.tv_wizardrx_banner_skip)
+    TextView tvWizardrxBannerSkip;
+    @BindView(R.id.iv_wizardrx_banner_back)
+    ImageView ivWizardrxBannerBack;
 
     private TimerHelper heartTimerHelper;// 心跳定时器
     private TimerHelper connectTimer;// 连接定时器
@@ -72,8 +77,15 @@ public class WizardRxActivity extends BaseActivityWithBack {
         setContentView(R.layout.activity_wizard_rx);
         ButterKnife.bind(this);
         initRes();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // 启动心跳防止登出
         heartTimer();
+        // 启动定时器
+        connectTimer();
     }
 
     private void initRes() {
@@ -114,9 +126,10 @@ public class WizardRxActivity extends BaseActivityWithBack {
                 boolean iswifi = OtherUtils.isWifiConnect(WizardRxActivity.this);
                 if (iswifi) {
                     // 检测WAN口连接
-                    API.get().getWanSeting(new MySubscriber<WanSetting>() {
+                    RX.getInstant().getWanSeting(new ResponseObject<WanSetting>() {
                         @Override
                         protected void onSuccess(WanSetting result) {
+                            Logger.t("ma_wizardrx_wan").v(result.getStatus() + "");
                             boolean isWanConnect = result.getStatus() == Cons.CONNECTED;
                             ivWanRx.setImageDrawable(isWanConnect ? wan_checked_pic : wan_unchecked_pic);
                             tvWanRx.setText(isWanConnect ? wan_checked_str : wan_unchecked_str);
@@ -138,7 +151,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
                         }
                     });
                     // 检测SIM卡连接
-                    API.get().getSimStatus(new MySubscriber<SimStatus>() {
+                    RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                         @Override
                         protected void onSuccess(SimStatus result) {
                             int simState = result.getSIMState();
@@ -181,13 +194,21 @@ public class WizardRxActivity extends BaseActivityWithBack {
     }
 
     private void heartTimer() {
-        OtherUtils.setOnHeartBeatListener(this::connectTimer);
         heartTimerHelper = OtherUtils.startHeartBeat(this, LoginRxActivity.class, LoginRxActivity.class);
     }
 
-    @OnClick({R.id.rl_sim_rx, R.id.rl_wan_rx})
+    @OnClick({R.id.tv_wizardrx_banner_skip,// skip
+                     R.id.iv_wizardrx_banner_back,// back
+                     R.id.rl_sim_rx,// sim
+                     R.id.rl_wan_rx})// wan
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_wizardrx_banner_back:
+                logout();
+                break;
+            case R.id.tv_wizardrx_banner_skip:
+                to(WifiInitRxActivity.class);
+                break;
             case R.id.rl_sim_rx:
                 clickSimRl();
                 break;
@@ -202,11 +223,10 @@ public class WizardRxActivity extends BaseActivityWithBack {
      */
     private void clickWanRl() {
         if (OtherUtils.isWifiConnect(this)) {
-
             if (pgd == null) {
                 pgd = OtherUtils.showProgressPop(this);
             }
-            API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+            RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
                 @Override
                 protected void onSuccess(WanSettingsResult result) {
                     int status = result.getStatus();
@@ -270,7 +290,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
             if (pgd == null) {
                 pgd = OtherUtils.showProgressPop(this);
             }
-            API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                 @Override
                 protected void onSuccess(SimStatus result) {
                     int simState = result.getSIMState();
@@ -284,6 +304,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
                                 checkWps();// 检测是否为WPS,true:则不允许进入wifi修改界面
                             }
                         } else {
+                            EventBus.getDefault().postSticky(Cons.WIZARD_RX);
                             to(DataPlanRxActivity.class);
                         }
                         return;
@@ -310,12 +331,14 @@ public class WizardRxActivity extends BaseActivityWithBack {
                     if (simState == Cons.PIN_REQUIRED) {
                         OtherUtils.hideProgressPop(pgd);
                         EventBus.getDefault().postSticky(new PinPukBean(Cons.PIN_FLAG));
+                        EventBus.getDefault().postSticky(Cons.WIZARD_RX);
                         to(PinPukIndexRxActivity.class);
                         return;
                     }
                     if (simState == Cons.PUK_REQUIRED) {
                         OtherUtils.hideProgressPop(pgd);
                         EventBus.getDefault().postSticky(new PinPukBean(Cons.PUK_FLAG));
+                        EventBus.getDefault().postSticky(Cons.WIZARD_RX);
                         to(PinPukIndexRxActivity.class);
                         return;
                     }
@@ -366,8 +389,8 @@ public class WizardRxActivity extends BaseActivityWithBack {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         // 停止心跳定时器
         OtherUtils.stopHeartBeat(heartTimerHelper);
         // 停止检测连接定时器

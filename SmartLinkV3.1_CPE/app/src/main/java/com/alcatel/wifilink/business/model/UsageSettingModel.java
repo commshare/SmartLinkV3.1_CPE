@@ -14,7 +14,7 @@ public class UsageSettingModel extends BaseResult {
     public int HTimeLimitTimes = 0;//The time limit function open, must set the limit time.
     public int HUsedTimes = 0;//The used time that after open time limit function.
     public ENUM.OVER_TIME_STATE HTimeLimitFlag = ENUM.OVER_TIME_STATE.Disable;  //The time limit function flage,0: disable 1:enable
-    public ENUM.OVER_DISCONNECT_STATE HAutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.Disable;//This flage control the disconnection when the usage settings get conditions.0:disable, not auto disconnect 1:enable, auto disconnect
+    public ENUM.OVER_DISCONNECT_STATE HAutoDisconnFlag = ENUM.OVER_DISCONNECT_STATE.Disable;//This flage control the disconnection when the usage settings getInstant conditions.0:disable, not auto disconnect 1:enable, auto disconnect
 
 
     @Override

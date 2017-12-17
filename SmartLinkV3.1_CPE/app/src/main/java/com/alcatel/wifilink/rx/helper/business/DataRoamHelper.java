@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.connection.ConnectionSettings;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.ConnectSettingHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -32,11 +32,11 @@ public class DataRoamHelper {
             int needRoam = roamingConnect == Cons.WHEN_ROAM_CAN_CONNECT ? Cons.WHEN_ROAM_NOT_CONNECT : Cons.WHEN_ROAM_CAN_CONNECT;
             result.setRoamingConnect(needRoam);// 2.切换连接状态
             // 3.提交请求
-            API.get().setConnectionSettings(result, new MySubscriber() {
+            RX.getInstant().setConnectionSettings(result, new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     // 4.再次获取
-                    API.get().getConnectionSettings(new MySubscriber<ConnectionSettings>() {
+                    RX.getInstant().getConnectionSettings(new ResponseObject<ConnectionSettings>() {
                         @Override
                         protected void onSuccess(ConnectionSettings result) {
                             roamConnSuccessNext(result);

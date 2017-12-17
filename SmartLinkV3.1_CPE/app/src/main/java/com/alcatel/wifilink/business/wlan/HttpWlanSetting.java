@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class HttpWlanSetting {
 
-    /******************** get wlan setting **************************************************************************************/
+    /******************** getInstant wlan setting **************************************************************************************/
     public static class GetWlanSetting extends BaseRequest {
 
         public GetWlanSetting(IHttpFinishListener callback) {
@@ -84,7 +84,7 @@ public class HttpWlanSetting {
 //                    m_result.ApStatus_5G = ap.ApStatus;
 //                    m_result.Ssid_5G = ap.Ssid;
 //                    m_result.SsidHidden_5G = ap.SsidHidden;
-//                    m_result.SecurityMode_5G = m_New_result.APList.get(1).SecurityMode;
+//                    m_result.SecurityMode_5G = m_New_result.APList.getInstant(1).SecurityMode;
 //                    m_result.WpaType_5G = ap.WpaType;
 //                    m_result.WpaKey_5G = ap.WpaKey;
 //                    m_result.WepType_5G = ap.WepType;
@@ -199,7 +199,7 @@ public class HttpWlanSetting {
     }
 
 
-    /*get Wlan support mode start*/
+    /*getInstant Wlan support mode start*/
     public static class getWlanSupportModeRequest extends BaseRequest {
 
         public getWlanSupportModeRequest(IHttpFinishListener callback) {
@@ -212,5 +212,5 @@ public class HttpWlanSetting {
         }
     }
 
-	/*get Wlan support mode end***/
+	/*getInstant Wlan support mode end***/
 }

@@ -71,8 +71,8 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 			SMSSummaryItem c2 = (SMSSummaryItem) o2;
 			String time1 = (String) c1.strSummaryTime;
 			String time2 = (String) c2.strSummaryTime;
-			/*SMSTag tag1 = (SMSTag) c1.get("type");
-			SMSTag tag2 = (SMSTag) c2.get("type");
+			/*SMSTag tag1 = (SMSTag) c1.getInstant("type");
+			SMSTag tag2 = (SMSTag) c2.getInstant("type");
 			if(tag1 == SMSTag.NotRead && tag2 == SMSTag.NotRead) {
 				if(time1.compareToIgnoreCase(time2) > 0)
 					return -1;
@@ -99,11 +99,11 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 		m_smsSummaryLstData.clear();
 		/*ArrayList<SmsMessageModel> smsList = BusinessManager.getInstance().getSMSList();
 		for(int i = 0;i < smsList.size();i++) {
-			SmsMessageModel sms = smsList.get(i);
+			SmsMessageModel sms = smsList.getInstant(i);
 			boolean bExist = false;
 			for(int j = 0;j < m_smsSummaryLstData.size();j++) {
-				Map<String, Object> summary = m_smsSummaryLstData.get(j);
-				String strNumber = (String) summary.get("number");
+				Map<String, Object> summary = m_smsSummaryLstData.getInstant(j);
+				String strNumber = (String) summary.getInstant("number");
 				if(strNumber.length() > SMS_MATCH_NUM) 
 					strNumber = strNumber.substring(strNumber.length() - SMS_MATCH_NUM);
 				String strNumber2 = sms.m_strNumber;
@@ -112,20 +112,20 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 				if(strNumber.equalsIgnoreCase(strNumber2)) {
 					bExist = true;
 					boolean bHaveUnread = false;
-					SMSTag tag = (SMSTag) summary.get("type");
+					SMSTag tag = (SMSTag) summary.getInstant("type");
 					if(sms.m_nTag == SMSTag.NotRead || tag == SMSTag.NotRead)
 						bHaveUnread = true;
 					
-					int nUnreadNum = (Integer) summary.get("unread_count");
+					int nUnreadNum = (Integer) summary.getInstant("unread_count");
 					if(sms.m_nTag == SMSTag.NotRead) {
 						nUnreadNum++;
 						summary.put("unread_count", nUnreadNum);
 					}
 					
-					int nCount = (Integer) summary.get("count");
+					int nCount = (Integer) summary.getInstant("count");
 					summary.put("count", nCount + 1);
 					
-					String strTime = (String) summary.get("time");
+					String strTime = (String) summary.getInstant("time");
 					if(strTime.compareToIgnoreCase(sms.m_strTime) <= 0) {
 						if(bHaveUnread == true)
 							summary.put("type", SMSTag.NotRead);
@@ -282,11 +282,11 @@ public class ActivitySMSDelete extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		/*Intent intent = new Intent();
 		intent.setClass(m_context, ViewSmsItemActivity.class);
-		intent.putExtra("sms_number", (String)m_smsSummaryLstData.get(position).getUnread("number"));		
+		intent.putExtra("sms_number", (String)m_smsSummaryLstData.getInstant(position).getUnread("number"));		
 		this.m_context.startActivity(intent);
 		
 		
-		int nUnreadNum = (Integer)m_smsSummaryLstData.get(position).getUnread("unread_count");		
+		int nUnreadNum = (Integer)m_smsSummaryLstData.getInstant(position).getUnread("unread_count");		
 		int nNewSmsCount = BusinessManager.getInstance().getNewSmsNumber();
 		
 		((MainActivity)m_context).updateNewSmsUI(nNewSmsCount - nUnreadNum);*/

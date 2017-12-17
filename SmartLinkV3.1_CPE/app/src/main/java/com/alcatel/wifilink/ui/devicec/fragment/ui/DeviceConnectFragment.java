@@ -15,8 +15,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.device.other.ConnectModel;
 import com.alcatel.wifilink.model.device.response.BlockList;
 import com.alcatel.wifilink.model.device.response.ConnectedList;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.devicec.allsetup.ActivityDeviceManager;
 import com.alcatel.wifilink.ui.devicec.fragment.connect.ConnectAdapter;
@@ -85,7 +85,7 @@ public class DeviceConnectFragment extends Fragment {
 
     /* **** getDevicesStatus **** */
     private void getDevicesStatus() {
-        // get connect devices
+        // getInstant connect devices
         updateConnectedDeviceUI();
         // refresh blocked count
         updateBlockCount();
@@ -93,7 +93,7 @@ public class DeviceConnectFragment extends Fragment {
 
     /* **** updateConnectedDeviceUI **** */
     private void updateConnectedDeviceUI() {
-        API.get().getConnectedDeviceList(new MySubscriber<ConnectedList>() {
+        RX.getInstant().getConnectedDeviceList(new ResponseObject<ConnectedList>() {
             @Override
             protected void onSuccess(ConnectedList result) {
                 connectModelList = ModelHelper.getConnectModel(result);
@@ -106,7 +106,7 @@ public class DeviceConnectFragment extends Fragment {
 
     /* **** updateBlockCount **** */
     private void updateBlockCount() {
-        API.get().getBlockDeviceList(new MySubscriber<BlockList>() {
+        RX.getInstant().getBlockDeviceList(new ResponseObject<BlockList>() {
             @Override
             protected void onSuccess(BlockList result) {
                 int blockSize = result.getBlockList().size();

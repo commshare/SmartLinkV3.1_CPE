@@ -7,11 +7,10 @@ import android.widget.TextView;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sms.SMSContactList;
 import com.alcatel.wifilink.model.sms.SmsInitState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
-import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
 import java.util.Set;
@@ -33,7 +32,7 @@ public class SmsCountHelper {
     public static void setSmsCount(Activity activity, TextView tv) {
         SmsCountHelper.activity = activity;
         // check the init state
-        API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
+        RX.getInstant().getSmsInitState(new ResponseObject<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
@@ -50,7 +49,7 @@ public class SmsCountHelper {
     }
 
     private static void getSmsContactList(TextView mTvSmsCount) {
-        API.get().getSMSContactList(0, new MySubscriber<SMSContactList>() {
+        RX.getInstant().getSMSContactList(0, new ResponseObject<SMSContactList>() {
             @Override
             protected void onSuccess(SMSContactList result) {
                 activity.runOnUiThread(() -> {

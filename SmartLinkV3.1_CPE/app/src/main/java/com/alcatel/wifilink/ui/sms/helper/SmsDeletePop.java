@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.sms.helper;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.alcatel.wifilink.R;
@@ -24,11 +25,12 @@ public abstract class SmsDeletePop {
     }
 
     public PopupWindows show() {
+        Drawable pop_bg = context.getResources().getDrawable(R.drawable.bg_pop_conner);
         View inflate = View.inflate(context, R.layout.pop_smsdetail_deleted, null);
         int width = (int) (ScreenSize.getSize(context).width * 0.75f);
-        int height = (int) (ScreenSize.getSize(context).height * 0.17f);
+        int height = (int) (ScreenSize.getSize(context).height * 0.22f);
         getView(inflate);
-        pop = new PopupWindows(context, inflate, width, height, true);
+        pop = new PopupWindows(context, inflate, width, height, true, pop_bg);
         return pop;
     }
 

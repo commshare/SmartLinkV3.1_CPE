@@ -220,10 +220,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingNetworkActivity"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.EthernetWanConnectionActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -343,7 +343,8 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".appwidget.SmartLinkWidget">
+        <!-- 该功能取消 -->
+        <!--<receiver android:name=".appwidget.SmartLinkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange" />
@@ -359,7 +360,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smart_link_widget_provider" />
-        </receiver>
+        </receiver>-->
 
         <service android:name=".common.NotificationService" />
         <!-- <service android:name=".samba.SmbService"> -->

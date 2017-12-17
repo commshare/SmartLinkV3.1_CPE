@@ -46,7 +46,7 @@ public class FeatureVersionManager {
 
         // TODO: 2017/7/14 不在获取feature
         // 判断获取 硬件节点模块的所有API
-        // ArrayList<String> apiLst = BusinessManager.getInstance().getFeatures().getFeatures().get(strModule);
+        // ArrayList<String> apiLst = BusinessManager.getInstance().getFeatures().getFeatures().getInstant(strModule);
         // if (null != apiLst && apiLst.size() > 0) {
         //     if (apiLst.contains(strApi))
         //         bSupport = true;

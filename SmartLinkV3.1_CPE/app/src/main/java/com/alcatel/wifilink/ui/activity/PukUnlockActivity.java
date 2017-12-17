@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.ActionbarSetting;
@@ -74,7 +74,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** getPUKInfo **** */
     private void getPUKInfo() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 int simState = result.getSIMState();
@@ -83,7 +83,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
                     return;
                 }
                 if (simState == Cons.PUK_REQUIRED) {// puk required
-                    pukRemain = result.getPukRemainingTimes();// get remaining times
+                    pukRemain = result.getPukRemainingTimes();// getInstant remaining times
                     runOnUiThread(() -> {
 
                         if (pukRemain == 0) {
@@ -123,7 +123,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
     public void onViewClicked() {
         // 检查编辑域 true: not empty; false: empty
         if (!isEtEmpty()) {// not empty
-            API.get().getSimStatus(new MySubscriber<SimStatus>() {
+            RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
                 @Override
                 protected void onSuccess(SimStatus result) {
                     int simState = result.getSIMState();
@@ -144,7 +144,7 @@ public class PukUnlockActivity extends BaseActivityWithBack implements View.OnCl
 
     /* **** unlockPuk **** */
     private void unlockPuk(String pukcode, String pincode) {
-        API.get().unlockPuk(pukcode, pincode, new MySubscriber() {
+        RX.getInstant().unlockPuk(pukcode, pincode, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 ToastUtil_m.show(PukUnlockActivity.this, getString(R.string.puk_unlock_success));

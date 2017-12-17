@@ -2,10 +2,10 @@ package com.alcatel.wifilink.rx.helper.base;
 
 import android.app.Activity;
 
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -42,7 +42,7 @@ public abstract class CheckBoard {
         if (OtherUtils.isWifiConnect(ori)) {
             // 请求接口前
             onPrepare();
-            API.get().getLoginState(new MySubscriber<LoginState>() {
+            RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                 @Override
                 protected void onSuccess(LoginState result) {
                     onSuccessful();// 请求接口成功后

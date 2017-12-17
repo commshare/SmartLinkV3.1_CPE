@@ -12,13 +12,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.LinkAppSettings;
 import com.alcatel.wifilink.utils.ToastUtil_m;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.utils.OtherUtils;
 
@@ -52,7 +52,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
     }
 
     private void doneChangePassword() {
-        // 1.get the psd info
+        // 1.getInstant the psd info
         String currentPwd = mCurrentPassword.getText().toString();
         String newPwd = mNewPassword.getText().toString();
         String confirmPwd = mConfirmPassword.getText().toString();
@@ -151,7 +151,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
 
         NewPassword = needEncrypt ? EncryptionUtil.encrypt(NewPassword) : NewPassword;
 
-        API.get().changePassword(UserName, CurrentPassword, NewPassword, new MySubscriber() {
+        RX.getInstant().changePassword(UserName, CurrentPassword, NewPassword, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingAccountActivity.this, R.string.succeed, Toast.LENGTH_SHORT).show();
@@ -177,7 +177,7 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
      */
     private void logout() {
         // 2. logout action
-        API.get().logout(new MySubscriber() {
+        RX.getInstant().logout(new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 CA.toActivity(SettingAccountActivity.this, LoginActivity.class, false, true, false, 0);

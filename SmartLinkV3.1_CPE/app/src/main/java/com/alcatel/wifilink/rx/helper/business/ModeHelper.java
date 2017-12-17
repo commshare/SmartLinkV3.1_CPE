@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.network.Network;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.NetworkSettingHelper;
 import com.alcatel.wifilink.utils.CA;
@@ -28,7 +28,7 @@ public class ModeHelper {
         nshelper.setOnNormalNetworkListener(attr -> {
             attr.setNetworkMode(mode);// 2.修改为目标类型
             // 3.提交请求
-            API.get().setNetworkSettings(attr, new MySubscriber() {
+            RX.getInstant().setNetworkSettings(attr, new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     // 4.再次获取

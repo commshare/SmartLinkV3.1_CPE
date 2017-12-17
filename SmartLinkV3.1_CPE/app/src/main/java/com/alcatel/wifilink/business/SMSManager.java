@@ -260,7 +260,7 @@ public class SMSManager extends BaseManager {
                 // SendSmsResult sendSmsResult = response.getModelResult();
                 // nSendId = sendSmsResult.SmsSendId;
                 //                		
-                // //get send status
+                // //getInstant send status
                 //                		DataValue dataValue = new DataValue();
                 //						dataValue.addParam("sms_send_id", nSendId);
                 getSmsSendResult(null);

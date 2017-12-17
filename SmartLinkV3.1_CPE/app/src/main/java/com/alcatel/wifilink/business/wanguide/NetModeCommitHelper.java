@@ -2,11 +2,9 @@ package com.alcatel.wifilink.business.wanguide;
 
 import android.content.Context;
 
-import com.alcatel.wifilink.business.BusinessManager;
-import com.alcatel.wifilink.business.WanManager;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 
 /**
  * Created by qianli.ma on 2017/5/27.
@@ -29,7 +27,7 @@ public abstract class NetModeCommitHelper {
      */
     public void commit(StatusBean statusBean) {
         // 获取WAN口信息并封装
-        API.get().getWanSettings(new MySubscriber<WanSettingsResult>() {
+        RX.getInstant().getWanSettings(new ResponseObject<WanSettingsResult>() {
             @Override
             protected void onSuccess(WanSettingsResult result) {
                 getStatusBean(setStatus(statusBean, result.getStatus()));

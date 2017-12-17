@@ -12,7 +12,7 @@
 *		- first revision.
 *	09/02/03
 *		- Giordano Sassaroli <sassarol@cefriel.it>
-*		- Problem : The API is unable to receive responses from the Microsoft UPnP stack
+*		- Problem : The RX is unable to receive responses from the Microsoft UPnP stack
 *		- Error : the Microsoft UPnP stack is based on ISAPI on IIS, and whenever IIS
 *                 receives a post request, it answers with two responses: the first one has no 
 *		          body and it is a code 100 (continue) response, which has to be ignored. The
@@ -67,7 +67,7 @@
 *		- Fixed set() to parse the chunk size as a hex string.
 *	11/02/05
 *		- Changed set() to use BufferedInputStream instead of BufferedReader to
-*		  get the content as a byte stream.
+*		  getInstant the content as a byte stream.
 *	11/06/05
 *		- Added getCharSet().
 *		- Changed getContentString() to return the content string using the charset.

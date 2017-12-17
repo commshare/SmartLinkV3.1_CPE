@@ -185,7 +185,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
 //      mStateHandler.setupViews();
 //    } else {
 //      StateHandler handler = null;
-//      //onRestoreInstanceState is invoke after onCrate, so get these values here.
+//      //onRestoreInstanceState is invoke after onCrate, so getInstant these values here.
 //      mWiFiSSID = savedInstanceState.getString(BUNDLE_WIFI_SSID);
 //      mWiFiPasswd = savedInstanceState.getString(BUNDLE_WIFI_PASSWD);
 //      buildStateHandlerChain(false);
@@ -867,7 +867,7 @@ public class QuickSetupActivity extends Activity implements OnClickListener {
         }
 
         /*
-         * get StateHandler to handle state
+         * getInstant StateHandler to handle state
          */
         public StateHandler getStateHandler(State state) {
             StateHandler head = goHead();

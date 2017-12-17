@@ -32,6 +32,8 @@ import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.common.DensityUtils;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
 import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
@@ -41,8 +43,6 @@ import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
 import com.alcatel.wifilink.model.sms.SmsInitState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.activity.InquireDialog.OnInquireApply;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -162,11 +162,11 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
 
     /* **** getAllstatus **** */
     private void getAllStatus() {
-        API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
+        RX.getInstant().getSmsInitState(new ResponseObject<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 if (result.getState() == Cons.SMS_COMPLETE) {
-                    // get sms contents
+                    // getInstant sms contents
                     getSMSContentList();
                 }
             }
@@ -176,7 +176,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
     /* **** getSMSContentList **** */
     private void getSMSContentList() {
         SMSContentParam scp = new SMSContentParam(0, m_nContactID);
-        API.get().getSMSContentList(scp, new MySubscriber<SMSContentList>() {
+        RX.getInstant().getSMSContentList(scp, new ResponseObject<SMSContentList>() {
             @Override
             protected void onSuccess(SMSContentList result) {
                 // if ok
@@ -304,7 +304,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
             List<String> phones = new ArrayList<>();
             phones.add(strNumber);
             SMSSaveParam ssp = new SMSSaveParam(item.nSMSID, strContent, DataUtils.getCurrent(), phones);
-            API.get().saveSMS(ssp, new MySubscriber() {
+            RX.getInstant().saveSMS(ssp, new ResponseObject() {
                 @Override
                 protected void onSuccess(Object result) {
                     ToastUtil_m.show(ActivitySmsDetail.this, getString(R.string.sms_save_success));
@@ -385,7 +385,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
         phones.add(tv_title.getText().toString());
         SMSSendParam sssp = new SMSSendParam(-1, m_etContent.getText().toString(), DataUtils.getCurrent(), phones);
         /* send */
-        API.get().sendSMS(sssp, new MySubscriber() {
+        RX.getInstant().sendSMS(sssp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 m_progressWaiting.setVisibility(View.GONE);
@@ -395,7 +395,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
 
             /* **** getSendResult **** */
             private void getSendResult() {
-                API.get().GetSendSMSResult(new MySubscriber<SendSMSResult>() {
+                RX.getInstant().GetSendSMSResult(new ResponseObject<SendSMSResult>() {
                     @Override
                     protected void onSuccess(SendSMSResult result) {
                         m_progressWaiting.setVisibility(View.GONE);
@@ -813,7 +813,7 @@ public class ActivitySmsDetail extends BaseActivityWithBack implements OnClickLi
     private void deletedSmsFuntion(int DelFlag, List<Long> smsIds, List<SMSDetailItem> m_smsListData, @Nullable SMSDetailItem 
                                                                                                             item) {
         SMSDeleteParam sdp = new SMSDeleteParam(DelFlag, smsIds);
-        API.get().deleteSMS(sdp, new MySubscriber() {
+        RX.getInstant().deleteSMS(sdp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
 

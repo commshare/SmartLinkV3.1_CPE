@@ -15,6 +15,7 @@ import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
 import com.alcatel.smartlinkv3.rx.impl.usage.UsageSetting;
 import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
+import com.alcatel.smartlinkv3.rx.model.SystemResult;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.utils.EncryptionUtil;
 import com.alcatel.smartlinkv3.utils.FileUtils;
@@ -371,6 +372,10 @@ public class API {
     public void getSystemInfo(MySubscriber<SystemInfo> subscriber) {
         subscribe(subscriber, smartLinkApi.getSystemInfo(new RequestBody(Methods.GET_SYSTEM_INFO)));
     }
+    
+    public void getSystemResult(MySubscriber<SystemResult> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSystemResult(new RequestBody(Methods.GET_SYSTEM_INFO)));
+    }
     //
     // public void getWanSeting(MySubscriber<WanSetting> subscriber) {
     //     subscribe(subscriber, smartLinkApi.getWanSeting(new RequestBody(Methods.GET_WAN_SETTINGS)));
@@ -614,6 +619,9 @@ public class API {
         //
         @POST("/jrd/webapi")
         Observable<ResponseBody<SystemInfo>> getSystemInfo(@Body RequestBody requestBody);
+        
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SystemInfo>> getSystemResult(@Body RequestBody requestBody);
         //
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<WanSetting>> getWanSeting(@Body RequestBody requestBody);

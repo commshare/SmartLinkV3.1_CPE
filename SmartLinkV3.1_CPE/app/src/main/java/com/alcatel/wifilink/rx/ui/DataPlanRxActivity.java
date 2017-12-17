@@ -14,12 +14,13 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
+import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.rx.helper.base.UsageHelper;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
@@ -33,6 +34,8 @@ import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.ScreenSize;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,18 +66,30 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
     private String GB;
     private ProgressDialog pgd;
     private UsageSetting result;
+    private String flag = "";
+
+    private void startHeartTimer() {
+        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class, LoginRxActivity.class);
+    }
+
     private Drawable switch_on;
     private Drawable switch_off;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_data_plan_rx);
         SmartLinkV3App.getContextInstance().add(this);
         ButterKnife.bind(this);
         startHeartTimer();
         initRes();
         initBean();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void getSkipFlag(String flag) {
+        this.flag = flag;
     }
 
     private void initRes() {
@@ -88,14 +103,18 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
 
     private void initBean() {
         pgd = OtherUtils.showProgressPop(this);
-        API.get().getUsageSetting(new MySubscriber<UsageSetting>() {
+        RX.getInstant().getUsageSetting(new ResponseObject<UsageSetting>() {
             @Override
             protected void onSuccess(UsageSetting result) {
                 OtherUtils.hideProgressPop(pgd);
                 DataPlanRxActivity.this.result = result;
+                // 设置原有的月计划
+                UsageHelper.Usage usageByte = UsageHelper.getUsageByte(DataPlanRxActivity.this, result.getMonthlyPlan());
+                float aFloat = Float.valueOf(usageByte.usage);
+                String usage = String.valueOf((int) aFloat);
+                etDataplanRxLimit.setText(result.getMonthlyPlan() == 0 ? "0" : usage);
                 // 设置单位
-                boolean unitType = result.getUnit() == Cons.MB;
-                tvDataplanRxLimitUnit.setText(unitType ? MB : GB);
+                tvDataplanRxLimitUnit.setText(usageByte.unit);
                 // 设置自动断线
                 boolean isAuto = result.getAutoDisconnFlag() == Cons.ENABLE_AUTODISCONNECT ? true : false;
                 ivDataplanRxAuto.setImageDrawable(isAuto ? switch_on : switch_off);
@@ -113,32 +132,47 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
         });
     }
 
-    private void startHeartTimer() {
-        heartTimer = OtherUtils.startHeartBeat(this, RefreshWifiRxActivity.class, LoginRxActivity.class);
-    }
-
     @Override
     public void onBackPressed() {
-        new LogoutHelper(this) {
-            @Override
-            public void logoutFinish() {
-                to(LoginRxActivity.class);
-            }
-        };
+        clickBackButton();
+    }
+
+    /**
+     * 点击了回退按钮
+     */
+    private void clickBackButton() {
+        if (Cons.WIZARD_RX.equalsIgnoreCase(flag)) {
+            to(WizardRxActivity.class);
+        } else {
+            new LogoutHelper(this) {
+                @Override
+                public void logoutFinish() {
+                    to(LoginRxActivity.class);
+                }
+            };
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         OtherUtils.stopHeartBeat(heartTimer);
     }
 
-    @OnClick({R.id.iv_dataplan_rx_limit_arrow, R.id.tv_dataplan_rx_limit_unit, R.id.iv_dataplan_rx_auto, R.id.bt_dataplan_rx_done})
+    @OnClick({R.id.iv_dataplan_rx_back,// 回退
+                     R.id.iv_dataplan_rx_limit_arrow,// 限制箭头
+                     R.id.tv_dataplan_rx_limit_unit,// 单位
+                     R.id.iv_dataplan_rx_auto,// 自动开关
+                     R.id.bt_dataplan_rx_done})// done
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_dataplan_rx_back:
+                clickBackButton();
+                break;
             case R.id.iv_dataplan_rx_limit_arrow:
             case R.id.tv_dataplan_rx_limit_unit:
-                setUnit();
+                choseUnit();
                 break;
             case R.id.iv_dataplan_rx_auto:
                 setAutoDisconnect();
@@ -199,7 +233,11 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
      * 发起提交请求
      */
     private void usageRequest() {
-        API.get().setUsageSetting(result, new MySubscriber() {
+        String monthly_s = OtherUtils.getEdContent(etDataplanRxLimit);
+        int monthly_c = Integer.valueOf(TextUtils.isEmpty(monthly_s) ? "0" : monthly_s);
+        long monthly_b = result.getUnit() == Cons.MB ? monthly_c * 1024 * 1024 : monthly_c * 1024 * 1024 * 1024;
+        result.setMonthlyPlan(monthly_b);
+        RX.getInstant().setUsageSetting(result, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 toast(R.string.success);
@@ -269,7 +307,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
     /**
      * 显示单位弹窗
      */
-    private void setUnit() {
+    private void choseUnit() {
         ScreenSize.SizeBean size = ScreenSize.getSize(this);
         int width = (int) (size.width * 0.85f);
         int height = (int) (size.height * 0.18f);

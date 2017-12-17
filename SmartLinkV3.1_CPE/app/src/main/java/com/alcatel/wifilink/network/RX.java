@@ -110,20 +110,20 @@ import static com.alcatel.wifilink.utils.Constants.SP_KEY_TOKEN;
  * Created by tao.j on 2017/6/14.
  */
 
-public class API {
+public class RX {
 
     public static final String AUTHORIZATION_KEY = "KSDHSDFOGQ5WERYTUIQWERTYUISDFG1HJZXCVCXBN2GDSMNDHKVKFsVBNf";
     public static final String USER_KEY = "e5dl12XYVggihggafXWf0f2YSf2Xngd1";
 
     private SmartLinkApi smartLinkApi;
 
-    private static API api;
+    private static RX api;
 
     private String token;
     private int TIMEOUT = 30;
     public static String gateWay;
 
-    private API() {
+    private RX() {
         if (smartLinkApi == null) {
             SharedPreferences sp = SmartLinkV3App.getInstance().getSharedPreferences(Constants.SP_GLOBAL_INFO, Context.MODE_PRIVATE);
             int token = sp.getInt(SP_KEY_TOKEN, 0);
@@ -132,7 +132,7 @@ public class API {
         }
     }
 
-    public static API get() {
+    public static RX getInstant() {
         // 1.检测wifi是否有连接
         boolean wiFiActive = OtherUtils.isWiFiActive(SmartLinkV3App.getInstance());
         if (!wiFiActive) {
@@ -141,9 +141,9 @@ public class API {
         gateWay = WifiUtils.getWifiGateWay(SmartLinkV3App.getInstance());
         gateWay = "http://" + (TextUtils.isEmpty(gateWay) | !gateWay.startsWith("192.168") ? "192.168.1.1" : gateWay);
         if (api == null) {
-            synchronized (API.class) {
+            synchronized (RX.class) {
                 if (api == null) {
-                    api = new API();
+                    api = new RX();
                 }
             }
         }
@@ -233,7 +233,7 @@ public class API {
     }
 
 
-    private void subscribe(MySubscriber subscriber, Observable observable) {
+    private void subscribe(ResponseObject subscriber, Observable observable) {
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
@@ -259,15 +259,19 @@ public class API {
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    public void getNetworkRegisterState(MySubscriber<NetworkRegisterState> subscriber) {
+    public void setDeviceUpdateStop(ResponseObject subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICE_UPDATE_STOP)));
+    }
+
+    public void getNetworkRegisterState(ResponseObject<NetworkRegisterState> subscriber) {
         subscribe(subscriber, smartLinkApi.getNetworkRegisterState(new RequestBody(Methods.GET_NETWORK_REGISTER_STATE)));
     }
 
-    public void getCurrentLanguage(MySubscriber<LanguageResult> subscriber) {
+    public void getCurrentLanguage(ResponseObject<LanguageResult> subscriber) {
         subscribe(subscriber, smartLinkApi.getCurrentLanguage(new RequestBody(Methods.GET_CURRENT_LANGUAGE)));
     }
 
-    public void getSMSStorageState(MySubscriber<SMSStorageState> subscriber) {
+    public void getSMSStorageState(ResponseObject<SMSStorageState> subscriber) {
         subscribe(subscriber, smartLinkApi.getSMSStorageState(new RequestBody(Methods.GET_SMS_STORAGE_STATE)));
     }
 
@@ -278,7 +282,7 @@ public class API {
      * @param passwd     password
      * @param subscriber callback
      */
-    public void login(String userName, String passwd, MySubscriber<LoginResult> subscriber) {
+    public void login(String userName, String passwd, ResponseObject<LoginResult> subscriber) {
         Observable observable = smartLinkApi.login(new RequestBody(Methods.LOGIN, new LoginParams(userName, passwd)));
         subscribe(subscriber, observable);
     }
@@ -288,16 +292,16 @@ public class API {
      *
      * @param subscriber callback
      */
-    public void logout(MySubscriber subscriber) {
+    public void logout(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.LOGOUT)));
     }
 
     /**
-     * get login state
+     * getInstant login state
      *
      * @param subscriber callback
      */
-    public void getLoginState(MySubscriber<LoginState> subscriber) {
+    public void getLoginState(ResponseObject<LoginState> subscriber) {
         subscribe(subscriber, smartLinkApi.getLoginState(new RequestBody(Methods.GET_LOGIN_STATE)));
     }
 
@@ -309,7 +313,7 @@ public class API {
      * @param newPasswd  new password
      * @param subscriber callback
      */
-    public void changePasswd(String userName, String currPasswd, String newPasswd, MySubscriber subscriber) {
+    public void changePasswd(String userName, String currPasswd, String newPasswd, ResponseObject subscriber) {
         NewPasswdParams passwdParams = new NewPasswdParams(userName, currPasswd, newPasswd);
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
     }
@@ -319,16 +323,16 @@ public class API {
      *
      * @param subscriber callback
      */
-    public void heartBeat(MySubscriber subscriber) {
+    public void heartBeat(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.HEART_BEAT)));
     }
 
     /**
-     * get sim status
+     * getInstant sim status
      *
      * @param subscriber callback
      */
-    public void getSimStatus(MySubscriber<SimStatus> subscriber) {
+    public void getSimStatus(ResponseObject<SimStatus> subscriber) {
         subscribe(subscriber, smartLinkApi.getSimStatus(new RequestBody(Methods.GET_SIM_STATUS)));
     }
 
@@ -338,35 +342,35 @@ public class API {
      * @param pin        pin code
      * @param subscriber call back
      */
-    public void unlockPin(String pin, MySubscriber subscriber) {
+    public void unlockPin(String pin, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PIN, new PinParams(pin))));
     }
 
-    public void unlockPuk(String puk, String newPin, MySubscriber subscriber) {
+    public void unlockPuk(String puk, String newPin, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_PUK, new PukParams(puk, newPin))));
     }
 
-    public void changePinCode(String newPin, String currPin, MySubscriber subscriber) {
+    public void changePinCode(String newPin, String currPin, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_CODE, new ChangePinParams(newPin, currPin))));
     }
 
-    public void changePinState(String pin, int state, MySubscriber subscriber) {
+    public void changePinState(String pin, int state, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PIN_STATE, new PinStateParams(pin, state))));
     }
 
-    public void getAutoValidatePinState(MySubscriber<AutoValidatePinState> subscriber) {
+    public void getAutoValidatePinState(ResponseObject<AutoValidatePinState> subscriber) {
         subscribe(subscriber, smartLinkApi.getAutoValidatePinState(new RequestBody(Methods.GET_AUTO_VALIDATE_PIN_STATE)));
     }
 
-    public void setAutoValidatePinState(String pin, int state, MySubscriber subscriber) {
+    public void setAutoValidatePinState(String pin, int state, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_AUTO_VALIDATE_PIN_STATE, new SetAutoValidatePinStateParams(pin, state))));
     }
 
-    public void unlockSimlock(int simlockState, String simlockCode, MySubscriber subscriber) {
+    public void unlockSimlock(int simlockState, String simlockCode, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.UNLOCK_SIMLOCK, new UnlockSimlockParams(simlockState, simlockCode))));
     }
 
-    public void getConnectionState(MySubscriber<ConnectionState> subscriber) {
+    public void getConnectionState(ResponseObject<ConnectionState> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectionState(new RequestBody(Methods.GET_CONNECTION_STATE)));
     }
 
@@ -375,11 +379,11 @@ public class API {
     }
 
     /**
-     * get 2.4g and 5g status (on/off)
+     * getInstant 2.4g and 5g status (on/off)
      *
      * @param subscriber call back
      */
-    public void getWlanState(MySubscriber<WlanState> subscriber) {
+    public void getWlanState(ResponseObject<WlanState> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanState(new RequestBody(Methods.GET_WLAN_STATE)));
     }
 
@@ -388,85 +392,85 @@ public class API {
      *
      * @param subscriber
      */
-    public void getWlanStatus(MySubscriber<WlanStatus> subscriber) {
+    public void getWlanStatus(ResponseObject<WlanStatus> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanStatus(new RequestBody(Methods.GET_WLAN_STATE)));
     }
 
-    public void setWlanState(WlanState state, MySubscriber subscriber) {
+    public void setWlanState(WlanState state, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_STATE, state)));
     }
 
     @Deprecated
-    public void getWlanSettings(MySubscriber<WlanSettings> subscriber) {
+    public void getWlanSettings(ResponseObject<WlanSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
     }
 
-    public void getWlanSetting(MySubscriber<WlanSetting> subscriber) {
+    public void getWlanSetting(ResponseObject<WlanSetting> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSetting(new RequestBody(Methods.GET_WLAN_SETTINGS)));
     }
 
     @Deprecated
-    public void setWlanSettings(WlanSettings settings, MySubscriber subscriber) {
+    public void setWlanSettings(WlanSettings settings, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, settings)));
     }
 
-    public void setWlanSetting(WlanSetting setting, MySubscriber subscriber) {
+    public void setWlanSetting(WlanSetting setting, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, setting)));
     }
 
-    public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber) {
+    public void getWlanSupportMode(ResponseObject<WlanSupportAPMode> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSupportMode(new RequestBody(Methods.GET_WLAN_SUPPORT_MODE)));
     }
 
-    public void getSystemStatus(MySubscriber<SysStatus> subscriber) {
+    public void getSystemStatus(ResponseObject<SysStatus> subscriber) {
         subscribe(subscriber, smartLinkApi.getSystemStatus(new RequestBody(Methods.GET_SYSTEM_STATUS)));
     }
 
-    public void rebootDevice(MySubscriber subscriber) {
+    public void rebootDevice(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.reboot(new RequestBody(Methods.SET_DEVICE_REBOOT)));
     }
 
-    public void resetDevice(MySubscriber subscriber) {
+    public void resetDevice(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.resetDevice(new RequestBody(Methods.SET_DEVICE_RESET)));
     }
 
-    public void backupDevice(MySubscriber subscriber) {
+    public void backupDevice(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.backupDevice(new RequestBody(Methods.SET_DEVICE_BACKUP)));
     }
 
-    public void getSystemInfo(MySubscriber<SystemInfo> subscriber) {
+    public void getSystemInfo(ResponseObject<SystemInfo> subscriber) {
         subscribe(subscriber, smartLinkApi.getSystemInfo(new RequestBody(Methods.GET_SYSTEM_INFO)));
     }
 
-    public void getWanSeting(MySubscriber<WanSetting> subscriber) {
+    public void getWanSeting(ResponseObject<WanSetting> subscriber) {
         subscribe(subscriber, smartLinkApi.getWanSeting(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
-    public void getWanSettings(MySubscriber<WanSettingsResult> subscriber) {
+    public void getWanSettings(ResponseObject<WanSettingsResult> subscriber) {
         subscribe(subscriber, smartLinkApi.getWanSettings(new RequestBody(Methods.GET_WAN_SETTINGS)));
     }
 
-    public void setWanSettings(WanSettingsParams wsp, MySubscriber subscriber) {
+    public void setWanSettings(WanSettingsParams wsp, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WAN_SETTINGS, wsp)));
     }
 
-    public void getDeviceNewVersion(MySubscriber<DeviceNewVersion> subscriber) {
+    public void getDeviceNewVersion(ResponseObject<DeviceNewVersion> subscriber) {
         subscribe(subscriber, smartLinkApi.getDeviceNewVersion(new RequestBody(Methods.GET_DEVICE_NEW_VERSION)));
     }
 
-    public void setCheckNewVersion(MySubscriber subscriber) {
+    public void setCheckNewVersion(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CHECK_NEW_VERSION)));
     }
 
-    public void setDeviceStartUpdate(MySubscriber subscriber) {
+    public void setDeviceStartUpdate(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICE_START_UPDATE)));
     }
 
-    public void SetFOTAStartDownload(MySubscriber subscriber) {
+    public void SetFOTAStartDownload(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_FOTA_START_DOWNLOAD)));
     }
 
-    public void getDeviceUpgradeState(MySubscriber<DeviceUpgradeState> subscriber) {
+    public void getDeviceUpgradeState(ResponseObject<DeviceUpgradeState> subscriber) {
         subscribe(subscriber, smartLinkApi.getDeviceUpgradeState(new RequestBody(Methods.GET_DEVICE_UPGRADE_STATE)));
     }
 
@@ -474,31 +478,31 @@ public class API {
         subscribeDownloadFile(subscriber, smartLinkApi.downloadFile(url), file);
     }
 
-    public void getFTPSettings(MySubscriber<FTPSettings> subscriber) {
+    public void getFTPSettings(ResponseObject<FTPSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getFTPSettings(new RequestBody(Methods.GET_FTP_SETTINGS)));
     }
 
-    public void getSambaSettings(MySubscriber<SambaSettings> subscriber) {
+    public void getSambaSettings(ResponseObject<SambaSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getSambaSettings(new RequestBody(Methods.GET_SAMBA_SETTINGS)));
     }
 
-    public void getDLNASettings(MySubscriber<DLNASettings> subscriber) {
+    public void getDLNASettings(ResponseObject<DLNASettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getDLNASettings(new RequestBody(Methods.GET_DLNA_SETTINGS)));
     }
 
-    public void setFTPSettings(FTPSettings settings, MySubscriber subscriber) {
+    public void setFTPSettings(FTPSettings settings, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_FTP_SETTINGS, settings)));
     }
 
-    public void setSambaSettings(SambaSettings settings, MySubscriber subscriber) {
+    public void setSambaSettings(SambaSettings settings, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_SAMBA_SETTINGS, settings)));
     }
 
-    public void setDLNASettings(DLNASettings settings, MySubscriber subscriber) {
+    public void setDLNASettings(DLNASettings settings, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DLNA_SETTINGS, settings)));
     }
 
-    public void getConnectionStates(MySubscriber<ConnectionStates> subscriber) {
+    public void getConnectionStates(ResponseObject<ConnectionStates> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectionStates(new RequestBody(Methods.GET_CONNECTION_STATE)));
     }
 
@@ -511,131 +515,131 @@ public class API {
      * @param newPasswd  new password
      * @param subscriber callback
      */
-    public void changePassword(String userName, String currPasswd, String newPasswd, MySubscriber subscriber) {
+    public void changePassword(String userName, String currPasswd, String newPasswd, ResponseObject subscriber) {
         NewPasswdParams passwdParams = new NewPasswdParams(userName, currPasswd, newPasswd);
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CHANGE_PASSWORD, passwdParams)));
     }
 
-    public void connect(MySubscriber subscriber) {
+    public void connect(ResponseObject subscriber) {
         Logs.v("ma_test", "gateWay: " + gateWay);
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.CONNECT)));
     }
 
-    public void disConnect(MySubscriber subscriber) {
+    public void disConnect(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DISCONNECT)));
     }
 
-    public void getConnectionSettings(MySubscriber<ConnectionSettings> subscriber) {
+    public void getConnectionSettings(ResponseObject<ConnectionSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectionSettings(new RequestBody(Methods.GET_CONNECTION_SETTINGS)));
     }
 
-    public void setConnectionSettings(ConnectionSettings connectionSettingsParams, MySubscriber subscriber) {
+    public void setConnectionSettings(ConnectionSettings connectionSettingsParams, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTION_SETTINGS, connectionSettingsParams)));
     }
 
-    public void getNetworkSettings(MySubscriber<Network> subscriber) {
+    public void getNetworkSettings(ResponseObject<Network> subscriber) {
         subscribe(subscriber, smartLinkApi.getNetworkSettings(new RequestBody(Methods.GET_NETWORK_SETTINGS)));
     }
 
-    public void setNetworkSettings(Network network, MySubscriber subscriber) {
+    public void setNetworkSettings(Network network, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_NETWORK_SETTINGS, network)));
     }
 
-    public void getUsageRecord(String current_time, MySubscriber<UsageRecord> subscriber) {
+    public void getUsageRecord(String current_time, ResponseObject<UsageRecord> subscriber) {
         subscribe(subscriber, smartLinkApi.getUsageRecord(new RequestBody(Methods.GET_USAGERECORD, new UsageRecordParam(current_time))));
     }
 
-    public void getBatteryState(MySubscriber<BatteryState> subscriber) {
+    public void getBatteryState(ResponseObject<BatteryState> subscriber) {
         subscribe(subscriber, smartLinkApi.getBatteryState(new RequestBody(Methods.GET_BATTERYSTATE)));
     }
 
-    public void setUsageSetting(UsageSetting usageSettingParams, MySubscriber subscriber) {
+    public void setUsageSetting(UsageSetting usageSettingParams, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, usageSettingParams)));
     }
-    
-    public void setUsageSettings(UsageSettings us, MySubscriber subscriber) {
+
+    public void setUsageSettings(UsageSettings us, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGE_SETTING, us)));
     }
 
-    public void getUsageSetting(MySubscriber<UsageSetting> subscriber) {
+    public void getUsageSetting(ResponseObject<UsageSetting> subscriber) {
         subscribe(subscriber, smartLinkApi.getUsageSetting(new RequestBody(Methods.GET_USAGESETTING)));
     }
 
-    public void getUsageSettings(MySubscriber<UsageSettings> subscriber) {
+    public void getUsageSettings(ResponseObject<UsageSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.getUsageSettings(new RequestBody(Methods.GET_USAGESETTING)));
     }
 
-    public void getNetworkInfo(MySubscriber<NetworkInfos> subscriber) {
+    public void getNetworkInfo(ResponseObject<NetworkInfos> subscriber) {
         subscribe(subscriber, smartLinkApi.getNetworkInfo(new RequestBody(Methods.GET_NETWORKINFO)));
     }
 
-    public void setUsageRecordClear(String clearTime, MySubscriber subscriber) {
+    public void setUsageRecordClear(String clearTime, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_USAGERECORDCLEAR, new UsageParams(clearTime))));
     }
 
-    public void getConnectedDeviceList(MySubscriber<ConnectedList> subscriber) {
+    public void getConnectedDeviceList(ResponseObject<ConnectedList> subscriber) {
         subscribe(subscriber, smartLinkApi.getConnectedDeviceList(new RequestBody(Methods.GET_CONNECTEDDEVICELIST)));
     }
 
-    public void getBlockDeviceList(MySubscriber<BlockList> subscriber) {
+    public void getBlockDeviceList(ResponseObject<BlockList> subscriber) {
         subscribe(subscriber, smartLinkApi.getBlockDeviceList(new RequestBody(Methods.GET_BLOCKDEVICELIST)));
     }
 
 
-    public void setConnectedDeviceBlock(String DeviceName, String MacAddress, MySubscriber subscriber) {
+    public void setConnectedDeviceBlock(String DeviceName, String MacAddress, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTEDDEVICEBLOCK, new ConnectedDeviceBlockParam(DeviceName, MacAddress))));
     }
 
-    public void setDeviceUnblock(String DeviceName, String MacAddress, MySubscriber subscriber) {
+    public void setDeviceUnblock(String DeviceName, String MacAddress, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICEUNBLOCK, new DeviceUnblockParam(DeviceName, MacAddress))));
     }
 
-    public void setDeviceName(String DeviceName, String MacAddress, int DeviceType, MySubscriber subscriber) {
+    public void setDeviceName(String DeviceName, String MacAddress, int DeviceType, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_DEVICENAME, new DeviceNameParam(DeviceName, MacAddress, DeviceType))));
     }
 
-    public void setConnectionMode(int connectMode, MySubscriber subscriber) {
+    public void setConnectionMode(int connectMode, ResponseObject subscriber) {
         ConnectionMode connectionModeParams = new ConnectionMode(connectMode);
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_CONNECTION_MODE, connectionModeParams)));
     }
 
-    public void getProfileList(MySubscriber<ProfileList> subscriber) {
+    public void getProfileList(ResponseObject<ProfileList> subscriber) {
         subscribe(subscriber, smartLinkApi.getProfileList(new RequestBody(Methods.GET_PROFILE_LIST)));
     }
 
-    public void getSMSContactList(int Page, MySubscriber<SMSContactList> subscriber) {
+    public void getSMSContactList(int Page, ResponseObject<SMSContactList> subscriber) {
         subscribe(subscriber, smartLinkApi.getSMSContactList(new RequestBody(Methods.GET_SMSCONTACTLIST, new SMSContactListParam(Page))));
     }
 
-    public void getSmsInitState(MySubscriber<SmsInitState> subscriber) {
+    public void getSmsInitState(ResponseObject<SmsInitState> subscriber) {
         subscribe(subscriber, smartLinkApi.getSmsInitState(new RequestBody(Methods.GET_SMSINITSTATE)));
     }
 
-    public void getSMSContentList(SMSContentParam scp, MySubscriber<SMSContentList> subscriber) {
+    public void getSMSContentList(SMSContentParam scp, ResponseObject<SMSContentList> subscriber) {
         subscribe(subscriber, smartLinkApi.getSMSContentList(new RequestBody(Methods.GET_SMSCONTENTLIST, scp)));
     }
 
-    public void saveSMS(SMSSaveParam ssp, MySubscriber subscriber) {
+    public void saveSMS(SMSSaveParam ssp, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SAVESMS, ssp)));
     }
 
-    public void deleteSMS(SMSDeleteParam sp, MySubscriber subscriber) {
+    public void deleteSMS(SMSDeleteParam sp, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.DELETESMS, sp)));
     }
 
-    public void sendSMS(SMSSendParam sssp, MySubscriber subscriber) {
+    public void sendSMS(SMSSendParam sssp, ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SENDSMS, sssp)));
     }
 
-    public void GetSendSMSResult(MySubscriber<SendSMSResult> subscriber) {
+    public void GetSendSMSResult(ResponseObject<SendSMSResult> subscriber) {
         subscribe(subscriber, smartLinkApi.GetSendSMSResult(new RequestBody(Methods.GET_SEND_SMS_RESULT)));
     }
 
-    public void getSingleSMS(long SMSId, MySubscriber<SmsSingle> subscriber) {
+    public void getSingleSMS(long SMSId, ResponseObject<SmsSingle> subscriber) {
         subscribe(subscriber, smartLinkApi.GetSingleSMS(new RequestBody(Methods.GET_SEND_SMS_RESULT, SMSId)));
     }
 
-    public void getLanSettings(MySubscriber<LanSettings> subscriber) {
+    public void getLanSettings(ResponseObject<LanSettings> subscriber) {
         subscribe(subscriber, smartLinkApi.GetLanSettings(new RequestBody(Methods.GET_LAN_SETTINGS)));
     }
 

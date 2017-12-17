@@ -6,8 +6,8 @@ import android.app.ProgressDialog;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSStorageState;
 import com.alcatel.wifilink.model.sms.SmsInitState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
@@ -63,7 +63,7 @@ public class SmsHelper {
      */
     private void getSmsStatus() {
         // 3.获取sim初始化状态
-        API.get().getSmsInitState(new MySubscriber<SmsInitState>() {
+        RX.getInstant().getSmsInitState(new ResponseObject<SmsInitState>() {
             @Override
             protected void onSuccess(SmsInitState result) {
                 int state = result.getState();
@@ -88,7 +88,7 @@ public class SmsHelper {
      * 获取未读短信数
      */
     private void getSmsUnread() {
-        API.get().getSMSStorageState(new MySubscriber<SMSStorageState>() {
+        RX.getInstant().getSMSStorageState(new ResponseObject<SMSStorageState>() {
             @Override
             protected void onSuccess(SMSStorageState result) {
                 int unreadSMSCount = result.getUnreadSMSCount();

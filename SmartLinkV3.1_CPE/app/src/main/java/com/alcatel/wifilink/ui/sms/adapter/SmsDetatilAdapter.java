@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.sms.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +13,10 @@ import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
-import com.alcatel.wifilink.ui.sms.helper.SmsReSendHelper;
 import com.alcatel.wifilink.ui.sms.helper.SmsContentSortHelper;
-import com.alcatel.wifilink.ui.sms.helper.SmsTryAgainPop;
+import com.alcatel.wifilink.ui.sms.helper.SmsReSendHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ScreenSize;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +46,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
 
     public RippleView tv_cancel;
     public RippleView tv_confirm;
-    private PopupWindows pop;
+    private PopupWindows failedPop;
     private OnSendSuccessListener onSendSuccessListener;
 
     public SmsDetatilAdapter(Context context, LinearLayoutManager lm, SMSContentList smsContentList, List<String> phoneNums) {
@@ -88,7 +89,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
     @Override
     public void onBindViewHolder(SmsDetailHolder holder, int position) {
         if (newScbList.size() > 0) {
-            // nscb = newScbList.get(position);// 带选中|未选中标记位
+            // nscb = newScbList.getInstant(position);// 带选中|未选中标记位
             // scb = nscb.smsContentBean;// 不带标记位
 
             setSelectLogo(holder, position);// set selected or not logo
@@ -284,21 +285,15 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
 
     /* 弹出窗口提示重新发送 */
     private void showTryAgainPop(SMSContentList.SMSContentBean scb) {
-        new SmsTryAgainPop(context) {
-            @Override
-            public void getView(View inflate) {
-                tv_cancel = (RippleView) inflate.findViewById(R.id.tv_smsdetail_tryagain_cancel);
-                tv_confirm = (RippleView) inflate.findViewById(R.id.tv_smsdetail_tryagain_confirm);
-                tv_cancel.setOnClickListener(v -> {
-                    if (pop != null) {
-                        pop.dismiss();
-                    }
-                });
-                tv_confirm.setOnClickListener(v -> {
-                    sendAgain(scb);
-                });
-            }
-        };
+        Drawable pop_bg = context.getResources().getDrawable(R.drawable.bg_pop_conner);
+        View inflate = View.inflate(context, R.layout.pop_smsdetail_tryagain, null);
+        int width = (int) (ScreenSize.getSize(context).width * 0.75f);
+        int height = (int) (ScreenSize.getSize(context).height * 0.22f);
+        tv_cancel = (RippleView) inflate.findViewById(R.id.tv_smsdetail_tryagain_cancel);
+        tv_confirm = (RippleView) inflate.findViewById(R.id.tv_smsdetail_tryagain_confirm);
+        tv_cancel.setOnClickListener(v -> failedPop.dismiss());
+        tv_confirm.setOnClickListener(v -> sendAgain(scb));
+        failedPop = new PopupWindows(context, inflate, width, height, true, pop_bg);
     }
 
     /* 点击确定后重新发送 */

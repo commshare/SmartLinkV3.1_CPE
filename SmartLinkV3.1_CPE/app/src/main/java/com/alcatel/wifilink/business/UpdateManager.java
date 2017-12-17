@@ -133,7 +133,7 @@ public class UpdateManager extends BaseManager {
 
     }
 
-    //get firmware new version
+    //getInstant firmware new version
     public void getDeviceNewVersion(DataValue data) {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {
@@ -195,7 +195,7 @@ public class UpdateManager extends BaseManager {
         }
     }
 
-    //get update state
+    //getInstant update state
     public void getUpgradeState(DataValue data) {
         boolean blWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         if (blWifiConnected) {

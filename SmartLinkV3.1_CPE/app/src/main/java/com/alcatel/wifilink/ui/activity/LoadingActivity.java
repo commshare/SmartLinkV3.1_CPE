@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.Constants;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -84,7 +84,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initViews() {
-        // get page view
+        // getInstant page view
         mViews.addAll(OtherUtils.getGuidePages(this));
         View pageLast = mViews.get(mViews.size() - 1);// 获取最后一页
         Button bt_start = (Button) pageLast.findViewById(R.id.btn_start);
@@ -135,7 +135,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
         Log.d("ma_load", "toNextOperation");
 
         // 2.login
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 Log.d("ma_load", "onSuccess");

@@ -5,14 +5,12 @@ import android.text.TextUtils;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
-import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.PinStatuHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 
 /**
@@ -62,11 +60,11 @@ public class SimPinHelper {
     private void disablePin(SimStatus attr, String pincode) {
 
         // 1.先解PIN
-        API.get().unlockPin(pincode, new MySubscriber() {
+        RX.getInstant().unlockPin(pincode, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 // 2.再改变PIN码状态
-                API.get().changePinState(pincode, Cons.DISABLE, new MySubscriber() {
+                RX.getInstant().changePinState(pincode, Cons.DISABLE, new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
                         pinDisableNext(attr);
@@ -104,11 +102,11 @@ public class SimPinHelper {
      */
     private void enableUnlockFirst(SimStatus attr, String pincode) {
         // 1.先解PIN
-        API.get().unlockPin(pincode, new MySubscriber() {
+        RX.getInstant().unlockPin(pincode, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 // 2.再改变PIN码状态
-                API.get().changePinState(pincode, Cons.ENABLE, new MySubscriber() {
+                RX.getInstant().changePinState(pincode, Cons.ENABLE, new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
                         pinEnableNext(attr);
@@ -149,7 +147,7 @@ public class SimPinHelper {
             toast(R.string.setting_failed);
         }
         // 获取剩余次数
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() == Cons.PIN_REQUIRED) {
@@ -184,7 +182,7 @@ public class SimPinHelper {
      * @param pincode
      */
     private void enablePin(SimStatus attr, String pincode) {
-        API.get().changePinState(pincode, Cons.ENABLE, new MySubscriber() {
+        RX.getInstant().changePinState(pincode, Cons.ENABLE, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 pinEnableNext(attr);

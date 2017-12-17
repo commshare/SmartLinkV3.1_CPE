@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sim.SimStatus;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -24,7 +24,6 @@ import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
-import com.github.ikidou.fragmentBackHandler.BackHandlerHelper;
 import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
 
 import butterknife.BindView;
@@ -216,7 +215,7 @@ public class PinRxFragment extends Fragment implements FragmentBackHandler{
      */
     private void unlockPinRequest(SimStatus result) {
         String pin = OtherUtils.getEdContent(etPinRx);
-        API.get().unlockPin(pin, new MySubscriber() {
+        RX.getInstant().unlockPin(pin, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 // 是否勾选了记住PIN

@@ -3,10 +3,10 @@ package com.alcatel.wifilink.rx.helper.base;
 import android.app.Activity;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 
@@ -26,12 +26,12 @@ public abstract class LogoutHelper {
     }
 
     private void logout() {
-        API.get().getLoginState(new MySubscriber<LoginState>() {
+        RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
                 int state = result.getState();
                 if (state == Cons.LOGIN) {
-                    API.get().logout(new MySubscriber() {
+                    RX.getInstant().logout(new ResponseObject() {
                         @Override
                         protected void onSuccess(Object result) {
                             ToastUtil_m.show(context, context.getString(R.string.login_logout_successful));

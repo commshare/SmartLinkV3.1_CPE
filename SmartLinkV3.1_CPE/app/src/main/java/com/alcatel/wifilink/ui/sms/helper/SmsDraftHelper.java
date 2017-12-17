@@ -7,8 +7,8 @@ import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SMSDeleteParam;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
-import com.alcatel.wifilink.network.API;
-import com.alcatel.wifilink.network.MySubscriber;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.DataUtils;
@@ -69,7 +69,7 @@ public class SmsDraftHelper {
 
     /* **** getDraftSms: 获取草稿短信--> 只执行1次 **** */
     public void getDraftSms() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() != Cons.READY) {// no sim
@@ -91,7 +91,7 @@ public class SmsDraftHelper {
     /* 获取草稿短信 */
     private void getDraftContent(Activity activity, long contactId) {
         SMSContentParam ssp = new SMSContentParam(0, contactId);
-        API.get().getSMSContentList(ssp, new MySubscriber<SMSContentList>() {
+        RX.getInstant().getSMSContentList(ssp, new ResponseObject<SMSContentList>() {
             @Override
             protected void onSuccess(SMSContentList result) {
 
@@ -124,7 +124,7 @@ public class SmsDraftHelper {
 
     /* 清空草稿短信 */
     public void clearDraft() {
-        API.get().getSimStatus(new MySubscriber<SimStatus>() {
+        RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
                 if (result.getSIMState() != Cons.READY) {
@@ -151,7 +151,7 @@ public class SmsDraftHelper {
         List<Long> draftList = new ArrayList<>();
         // 获取所有草稿短信
         SMSContentParam ssp = new SMSContentParam(0, contactId);
-        API.get().getSMSContentList(ssp, new MySubscriber<SMSContentList>() {
+        RX.getInstant().getSMSContentList(ssp, new ResponseObject<SMSContentList>() {
             @Override
             protected void onSuccess(SMSContentList result) {
                 for (SMSContentList.SMSContentBean scb : result.getSMSContentList()) {
@@ -162,7 +162,7 @@ public class SmsDraftHelper {
 
                 // 删除全部草稿短信
                 SMSDeleteParam sdp = new SMSDeleteParam(Cons.DELETE_MORE_SMS, draftList);
-                API.get().deleteSMS(sdp, new MySubscriber() {
+                RX.getInstant().deleteSMS(sdp, new ResponseObject() {
                     @Override
                     protected void onSuccess(Object result) {
                         if (onClearDraftListener != null) {
@@ -190,7 +190,7 @@ public class SmsDraftHelper {
     /* 保存草稿短信 */
     public void saveDraftSms(List<String> phoneNum, String content) {
         SMSSaveParam sssp = new SMSSaveParam(-1, content, DataUtils.getCurrent(), phoneNum);
-        API.get().saveSMS(sssp, new MySubscriber() {
+        RX.getInstant().saveSMS(sssp, new ResponseObject() {
             @Override
             protected void onSuccess(Object result) {
                 if (onSaveDraftListener != null) {

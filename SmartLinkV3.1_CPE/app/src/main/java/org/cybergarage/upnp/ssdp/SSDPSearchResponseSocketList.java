@@ -64,7 +64,7 @@ public class SSDPSearchResponseSocketList extends Vector
 	}
 
 	////////////////////////////////////////////////
-	//	get
+	//	getInstant
 	////////////////////////////////////////////////
 	
 	public SSDPSearchResponseSocket getSSDPSearchResponseSocket(int n)
