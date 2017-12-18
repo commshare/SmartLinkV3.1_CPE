@@ -244,4 +244,9 @@ public class Cons {
     public static final int NO_START_UPDATE = 0;
     public static final int UPDATING = 1;
     public static final int COMPLETE = 2;
+    
+    /* sms check state */
+    public static final int CLICK = 0;
+    public static final int SELETE_ALL = 1;
+    public static final int DESELETE_ALL = -1;
 }

@@ -25,11 +25,12 @@ import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.common.Constants;
 import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.model.sms.SMSContactList;
+import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.RX;
-import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.bean.SMSContactSelf;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
@@ -66,6 +67,19 @@ public class OtherUtils {
     public static List<Object> homeTimerList = new ArrayList<>();// 仅存放自动退出定时器
     public static List<PopupWindows> popList = new ArrayList<>();
     public static OnHeartBeatListener onHeartBeatListener;
+
+    /**
+     * 获取某个contactId下所有的smsid
+     * @param scList
+     * @return
+     */
+    public static List<Long> getAllSmsIdByOneSession(SMSContentList scList) {
+        List<Long> smsIds = new ArrayList<>();
+        for (SMSContentList.SMSContentBean scb : scList.getSMSContentList()) {
+            smsIds.add(scb.getSMSId());
+        }
+        return smsIds;
+    }
 
     /**
      * 根据SP读取到的值获取数组中的字符
@@ -239,6 +253,17 @@ public class OtherUtils {
         return smscs;
     }
 
+    /**
+     * 修改联系人列表是否进入可删除状态(islongClick==true则为可删除)
+     *
+     * @param isLongClick
+     */
+    public static List<SMSContactSelf> modifySMSContactSelf(List<SMSContactSelf> smsContactSelves, boolean isLongClick) {
+        for (SMSContactSelf smsContactSelf : smsContactSelves) {
+            smsContactSelf.setLongClick(isLongClick);
+        }
+        return smsContactSelves;
+    }
 
     public interface OnHeartBeatListener {
         void onSucess();

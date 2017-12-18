@@ -14,26 +14,44 @@
         app:layout_heightPercent="90%h" />
 
     <!-- 批量删除短信按钮 -->
-    <com.zhy.android.percent.support.PercentRelativeLayout
-        android:visibility="gone"
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/ll_sms_batchDeteled"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rcv_sms"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_sms_batchSelectAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bt_login_selector"
+            android:gravity="center"
+            android:text="@string/operation_selectall"
+            android:textColor="@color/white"
+            app:layout_heightPercent="80%h"
+            app:layout_marginLeftPercent="20%h"
+            app:layout_marginRightPercent="20%h"
+            app:layout_textSizePercent="27%h" />
 
         <TextView
             android:id="@+id/tv_sms_batchDeteled"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/bt_login_selector"
             android:gravity="center"
             android:text="@string/delete"
             android:textColor="@color/white"
             app:layout_heightPercent="80%h"
-            app:layout_textSizePercent="27%h"
-            app:layout_widthPercent="80%w" />
+            app:layout_marginLeftPercent="20%h"
+            app:layout_marginRightPercent="20%h"
+            app:layout_textSizePercent="27%h" />
 
-    </com.zhy.android.percent.support.PercentRelativeLayout>
+    </com.zhy.android.percent.support.PercentLinearLayout>
 
     <!-- no sms 提示 -->
     <TextView
