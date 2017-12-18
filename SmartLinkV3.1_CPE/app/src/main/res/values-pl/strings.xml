@@ -590,4 +590,6 @@
     <string name="Blocked">Zablokowane</string>
     <string name="mtu_not_match">MTU musi znajdować się w zakresie od 576 do 1500</string>
     <string name="Set_connected_device_black_failed">Konfiguracja blokady podłączonego urządzenia nie powiodła się.</string>
+    <string name="crash_tip">Czas połączenia minął. Sprawdź sygnał swojego urządzenia. Zrestartuj urządzenie lub połączenie Wi-Fi i zaloguj się ponownie do aplikacji.</string>
+    <string name="reset_tip">Naciśnij przycisk resetowania na urządzeniu, aby przywrócić ustawienia fabryczne</string>
 </resources>

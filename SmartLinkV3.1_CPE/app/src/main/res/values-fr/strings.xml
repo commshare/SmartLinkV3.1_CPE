@@ -591,4 +591,6 @@
     <string name="Blocked">Bloqué</string>
     <string name="mtu_not_match">MTU doit être entre 575 et 1500</string>
     <string name="Set_connected_device_black_failed">Impossible de bloquer cet appareil</string>
+    <string name="crash_tip">Délai de connection dépassé. Vérifiez le signal de votre appareil. Redémarrez votre appareil ou votre connexion Wi-Fi et reconnectez-vous à l\'application.</string>
+    <string name="reset_tip">Appuyez sur le bouton de réinitialisation de l\'appareil pour restaurer les paramètres d\'usine</string>
 </resources>

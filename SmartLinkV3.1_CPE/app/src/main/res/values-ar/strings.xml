@@ -591,4 +591,6 @@
     <string name="Blocked">محظور</string>
     <string name="mtu_not_match">يجب أن يكون MTU بين 576 و 1500</string>
     <string name="Set_connected_device_black_failed">لا يمكن حظر هذا الجهاز</string>
+    <string name="crash_tip">انتهى مهلة الاتصال. تحقق من إشارة جهازك. أعد تشغيل جهازك أو اتصال Wi-Fi وسجل الدخول إلى التطبيق مرة أخرى.</string>
+    <string name="reset_tip">يُرجى تشغيل زر إعادة الضبط بالجهاز لاستعادة إعدادات ضبط المصنع.</string>
 </resources>

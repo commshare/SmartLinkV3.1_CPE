@@ -590,4 +590,6 @@
     <string name="Blocked">Blokiran</string>
     <string name="mtu_not_match">MTU mora da bude između  576 i 1500</string>
     <string name="Set_connected_device_black_failed">Ne mogu da blokiraju ovaj uređaj</string>
+    <string name="crash_tip">Veza je istekla. Proverite signal na uređaju. Restartujte uređaj ili Wi-Fi vezu i ponovo se prijavite u aplikaciju.</string>
+    <string name="reset_tip">Pritiniste taster za resetovanje na uređaju da biste vratili fabrička podešavanja.</string>
 </resources>

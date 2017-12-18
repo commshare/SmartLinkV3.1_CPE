@@ -590,4 +590,6 @@
     <string name="Blocked">Blockiert</string>
     <string name="mtu_not_match">MTU muss zwischen 576 und 1500 liegen</string>
     <string name="Set_connected_device_black_failed">Dieses Gerät kann nicht blockiert werden</string>
+    <string name="crash_tip">Zeitüberschreitung. Überprüfen Sie die Signalstärke des Gerätes und starten die WLAN-Verbindung oder das Gerät neu. Melden Sie sich dann erneut in der App an.</string>
+    <string name="reset_tip">Bitte betätigen Sie den Reset-Knopf, um die Werkseinstellungen des Gerätes wiederherzustellen.</string>
 </resources>

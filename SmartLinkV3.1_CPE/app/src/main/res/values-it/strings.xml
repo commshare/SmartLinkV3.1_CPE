@@ -595,4 +595,6 @@ di rete se non si è sicuri del codice PUK</string>
     <string name="Blocked">Bloccato</string>
     <string name="mtu_not_match">L’MTU deve essere tra 576 e 1500</string>
     <string name="Set_connected_device_black_failed">Impossibile bloccare questo dispositivo</string>
+    <string name="crash_tip">Connesione finita. Controlla il segnale del tuo dispositivo. Riavvia il dispositivo o la connessione Wi-Fi e accedi nuovamente all\'app.</string>
+    <string name="reset_tip">Usare il tasto di reset sul dispositivo per ripristinare le impostazioni di fabbrica</string>
 </resources>
