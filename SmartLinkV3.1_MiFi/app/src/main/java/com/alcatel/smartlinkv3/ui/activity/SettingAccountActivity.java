@@ -24,13 +24,17 @@ import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
 import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Cons;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
+import com.alcatel.smartlinkv3.utils.EncryptionUtil;
 import com.alcatel.smartlinkv3.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,9 +154,34 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
             Toast.makeText(this, strInfo, Toast.LENGTH_SHORT).show();
             return;
         }
+        
+        // TOAT: 加密处理
+        API.get().getLoginState(new MySubscriber<LoginState>() {
+            @Override
+            protected void onSuccess(LoginState result) {
+                String usaName = LoginDialog.USER_NAME;
+                String password = currentPwd;
+                String confirmPassword = confirmPwd;
+                if (result.getPwEncrypt() == Cons.NEED_ENCRYPT) {
+                    usaName = EncryptionUtil.encrypt(LoginDialog.USER_NAME);
+                    password = EncryptionUtil.encrypt(password);
+                    confirmPassword = EncryptionUtil.encrypt(confirmPassword);
+                }
+                userChangePassword(usaName, password, confirmPassword);
+                onBackPressed();
+            }
 
-        userChangePassword(LoginDialog.USER_NAME, currentPwd, confirmPwd);
-        onBackPressed();
+            @Override
+            public void onError(Throwable e) {
+                Logger.t("ma").v(getClass().getSimpleName() + "doneChangePassword onError:" + e.getMessage());
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                Logger.t("ma").v(getClass().getSimpleName() + "doneChangePassword onError:" + error.getMessage());
+            }
+        });
+
 
         //        m_current_password.setText(null);
         //        m_new_password.setText(null);
@@ -173,7 +202,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
             m_notice.setVisibility(View.GONE);
         } else
             SettingAccountActivity.this.finish();
-
     }
 
 
@@ -289,7 +317,6 @@ public class SettingAccountActivity extends BaseActivity implements OnClickListe
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO Auto-generated method stub
             if (intent.getAction().equalsIgnoreCase(MessageUti.USER_CHANGE_PASSWORD_REQUEST)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);

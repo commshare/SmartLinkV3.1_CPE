@@ -5,6 +5,8 @@ import android.app.Application;
 import com.alcatel.smartlinkv3.common.HostnameUtils;
 import com.alcatel.smartlinkv3.mediaplayer.proxy.AllShareProxy;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import org.cybergarage.upnp.ControlPoint;
 
@@ -34,8 +36,8 @@ public class SmartLinkV3App extends Application {
         // x.Ext.init(this);
         
         // 全局异常捕获
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(getApplicationContext());
+        // CrashHandler crashHandler = CrashHandler.getInstance();
+        // crashHandler.init(getApplicationContext());
         
         // 初始化接口
         // BusinessMannager.getInstance();
@@ -43,7 +45,7 @@ public class SmartLinkV3App extends Application {
         // HandlerUtils.replaceHandler();
         // mAllShareProxy = AllShareProxy.getInstance(this);
         OtherUtils.initBusiness();
-
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     public void setControlPoint(ControlPoint controlPoint) {

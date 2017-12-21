@@ -2,7 +2,7 @@ package com.alcatel.smartlinkv3.business.system;
 
 import com.alcatel.smartlinkv3.business.BaseResult;
 
-public class SystemInfo extends BaseResult {
+public class SystemInfoForY900 extends BaseResult {
     private String DeviceName = new String();
     private String IMEI = new String();
     private String HwVersion = new String();
@@ -10,15 +10,6 @@ public class SystemInfo extends BaseResult {
     private String HttpApiVersion = new String();
     private String WebUiVersion = new String();
     private String MacAddress = new String();
-    private String MSISDN = new String();
-
-    public String getMSISDN() {
-        return MSISDN;
-    }
-
-    public void setMSISDN(String MSISDN) {
-        this.MSISDN = MSISDN;
-    }
 
     @Override
     public void clear() {
@@ -29,7 +20,6 @@ public class SystemInfo extends BaseResult {
         SwVersion = "";
         HttpApiVersion = "";
         WebUiVersion = "";
-        MSISDN = "";
 
     }
 
@@ -91,6 +81,6 @@ public class SystemInfo extends BaseResult {
 
     @Override
     public String toString() {
-        return "SystemInfo{" + "DeviceName='" + DeviceName + '\'' + ", IMEI='" + IMEI + '\'' + ", HwVersion='" + HwVersion + '\'' + ", SwVersion='" + SwVersion + '\'' + ", HttpApiVersion='" + HttpApiVersion + '\'' + ", WebUiVersion='" + WebUiVersion + '\'' + ", MacAddress='" + MacAddress + '\'' + ", MSISDN='" + MSISDN + '\'' + '}';
+        return "SystemInfoForY900{" + "DeviceName='" + DeviceName + '\'' + ", IMEI='" + IMEI + '\'' + ", HwVersion='" + HwVersion + '\'' + ", SwVersion='" + SwVersion + '\'' + ", HttpApiVersion='" + HttpApiVersion + '\'' + ", WebUiVersion='" + WebUiVersion + '\'' + ", MacAddress='" + MacAddress + '\'' + ", MSISDN='" + '}';
     }
 }

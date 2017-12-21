@@ -28,6 +28,31 @@ public class PopupWindows extends PopupWindow {
     public PopupWindow getPopupWindow() {
         return this;
     }
+    
+    /**
+     * 普通弹窗(全部自定义)
+     *
+     * @param context
+     * @param contentView 要显示的VIEW
+     * @param width       弹窗宽度
+     * @param height      弹窗高度
+     * @param isDismiss   点击空白是否消失
+     */
+    public PopupWindows(Context context, View contentView, int width, int height, boolean isDismiss,Drawable drawable) {
+        super(contentView, width, height, true);
+        this.context = context;
+        setFocusable(isDismiss);
+        setBackgroundDrawable(drawable);
+        setAnimationStyle(R.style.popwin_anim_style);
+        showAtLocation(contentView, Gravity.CENTER, 0, 0);
+        contentView.setOnClickListener(v -> {
+            if (isDismiss) {
+                dismiss();
+            }
+        });
+        showGray(context);// 背景变暗
+    }
+    
 
     /**
      * 不可设置底版颜色的弹窗(点击空白不消失)

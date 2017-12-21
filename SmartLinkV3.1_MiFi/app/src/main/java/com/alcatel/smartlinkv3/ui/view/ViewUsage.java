@@ -25,6 +25,7 @@ import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
+import com.orhanobut.logger.Logger;
 
 import static com.alcatel.smartlinkv3.common.CommonUtil.getDataValueFor901;
 
@@ -99,6 +100,7 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
 
     @Override
     protected void init() {
+        Logger.t("ma_usage").v("view usage");
         m_view = LayoutInflater.from(m_context).inflate(R.layout.view_usage, null);
 
         m_homewarn = (ImageView) m_view.findViewById(R.id.home_warn);

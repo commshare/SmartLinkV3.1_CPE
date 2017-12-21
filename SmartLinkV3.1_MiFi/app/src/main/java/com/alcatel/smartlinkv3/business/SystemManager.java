@@ -10,7 +10,7 @@ import android.os.Handler;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.HttpSystem;
 import com.alcatel.smartlinkv3.business.system.RestoreError;
-import com.alcatel.smartlinkv3.business.system.SystemInfo;
+import com.alcatel.smartlinkv3.business.system.SystemInfoForY900;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.common.DataValue;
 import com.alcatel.smartlinkv3.common.MessageUti;
@@ -23,7 +23,7 @@ import java.util.TimerTask;
 
 public class SystemManager extends BaseManager {
     private Features m_features = new Features();
-    private SystemInfo m_systemInfo = new SystemInfo();
+    private SystemInfoForY900 m_systemInfo = new SystemInfoForY900();
     private SystemStatus m_systemStatus = new SystemStatus();
 
     private boolean m_bAlreadyRecogniseCPEDevice = false;// whether recognise
@@ -48,7 +48,7 @@ public class SystemManager extends BaseManager {
         return m_features;
     }
 
-    public SystemInfo getSystemInfoModel() {
+    public SystemInfoForY900 getSystemInfoModel() {
         return m_systemInfo;
     }
 
@@ -225,8 +225,7 @@ public class SystemManager extends BaseManager {
                         BusinessMannager.getInstance().getSystemInfoModel().
                                                                                    setIMEI(m_systemInfo.getIMEI());
 
-                        BusinessMannager.getInstance().getSystemInfoModel().
-                                                                                   setMSISDN(m_systemInfo.getMSISDN());
+                        // BusinessMannager.getInstance().getSystemInfoModel().setMSISDN(m_systemInfo.getMSISDN());
                     } else {
                         new Handler().postDelayed(new Runnable() {
                             @Override

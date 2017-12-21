@@ -5,17 +5,21 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alcatel.smartlinkv3.business.system.SystemInfo;
+import com.alcatel.smartlinkv3.business.system.SystemInfoForNew;
+import com.alcatel.smartlinkv3.business.system.SystemInfoForY900;
 import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.common.HostnameUtils;
+import com.alcatel.smartlinkv3.rx.bean.WlanSettingForY900;
 import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressInterceptor;
 import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressListener;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginParams;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginResult;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginStateForY900;
 import com.alcatel.smartlinkv3.rx.impl.usage.UsageSetting;
 import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
 import com.alcatel.smartlinkv3.rx.model.SystemResult;
+import com.alcatel.smartlinkv3.rx.model.WlanState;
 import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.utils.EncryptionUtil;
 import com.alcatel.smartlinkv3.utils.FileUtils;
@@ -30,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -133,8 +136,10 @@ public class API {
     }
 
     private OkHttpClient buildOkHttpClient() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        HttpLoggerInterceptor httpLoggerInterceptor = new HttpLoggerInterceptor("MA_LOOGER");
+        // httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpLoggerInterceptor.setPrintLevel(HttpLoggerInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(TIMEOUT, TimeUnit.SECONDS);
         builder.readTimeout(TIMEOUT, TimeUnit.SECONDS);
@@ -167,7 +172,8 @@ public class API {
         /* google play request online ssl verify */
         builder.hostnameVerifier(HostnameUtils.getVerify());
 
-        builder.addInterceptor(httpLoggingInterceptor);
+        // builder.addInterceptor(httpLoggingInterceptor);
+        builder.addInterceptor(httpLoggerInterceptor);
         return builder.build();
     }
 
@@ -204,47 +210,26 @@ public class API {
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    /**
-     * login
-     *
-     * @param userName   user name
-     * @param passwd     password
-     * @param subscriber callback
-     */
     public void login(String userName, String passwd, MySubscriber<LoginResult> subscriber) {
         Observable observable = smartLinkApi.login(new RequestBody(Methods.LOGIN, new LoginParams(userName, passwd)));
         subscribe(subscriber, observable);
     }
 
-    /**
-     * login
-     *
-     * @param userName   user name
-     * @param passwd     password
-     * @param subscriber callback
-     */
-    public void forceLogin(String userName, String passwd, MySubscriber<LoginResult> subscriber) {
-        Observable observable = smartLinkApi.forceLogin(new RequestBody(Methods.FORCELOGIN, new LoginParams(userName, passwd)));
+    public void loginForY900(String userName, String passwd, MySubscriber subscriber) {
+        Observable observable = smartLinkApi.loginForY900(new RequestBody(Methods.LOGIN, new LoginParams(userName, passwd)));
         subscribe(subscriber, observable);
     }
 
-
-    /**
-     * logout
-     *
-     * @param subscriber callback
-     */
     public void logout(MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.LOGOUT)));
     }
 
-    /**
-     * get login state
-     *
-     * @param subscriber callback
-     */
     public void getLoginState(MySubscriber<LoginState> subscriber) {
         subscribe(subscriber, smartLinkApi.getLoginState(new RequestBody(Methods.GET_LOGIN_STATE)));
+    }
+
+    public void getLoginStateForY900(MySubscriber<LoginStateForY900> subscriber) {
+        subscribe(subscriber, smartLinkApi.getLoginStateForY900(new RequestBody(Methods.GET_LOGIN_STATE)));
     }
 
     // /**
@@ -321,31 +306,37 @@ public class API {
     // public void uploadFile(Subscriber subscriber, MultipartBody.Part body) {
     //     subscribe(subscriber, smartLinkApi.uploadFile(body));
     // }
-    //
-    // /**
-    //  * get 2.4g and 5g status (on/off)
-    //  *
-    //  * @param subscriber call back
-    //  */
-    // public void getWlanState(MySubscriber<WlanState> subscriber) {
-    //     subscribe(subscriber, smartLinkApi.getWlanState(new RequestBody(Methods.GET_WLAN_STATE)));
-    // }
-    //
+    
+    public void getWlanState(MySubscriber<WlanState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getWlanState(new RequestBody(Methods.GET_WLAN_STATE)));
+    }
+
     // public void setWlanState(WlanState state, MySubscriber subscriber) {
     //     subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_STATE, state)));
     // }
-    //
-    /**
-     * get all wlan settings
-     *
-     * @param subscriber call back
-     */
+    
+    public void setWlanOff(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_OFF)));
+    }
+    
+    public void setWlanOn(MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_ON)));
+    }
+
+    public void getWlanSettingsForY900(MySubscriber<WlanSettingForY900> subscriber) {
+        subscribe(subscriber, smartLinkApi.getWlanSettingsForY900(new RequestBody(Methods.GET_WLAN_SETTINGS)));
+    }
+
     public void getWlanSettings(MySubscriber<WlanResult> subscriber) {
         subscribe(subscriber, smartLinkApi.getWlanSettings(new RequestBody(Methods.GET_WLAN_SETTINGS)));
     }
 
     public void setWlanSettings(WlanResult wlanResult, MySubscriber subscriber) {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, wlanResult)));
+    }
+
+    public void setWlanSettingsForY900(WlanSettingForY900 wsY900, MySubscriber subscriber) {
+        subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.SET_WLAN_SETTINGS, wsY900)));
     }
 
     // public void getWlanSupportMode(MySubscriber<WlanSupportAPMode> subscriber) {
@@ -369,13 +360,15 @@ public class API {
     //     subscribe(subscriber, smartLinkApi.backupDevice(new RequestBody(Methods.SET_DEVICE_BACKUP)));
     // }
     //
-    public void getSystemInfo(MySubscriber<SystemInfo> subscriber) {
-        subscribe(subscriber, smartLinkApi.getSystemInfo(new RequestBody(Methods.GET_SYSTEM_INFO)));
+
+    public void getSystemInfoForY900(MySubscriber<SystemInfoForY900> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSystemInfoForY900(new RequestBody(Methods.GET_SYSTEM_INFO)));
     }
-    
-    public void getSystemResult(MySubscriber<SystemResult> subscriber) {
-        subscribe(subscriber, smartLinkApi.getSystemResult(new RequestBody(Methods.GET_SYSTEM_INFO)));
+
+    public void getSystemInfoForNew(MySubscriber<SystemInfoForNew> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSystemInfoForNew(new RequestBody(Methods.GET_SYSTEM_INFO)));
     }
+
     //
     // public void getWanSeting(MySubscriber<WanSetting> subscriber) {
     //     subscribe(subscriber, smartLinkApi.getWanSeting(new RequestBody(Methods.GET_WAN_SETTINGS)));
@@ -580,7 +573,13 @@ public class API {
         Observable<ResponseBody<LoginState>> getLoginState(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
+        Observable<ResponseBody<LoginStateForY900>> getLoginStateForY900(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
         Observable<ResponseBody<LoginResult>> login(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody> loginForY900(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<LoginResult>> forceLogin(@Body RequestBody requestBody);
@@ -595,11 +594,15 @@ public class API {
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<ConnectionState>> getConnectionState(@Body RequestBody requestBody);
         //
-        // @POST("/jrd/webapi")
-        // Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanState>> getWlanState(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<WlanResult>> getWlanSettings(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<WlanSettingForY900>> getWlanSettingsForY900(@Body RequestBody requestBody);
+
         //
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<WlanSupportAPMode>> getWlanSupportMode(@Body RequestBody requestBody);
@@ -618,10 +621,13 @@ public class API {
         // Observable<ResponseBody> backupDevice(@Body RequestBody requestBody);
         //
         @POST("/jrd/webapi")
-        Observable<ResponseBody<SystemInfo>> getSystemInfo(@Body RequestBody requestBody);
-        
+        Observable<ResponseBody<SystemInfoForNew>> getSystemInfoForNew(@Body RequestBody requestBody);
+
         @POST("/jrd/webapi")
-        Observable<ResponseBody<SystemInfo>> getSystemResult(@Body RequestBody requestBody);
+        Observable<ResponseBody<SystemInfoForY900>> getSystemInfoForY900(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SystemResult>> getSystemResult(@Body RequestBody requestBody);
         //
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<WanSetting>> getWanSeting(@Body RequestBody requestBody);

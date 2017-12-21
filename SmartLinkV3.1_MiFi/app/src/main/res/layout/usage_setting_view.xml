@@ -142,13 +142,13 @@
             app:layout_textSizePercent="40%h" />
 
         <Spinner
-            android:gravity="center"
             android:id="@+id/unit_selector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@drawable/unit_selector"
+            android:gravity="center"
             android:spinnerMode="dialog"
             app:layout_heightPercent="75%h"
             app:layout_widthPercent="15%w" />
@@ -331,7 +331,9 @@
             android:background="@drawable/selector_edit_bg"
             android:gravity="center"
             android:inputType="number"
-            android:maxLength="4"
+            android:lines="1"
+            android:maxLength="5"
+            android:numeric="integer"
             android:textColor="@color/main_title_background"
             app:layout_heightPercent="75%h"
             app:layout_marginRightPercent="3%w"

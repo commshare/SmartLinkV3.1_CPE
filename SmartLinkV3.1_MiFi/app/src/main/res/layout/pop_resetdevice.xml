@@ -3,72 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_pop_conner">
 
     <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_pop_login_reset_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/pop_sim_bg"
-        app:layout_heightPercent="35%sh">
+        android:gravity="center"
+        app:layout_marginTopPercent="3%sh">
 
-        <!-- buttons -->
-        <com.zhy.android.percent.support.PercentLinearLayout
-            android:id="@+id/ll_bts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            app:layout_heightPercent="25%h"
-            app:layout_marginBottomPercent="4%h">
-
-            <!-- cancel -->
-            <com.alcatel.smartlinkv3.appwidget.RippleView
-                android:id="@+id/tv_pop_forgot_cancel"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/pop_sim_bg"
-                android:gravity="center"
-                android:text="@string/cancel"
-                android:textColor="@color/pop_sim_text"
-                app:alphaFactor="0.8"
-                app:hover="true"
-                app:layout_textSizePercent="40%h"
-                app:rippleColor="@color/gray" />
-
-            <!-- unlock -->
-            <com.alcatel.smartlinkv3.appwidget.RippleView
-                android:id="@+id/tv_pop_forgot_ok"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/pop_sim_bg"
-                android:gravity="center"
-                android:text="@string/ok"
-                android:textColor="@color/pop_sim_text"
-                app:alphaFactor="0.8"
-                app:hover="true"
-                app:layout_textSizePercent="40%h"
-                app:rippleColor="@color/gray" />
-
-        </com.zhy.android.percent.support.PercentLinearLayout>
-
-        <!-- msg -->
         <TextView
+            android:id="@+id/tv_pop_login_reset_reboot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/setting_reset_success"
-            android:textColor="@color/black"
-            app:layout_marginLeftPercent="3%sw"
-            app:layout_marginRightPercent="3%sw"
-            app:layout_marginTopPercent="15%h"
-            app:layout_textSizePercent="9.5%h" />
+            android:text="@string/setting_device_btn_reboot"
+            android:textColor="@color/blue_btn"
+            app:layout_textSizePercent="2.7%sh" />
+
+        <TextView
+            android:id="@+id/tv_pop_login_reset_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_toEndOf="@id/tv_pop_login_reset_reboot"
+            android:text="@string/setting_device"
+            android:textColor="@color/blue_btn"
+            app:layout_textSizePercent="2.7%sh" />
 
     </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_pop_login_reset_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_pop_login_reset_title"
+        android:layout_centerHorizontal="true"
+        android:text="@string/ok"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_textSizePercent="3%sh" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_pop_login_reset_ok"
+        app:layout_marginTopPercent="3%sh" />
 
 </com.zhy.android.percent.support.PercentRelativeLayout>

@@ -8,7 +8,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -22,11 +25,17 @@ import com.alcatel.smartlinkv3.common.ENUM.UserLoginStatus;
 import com.alcatel.smartlinkv3.common.ErrorCode;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
-import com.alcatel.smartlinkv3.rx.tools.Logs;
-import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
+import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
+import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
+import com.alcatel.smartlinkv3.utils.TimerHelper;
+import com.alcatel.smartlinkv3.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class BaseActivity extends Activity {
@@ -34,16 +43,13 @@ public abstract class BaseActivity extends Activity {
     protected ActivityBroadcastReceiver m_msgReceiver2;
     private ArrayList<Dialog> m_dialogManager = new ArrayList<Dialog>();
     protected boolean m_bNeedBack = true;//whether need to back main activity.
+    private TimerHelper timerHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startHeart();
         OtherUtils.contexts.add(this);
-        Logs.v("ma_act", getClass().getSimpleName());
-    }
-
-    protected void addToDialogManager(Dialog dialog) {
-        m_dialogManager.add(dialog);
     }
 
     private void dismissAllDialog() {
@@ -68,8 +74,52 @@ public abstract class BaseActivity extends Activity {
 
         // showActivity(this);
         if (FeatureVersionManager.getInstance().isSupportApi("User", "ForceLogin") != true) {
-            backMainActivityOnResume(this);
+            // backMainActivityOnResume(this);
         }
+    }
+
+    private void startHeart() {
+        timerHelper = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                API.get().getLoginState(new MySubscriber<LoginState>() {
+                    @Override
+                    protected void onSuccess(LoginState result) {
+                        API.get().heartBeat(new MySubscriber() {
+                            @Override
+                            protected void onSuccess(Object result) {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Logger.t("ma_rx").v(e.getMessage());
+                                to(RefreshWifiActivity.class, true);
+                            }
+
+                            @Override
+                            protected void onResultError(ResponseBody.Error error) {
+                                Logger.t("ma_rx").v(error.getMessage());
+                                // to(LoginRxActivity.class, true);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.t("ma_rx").v(e.getMessage());
+                        to(RefreshWifiActivity.class, true);
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        Logger.t("ma_rx").v(error.getMessage());
+                        to(RefreshWifiActivity.class, true);
+                    }
+                });
+            }
+        };
+        timerHelper.start(3000);
     }
 
     @Override
@@ -86,8 +136,8 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
+        timerHelper.stop();
         try {
             this.unregisterReceiver(m_msgReceiver2);
             //checkLogin();
@@ -97,9 +147,6 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void onBroadcastReceive(Context context, Intent intent) {
-        // if (intent.getAction().equals(MessageUti.CPE_WIFI_CONNECT_CHANGE)) {
-        //     showActivity(context);
-        // } else 
         if (intent.getAction().equals(MessageUti.SIM_GET_SIM_STATUS_ROLL_REQUSET)) {
             int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
@@ -110,19 +157,19 @@ public abstract class BaseActivity extends Activity {
             int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0 && isForeground(this)) {
-                backMainActivity(context);
+                // backMainActivity(context);
             }
         } else if (intent.getAction().equals(MessageUti.USER_HEARTBEAT_REQUEST)) {
             int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.equalsIgnoreCase(ErrorCode.ERR_HEARTBEAT_OTHER_USER_LOGIN)) {
-                backMainActivity(context);
+                // backMainActivity(context);
                 kickoffLogout();
             }
         } else if (intent.getAction().equals(MessageUti.USER_COMMON_ERROR_32604_REQUEST)) {
             String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
             if (strErrorCode.equalsIgnoreCase(ErrorCode.ERR_COMMON_ERROR_32604) && isForeground(this)) {
-                backMainActivity(context);
+                // backMainActivity(context);
                 kickoffLogout();
             }
         }
@@ -141,10 +188,8 @@ public abstract class BaseActivity extends Activity {
         boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
         SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
 
-        if (bCPEWifiConnected == true && sim.m_SIMState != SIMState.Accessable) {
-            //			String strInfo = getString(R.string.home_sim_not_accessible);
-            //			Toast.makeText(context, strInfo, Toast.LENGTH_SHORT).show();
-            if (this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName()) == false) {
+        if (bCPEWifiConnected && sim.m_SIMState != SIMState.Accessable) {
+            if (!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
                 dismissAllDialog();
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
@@ -153,62 +198,32 @@ public abstract class BaseActivity extends Activity {
         }
     }
 
-    private void backMainActivityOnResume(Context context) {
-        boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-        UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+    // private void backMainActivityOnResume(Context context) {
+    //     boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+    //     UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+    //
+    //     if (bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
+    //         if (!this.getClass().getSimpleName().contains(MainActivity.class.getSimpleName())) {// 把主页过滤掉
+    //             Intent intent = new Intent(context, LoginRxActivity.class);
+    //             context.startActivity(intent);
+    //             finish();
+    //         }
+    //     }
+    // }
 
-        if (bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
-            // if (!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
-            //     Intent intent = new Intent(context, MainActivity.class);
-            if (!this.getClass().getName().equalsIgnoreCase(LoginRxActivity.class.getName())) {
-                Intent intent = new Intent(context, LoginRxActivity.class);
-                context.startActivity(intent);
-                finish();
-            }
-            // else {
-            //     Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-            //     context.sendBroadcast(intent2);
-            // }
-        }
-    }
-
-    private void backMainActivity(Context context) {
-        boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-        UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
-
-        if (bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
-            dismissAllDialog();
-            // if (!this.getClass().getName().equalsIgnoreCase(MainActivity.class.getName())) {
-            if (!this.getClass().getName().equalsIgnoreCase(LoginRxActivity.class.getName())) {
-                Intent intent = new Intent(context, LoginRxActivity.class);
-                context.startActivity(intent);
-                finish();
-            }
-            // else {
-            //     Intent intent2 = new Intent(MainActivity.PAGE_TO_VIEW_HOME);
-            //     context.sendBroadcast(intent2);
-            // }
-        }
-    }
-
-    private void showActivity(Context context) {
-
-        boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
-
-        if (bCPEWifiConnected && this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
-            dismissAllDialog();
-            //Intent intent = new Intent(context, MainActivity.class);
-            // Intent intent = new Intent(context, LoginRxActivity.class);
-            // context.startActivity(intent);
-            // finish();
-
-        } else if (!bCPEWifiConnected && !this.getClass().getName().equalsIgnoreCase(RefreshWifiActivity.class.getName())) {
-            dismissAllDialog();
-            Intent intent = new Intent(context, RefreshWifiActivity.class);
-            context.startActivity(intent);
-            finish();
-        }
-    }
+    // private void backMainActivity(Context context) {
+    //     boolean bCPEWifiConnected = DataConnectManager.getInstance().getCPEWifiConnected();
+    //     UserLoginStatus m_loginStatus = BusinessMannager.getInstance().getLoginStatus();
+    //
+    //     if (bCPEWifiConnected && m_loginStatus != UserLoginStatus.login) {
+    //         dismissAllDialog();
+    //         if (!this.getClass().getSimpleName().contains(MainActivity.class.getSimpleName())) {// 把主页过滤掉
+    //             Intent intent = new Intent(context, LoginRxActivity.class);
+    //             context.startActivity(intent);
+    //             finish();
+    //         }
+    //     }
+    // }
 
     public boolean isForeground(Context context) {
 
@@ -235,25 +250,31 @@ public abstract class BaseActivity extends Activity {
         }
     }
 
-    //	private void checkLogin()
-    //	{
-    //    	PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);  
-    //    	boolean bScreenOn = pm.isScreenOn();
-    //    	if(bScreenOn == false) {
-    //    		LoginDialog.setAlreadyLogin(false);
-    //    	}
-    //		
-    //    	ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);    	
-    //    	ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-    //    	if(!cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe")) {
-    //    		LoginDialog.setAlreadyLogin(false);
-    //    	}  
-    //    	//back键退出程序界面的处理
-    //    	else if(cn.getPackageName().equalsIgnoreCase("com.alcatel.cpe") 
-    //    			&&  cn.getClassName().equalsIgnoreCase("com.alcatel.cpe.ui.activity.LoadingActivity"))
-    //    	{
-    //    		LoginDialog.setAlreadyLogin(false);
-    //    	}
-    //	   
-    //	}
+    public void toast(int resid) {
+        ToastUtil_m.show(this, resid);
+    }
+
+    public void toast(String content) {
+        ToastUtil_m.show(this, content);
+    }
+
+    public void to(Class target, boolean isFinish) {
+        Intent intent = new Intent(this, target);
+        startActivity(intent);
+        if (isFinish) {
+            finish();
+        }
+    }
+
+    public String[] getStringArr(@ArrayRes int arrayId) {
+        return getResources().getStringArray(arrayId);
+    }
+
+    public List<String> getStringList(@ArrayRes int resId) {
+        return Arrays.asList(getStringArr(resId));
+    }
+
+    public Drawable getDrawabl(@DrawableRes int resId) {
+        return getResources().getDrawable(resId);
+    }
 }

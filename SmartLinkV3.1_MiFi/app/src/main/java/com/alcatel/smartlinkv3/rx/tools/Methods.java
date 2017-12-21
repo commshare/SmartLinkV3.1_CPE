@@ -42,6 +42,7 @@ public interface Methods {
     String GET_WLAN_STATE = "GetWlanState";
     String SET_WLAN_STATE = "SetWlanState";
     String SET_WLAN_ON = "SetWlanOn";
+    String SET_WLAN_OFF = "SetWlanOff";
     String GET_WLAN_SETTINGS = "GetWlanSettings";
     String SET_WLAN_SETTINGS = "SetWlanSettings";
     String SET_WPS_PIN = "SetWPSPin";

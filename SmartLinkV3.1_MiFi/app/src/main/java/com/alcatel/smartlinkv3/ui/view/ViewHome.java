@@ -40,6 +40,7 @@ import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
 import com.alcatel.smartlinkv3.httpservice.ConstValue;
 import com.alcatel.smartlinkv3.rx.tools.Logs;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
 import com.alcatel.smartlinkv3.ui.dialog.AutoForceLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog;
 import com.alcatel.smartlinkv3.ui.dialog.AutoLoginProgressDialog.OnAutoLoginFinishedListener;
@@ -48,6 +49,7 @@ import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog;
 import com.alcatel.smartlinkv3.ui.dialog.ErrorDialog.OnClickBtnRetry;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog;
 import com.alcatel.smartlinkv3.ui.dialog.LoginDialog.OnLoginFinishedListener;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -119,6 +121,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
 
     private ViewConnetBroadcastReceiver m_viewConnetMsgReceiver;
+    private SmartLinkV3App context;
 
     private class ViewConnetBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -160,6 +163,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
 
             if (intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET) || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET)) {
+                Logger.t("ma_connect").v("intent action:" + intent.getAction());
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, BaseResponse.RESPONSE_OK);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 if (nResult == BaseResponse.RESPONSE_OK && strErrorCode.length() == 0) {
@@ -167,9 +171,9 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 } else {
                     //operation fail
                     m_bConnectPressd = false;
-                    showNetworkState();
-                    showConnctBtnView();
                 }
+                showNetworkState();
+                showConnctBtnView();
             }
 
             if (intent.getAction().equals(MessageUti.DEVICE_GET_CONNECTED_DEVICE_LIST)) {
@@ -199,6 +203,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
     @Override
     protected void init() {
+        context = SmartLinkV3App.getInstance();
         m_view = LayoutInflater.from(m_context).inflate(R.layout.view_home, null);
 
         m_connectLayout = (RelativeLayout) m_view.findViewById(R.id.connect_layout);
@@ -364,7 +369,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 nStatusId = R.string.Home_puk_locked;
                 m_unlockSimBtn.setVisibility(View.VISIBLE);
             } else {
-                nStatusId = R.string.Home_sim_invalid;
+                nStatusId = R.string.home_connecting_to;
                 m_unlockSimBtn.setVisibility(View.GONE);
             }
 
@@ -638,7 +643,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
 
             //2G
-            if (curNetwork.m_NetworkType == NetworkType.EDGE || curNetwork.m_NetworkType == NetworkType.GPRS) {
+            if (curNetwork.m_NetworkType == NetworkType.EDGE // 
+                        || curNetwork.m_NetworkType == NetworkType.GPRS //
+                        || curNetwork.m_NetworkType == NetworkType.GSM //
+                        || curNetwork.m_NetworkType == NetworkType.CDMA) {//
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
@@ -646,7 +654,10 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             }
 
             //3G
-            if (curNetwork.m_NetworkType == NetworkType.HSPA || curNetwork.m_NetworkType == NetworkType.UMTS || curNetwork.m_NetworkType == NetworkType.HSUPA) {
+            if (curNetwork.m_NetworkType == NetworkType.HSPA //
+                        || curNetwork.m_NetworkType == NetworkType.UMTS //
+                        || curNetwork.m_NetworkType == NetworkType.WCDMA //
+                        || curNetwork.m_NetworkType == NetworkType.HSUPA) {//
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
@@ -666,13 +677,19 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 m_networkLabelTextView.setVisibility(View.GONE);
                 m_networkTypeTextView.setVisibility(View.VISIBLE);
                 m_networkTypeTextView.setTypeface(typeFace);
-                //                if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y859NC"))
-                //                    m_networkTypeTextView.setText(R.string.str_LTE);
-                //                else
                 if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("MW41MP"))
                     m_networkTypeTextView.setText(R.string.str_4G_LTE);
                 else
                     m_networkTypeTextView.setText(R.string.home_network_type_4g);
+            }
+
+            //4G+
+            if (curNetwork.m_NetworkType == NetworkType.LTE_PLUS) {
+                m_networkLabelTextView.setVisibility(View.GONE);
+                m_networkTypeTextView.setVisibility(View.VISIBLE);
+                m_networkTypeTextView.setTypeface(typeFace);
+                String _4G_PLUS = context.getString(R.string.home_network_type_4g) + "+";
+                m_networkTypeTextView.setText(_4G_PLUS);
             }
         }
     }
@@ -680,39 +697,51 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
     private void showBatteryState() {
 
         if (!FeatureVersionManager.getInstance().isSupportApi("PowerManagement", "GetBatteryState")) {
+            Logger.t("ma_power").v("PowerManagement false");
             m_batteryPanelView.setVisibility(View.GONE);
             return;
+        } else {
+            Logger.t("ma_power").v("PowerManagement true");
+            m_batteryPanelView.setVisibility(View.VISIBLE);
         }
         int nProgress = 0;
         BatteryInfo batteryinfo = BusinessMannager.getInstance().getBatteryInfo();
-        if (ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()) {
+        nProgress = batteryinfo.getBatterLevel();
+        Logger.t("ma_power_battery").v("battery progress: " + nProgress);
+        nProgress = nProgress > m_batteryProgress.getMax() ? m_batteryProgress.getMax() : nProgress;
+        if (ConstValue.CHARGE_STATE_REMOVED == batteryinfo.getChargeState()) {// 移除=2
+            Logger.t("ma_power_type").v("CHARGE_STATE_REMOVED");
             m_batteryProgress.setVisibility(View.VISIBLE);
             m_batteryscalelayout.setVisibility(View.VISIBLE);
             m_batterydescriptionlayout.setVisibility(View.GONE);
             m_batterychargingImageView.setVisibility(View.GONE);
             m_batteryscaleTextView.setTypeface(typeFace);
-            m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
-            nProgress = (int) batteryinfo.getBatterLevel();
-            if (nProgress > m_batteryProgress.getMax())
-                nProgress = m_batteryProgress.getMax();
+            m_batteryscaleTextView.setText(String.valueOf(batteryinfo.getBatterLevel()));
             m_batteryProgress.setProgress(nProgress);
-        } else if (ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()) {
+
+        } else if (ConstValue.CHARGE_STATE_CHARGING == batteryinfo.getChargeState()) {// 消耗中=0
+            Logger.t("ma_power_type").v("CHARGE_STATE_CHARGING");
             m_batteryProgress.setVisibility(View.GONE);
             m_batteryscalelayout.setVisibility(View.VISIBLE);
             m_batterydescriptionlayout.setVisibility(View.GONE);
             m_batterychargingImageView.setVisibility(View.VISIBLE);
             m_batteryscaleTextView.setTypeface(typeFace);
-            m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
-        } else if (ConstValue.CHARGE_STATE_COMPLETED == batteryinfo.getChargeState()) {
+            m_batteryscaleTextView.setText(String.valueOf(batteryinfo.getBatterLevel()));
+
+        } else if (ConstValue.CHARGE_STATE_DONE == batteryinfo.getChargeState()) {// 装配完成=1
+            Logger.t("ma_power_type").v("CHARGE_STATE_DONE");
             m_batterychargingImageView.setVisibility(View.GONE);
             m_batteryProgress.setVisibility(View.VISIBLE);
             m_batterydescriptionlayout.setVisibility(View.GONE);
-            m_batteryProgress.setProgress(m_batteryProgress.getMax());
+            m_batteryProgress.setProgress(nProgress);
             m_batteryscalelayout.setVisibility(View.VISIBLE);
             m_batteryscaleTextView.setTypeface(typeFace);
-            m_batteryscaleTextView.setText(Integer.toString(batteryinfo.getBatterLevel()));
-        } else if (ConstValue.CHARGE_STATE_ABORT == batteryinfo.getChargeState()) {
+            m_batteryscaleTextView.setText(String.valueOf(batteryinfo.getBatterLevel()));
 
+        } else if (ConstValue.CHARGE_STATE_ERROR_OCCUR == batteryinfo.getChargeState()) {// 错误
+            Logger.t("ma_power_type").v("CHARGE_STATE_ERROR_OCCUR");
+        } else {
+            Logger.t("ma_power_type").v("else");
         }
     }
 

@@ -14,9 +14,15 @@ import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.rx.bean.PsdBean;
 import com.alcatel.smartlinkv3.rx.bean.PsdRuleBean;
+import com.alcatel.smartlinkv3.rx.bean.WlanSettingForY900;
+import com.alcatel.smartlinkv3.rx.helper.MWY900Tool;
+import com.alcatel.smartlinkv3.rx.helper.WlanOnOffHelper;
+import com.alcatel.smartlinkv3.rx.helper.WlanSettingY900Helper;
+import com.alcatel.smartlinkv3.rx.helper.WlanStateHelper;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
 import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
 import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Cons;
 import com.alcatel.smartlinkv3.rx.tools.FraHelper;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
@@ -36,7 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SettingwifiRxActivity extends BaseRxActivity {
+public class SettingwifiRxY900Activity extends BaseRxActivity {
 
     @BindView(R.id.iv_wifisetting_back)
     ImageView ivWifisettingBack;
@@ -58,6 +64,8 @@ public class SettingwifiRxActivity extends BaseRxActivity {
     LVCircularRing lvcWait;
     @BindView(R.id.rl_wifisetting_wait)
     PercentRelativeLayout rlWifisettingWait;
+    @BindView(R.id.rl_wifisetting_notChangeWifi)
+    PercentRelativeLayout rlWifisettingNotChangeWifi;
 
     private int container;// 容器
     private int colorCheck;
@@ -70,30 +78,29 @@ public class SettingwifiRxActivity extends BaseRxActivity {
     public PsdBean pb_5G_default = new PsdBean();
     private FraHelper fraHelper;// fragment切换辅助类
     private Class[] clazzs = {// fragment类集合
-            SettingwifiRx2p4Fragment.class,// 2.4G fragment
-            SettingwifiRx5GFragment.class};// 5G fragment
-    private WlanResult result;
+            SettingwifiRx2p4Y900Fragment.class,// 2.4G fragment(Y900)
+            SettingwifiRx5GY900Fragment.class};// 5G fragment(Y900)
+    private WlanResult resultMW;
     public String toastWepWarn;
     public String toastWpaWarn;
     private Activity activity;
     private ProgressDialog pgd;
     private TimerHelper timerHelper;
     private TimerHelper heartTimer;
-
+    private int ERROR_UI = 0;
+    private int NOTCHANGE_UI = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.t("ma_wifi").v(getClass().getSimpleName());
         setContentView(R.layout.activity_wifirx_setting);
-        OtherUtils.contexts.add(this);
         ButterKnife.bind(this);
-        startHeart();
+        OtherUtils.contexts.add(this);
         activity = this;
         initAttr();// 初始化属性
-        initWait();// 初始化等待
-        initWlan();// 初始化数据
-        initTimer();// 启动定时器
+        startHeart();
+        checkIsWPS();// 检测是否为WPS模式,如果是则不能修改wifi
     }
 
     private void startHeart() {
@@ -108,112 +115,18 @@ public class SettingwifiRxActivity extends BaseRxActivity {
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
-                        Logger.t("ma_wifi").v("startHeart:" + error.getMessage());
+                        Logger.t("ma_wifi").e("startHeart result error:" + error.getMessage());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.t("ma_wifi").v("startHeart:" + e.getMessage());
+                        Logger.t("ma_wifi").e("startHeart result error:" + e.getMessage());
                         to(RefreshWifiActivity.class, true);
                     }
                 });
             }
         };
         heartTimer.start(3000);
-    }
-
-
-    private void initAttr() {
-        container = R.id.fl_wifiInfo;// 容器
-        colorCheck = getResources().getColor(R.color.main_title_background);
-        colorUnCheck = getResources().getColor(R.color.gray);
-        textBold = Typeface.defaultFromStyle(Typeface.BOLD);
-        textNormal = Typeface.defaultFromStyle(Typeface.NORMAL);
-        toastWepWarn = getString(R.string.setting_wep_password_error_prompt);
-        toastWpaWarn = getString(R.string.setting_wpa_password_error_prompt);
-    }
-
-
-    private void initWait() {
-        rlWifisettingWait.setVisibility(View.VISIBLE);
-        lvcWait.setViewColor(colorUnCheck);
-        lvcWait.setBarColor(colorCheck);
-        lvcWait.startAnim(1000);
-    }
-
-    private void initWlan() {
-        API.get().getWlanSettings(new MySubscriber<WlanResult>() {
-            @Override
-            protected void onSuccess(WlanResult result) {
-                SettingwifiRxActivity.this.result = result;
-                // 1.分类AP对象
-                for (WlanResult.APListBean apListBean : result.getAPList()) {
-                    if (apListBean.getWlanAPID() == Conn.WLANAPID_2P4G) {
-                        apbean_2P4 = apListBean;
-                        // 保存WEP|WPA的临时信息
-                        pb_2P4_default = setDefaultInfo(Conn.WLANAPID_2P4G, apbean_2P4);
-
-                    } else {
-                        apbean_5G = apListBean;
-                        // 保存WEP|WPA的临时信息
-                        pb_5G_default = setDefaultInfo(Conn.WLANAPID_5G, apbean_5G);
-                    }
-                }
-
-                // 1.1.通过判断2.4G & 5G 的AP对象是否为空来决定面板的显示与否
-                int APExist = 0;// 默认只显示2.4G
-                if (apbean_2P4 != null & apbean_5G != null) {
-                    APExist = Conn.MODE_2P4G_5G;
-                } else if (apbean_2P4 != null) {
-                    APExist = Conn.MODE_2P4G;
-                } else if (apbean_5G != null) {
-                    APExist = Conn.MODE_5G;
-                } else if (apbean_2P4 == null & apbean_5G == null) {
-                    showErrorUi();
-                }
-
-                // TOGO 2017/11/3 0003 测试代码 START
-                // apbean_5G = new WlanResult.APListBean();
-                // apbean_5G.setWlanAPID(1);// 5G
-                // apbean_5G.setSsid(apbean_2P4.getSsid() + "_5G");// xxxx_5G
-                // apbean_5G.setSsidHidden(1);// ssid hidden enable
-                // apbean_5G.setSecurityMode(1);// wep
-                // apbean_5G.setWepType(1);// share
-                // apbean_5G.setWepKey("12345");
-                // List<WlanResult.APListBean> aps = new ArrayList<>();
-                // aps.add(apbean_2P4);
-                // aps.add(apbean_5G);
-                // result.setAPList(aps);
-                // result.setWlanAPMode(2);
-                // TOGO 2017/11/3 0003 测试代码 END
-
-                // 2.根据情况显示banner
-                if (APExist == Conn.MODE_2P4G_5G) {// 两种模式
-                    tv2p4Checker.setVisibility(View.VISIBLE);
-                    tv5GChecker.setVisibility(View.VISIBLE);
-                    vSplitBanner.setVisibility(View.VISIBLE);
-                    initFra(clazzs[0], clazzs);
-                } else if (APExist == Conn.MODE_2P4G) {// 2.4G模式
-                    tv2p4Checker.setVisibility(View.VISIBLE);
-                    initFra(clazzs[0], clazzs[0]);
-                } else {// 5G模式
-                    tv5GChecker.setVisibility(View.VISIBLE);
-                    initFra(clazzs[1], clazzs[1]);
-                }
-                // 3.等待界面消隐
-                stopWait();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                showErrorUi();
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                showErrorUi();
-            }
-        });
     }
 
     private void initTimer() {
@@ -228,6 +141,7 @@ public class SettingwifiRxActivity extends BaseRxActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        Logger.t("ma_wifi").e("initTimer error:" + e.getMessage());
                         finishMain();
                     }
 
@@ -248,12 +162,120 @@ public class SettingwifiRxActivity extends BaseRxActivity {
         timerHelper.start(2500);
     }
 
+    /**
+     * 检测是否为WPS模式,如果是则不能修改wifi
+     */
+    private void checkIsWPS() {
+        WlanStateHelper wlsY900 = new WlanStateHelper();
+        wlsY900.setOnErrorListener(attr -> showErrorUi(ERROR_UI));
+        wlsY900.setOnResultErrorListener(attr -> showErrorUi(ERROR_UI));
+        wlsY900.setOnOFFListener(attr -> showErrorUi(ERROR_UI));
+        wlsY900.setOnWPSListener(attr -> showErrorUi(NOTCHANGE_UI));
+        wlsY900.setOnONStateListener(attr -> {
+            showNormalUi();// 显示正常界面
+            initWait();// 初始化等待
+            initWlan(attr.getWlanState());// 初始化数据
+            initTimer();// 启动定时器
+        });
+        wlsY900.get();
+    }
+
+    private void initAttr() {
+        container = R.id.fl_wifiInfo;// 容器
+        colorCheck = getResources().getColor(R.color.main_title_background);
+        colorUnCheck = getResources().getColor(R.color.gray);
+        textBold = Typeface.defaultFromStyle(Typeface.BOLD);
+        textNormal = Typeface.defaultFromStyle(Typeface.NORMAL);
+        toastWepWarn = getString(R.string.setting_wep_password_error_prompt);
+        toastWpaWarn = getString(R.string.setting_wpa_password_error_prompt);
+    }
+
+    private void initWait() {
+        rlWifisettingWait.setVisibility(View.VISIBLE);
+        lvcWait.setViewColor(colorUnCheck);
+        lvcWait.setBarColor(colorCheck);
+        lvcWait.startAnim(1000);
+    }
+
+    private void initWlan(int wlanState) {
+        WlanSettingY900Helper wlY900h = new WlanSettingY900Helper(this);
+        wlY900h.setOnResultErrorListener(attr -> showErrorUi(ERROR_UI));
+        wlY900h.setOnErrorListener(attr -> showErrorUi(ERROR_UI));
+        wlY900h.setOnWlanSettingNoramlListener(result -> {
+            checkPanel(wlanState, result);// 选择切换面板等操作
+        });
+        wlY900h.get();
+    }
+
+    /**
+     * 选择切换面板等操作
+     *
+     * @param wlanState
+     * @param result
+     */
+    private void checkPanel(int wlanState, WlanSettingForY900 result) {
+        Logger.t("ma_wifi").v("getWlanSettingsForY900 success");
+        // TOAT: 2017/12/20 0020 把Y900制式转换为MW制式
+        SettingwifiRxY900Activity.this.resultMW = MWY900Tool.transferY900WlanToMW(result, wlanState);
+        // 1.分类AP对象
+        for (WlanResult.APListBean apListBean : resultMW.getAPList()) {
+            if (apListBean.getWlanAPID() == Conn.WLANAPID_2P4G) {
+                apbean_2P4 = apListBean;
+                // 保存WEP|WPA的临时信息
+                pb_2P4_default = setDefaultInfo(Conn.WLANAPID_2P4G, apbean_2P4);
+
+            } else {
+                apbean_5G = apListBean;
+                // 保存WEP|WPA的临时信息
+                pb_5G_default = setDefaultInfo(Conn.WLANAPID_5G, apbean_5G);
+            }
+        }
+
+        // 1.1.通过判断2.4G & 5G 的AP对象是否为空来决定面板的显示与否
+        int APExist = 0;// 默认只显示2.4G
+        if (apbean_2P4 != null & apbean_5G != null) {
+            APExist = Conn.MODE_2P4G_5G;
+        } else if (apbean_2P4 != null) {
+            APExist = Conn.MODE_2P4G;
+        } else if (apbean_5G != null) {
+            APExist = Conn.MODE_5G;
+        } else if (apbean_2P4 == null & apbean_5G == null) {
+            showErrorUi(ERROR_UI);
+        }
+
+        // 2.根据情况显示banner
+        if (APExist == Conn.MODE_2P4G_5G) {// 两种模式
+            tv2p4Checker.setVisibility(View.VISIBLE);
+            tv5GChecker.setVisibility(View.VISIBLE);
+            vSplitBanner.setVisibility(View.VISIBLE);
+            initFra(clazzs[0], clazzs);
+        } else if (APExist == Conn.MODE_2P4G) {// 2.4G模式
+            tv2p4Checker.setVisibility(View.VISIBLE);
+            initFra(clazzs[0], clazzs[0]);
+        } else {// 5G模式
+            tv5GChecker.setVisibility(View.VISIBLE);
+            initFra(clazzs[1], clazzs[1]);
+        }
+        // 3.等待界面消隐
+        stopWait();
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         clearAP();
-        heartTimer.stop();
-        timerHelper.stop();
+        if (heartTimer != null) {
+            heartTimer.stop();
+        }
+        if (timerHelper != null) {
+            timerHelper.stop();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @OnClick({R.id.iv_wifisetting_back,// 返回键
@@ -268,7 +290,7 @@ public class SettingwifiRxActivity extends BaseRxActivity {
         switch (view.getId()) {
             case R.id.iv_wifisetting_back:
             case R.id.tv_wifisetting_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_wifisetting_done:
                 clickDoneButton();// 提交数据更新配置
@@ -283,6 +305,7 @@ public class SettingwifiRxActivity extends BaseRxActivity {
                 break;
             case R.id.rl_wifisetting_wait:// 等待界面
             case R.id.rl_wifisetting_error:// 错误界面
+            case R.id.rl_wifisetting_notChangeWifi:// 不能修改
                 break;
         }
     }
@@ -311,8 +334,8 @@ public class SettingwifiRxActivity extends BaseRxActivity {
         boolean isDone = true;
 
         // 非空判断
-        if (apbean_2P4 != null & SettingwifiRx2p4Fragment.et2P4Gssid != null) {
-            String ssid2P4 = OtherUtils.getEdittext(SettingwifiRx2p4Fragment.et2P4Gssid);
+        if (apbean_2P4 != null & SettingwifiRx2p4Y900Fragment.et2P4Gssid != null) {
+            String ssid2P4 = OtherUtils.getEdittext(SettingwifiRx2p4Y900Fragment.et2P4Gssid);
             if (TextUtils.isEmpty(ssid2P4)) {
                 toast(R.string.setting_wifi_ssid_can_not_be_empty);
                 fraHelper.transfer(clazzs[0]);
@@ -322,8 +345,8 @@ public class SettingwifiRxActivity extends BaseRxActivity {
             }
         }
 
-        if (apbean_5G != null & SettingwifiRx5GFragment.et5Gssid != null) {
-            String ssid5G = OtherUtils.getEdittext(SettingwifiRx5GFragment.et5Gssid);
+        if (apbean_5G != null & SettingwifiRx5GY900Fragment.et5Gssid != null) {
+            String ssid5G = OtherUtils.getEdittext(SettingwifiRx5GY900Fragment.et5Gssid);
             if (TextUtils.isEmpty(ssid5G)) {
                 toast(R.string.setting_wifi_ssid_can_not_be_empty);
                 fraHelper.transfer(clazzs[1]);
@@ -363,8 +386,7 @@ public class SettingwifiRxActivity extends BaseRxActivity {
         }
         // 以上都没有问题--> 直接提交
         if (isDone) {
-            // TODO: 2017/11/4 0004 正式提交
-            commitWlan();
+            commitWlan(); // 正式提交
         }
     }
 
@@ -372,27 +394,72 @@ public class SettingwifiRxActivity extends BaseRxActivity {
      * ***** 正式提交 *****
      */
     private void commitWlan() {
+        WlanStateHelper wsh = new WlanStateHelper();
+        wsh.setOnErrorListener(attr -> showErrorUi(ERROR_UI));
+        wsh.setOnResultErrorListener(attr -> showErrorUi(ERROR_UI));
+        wsh.setOnOFFListener(attr -> showErrorUi(ERROR_UI));
+        wsh.setOnWPSListener(attr -> showErrorUi(NOTCHANGE_UI));
+        wsh.setOnONStateListener(attr -> setWlanSettings());
+        wsh.get();
+    }
+
+    private void setWlanSettings() {
         pgd = OtherUtils.showProgressPop(this);
-        API.get().setWlanSettings(result, new MySubscriber() {
-            @Override
-            protected void onSuccess(Object result) {
-                OtherUtils.hideProgressPop(pgd);
-                OtherUtils.setWifiActive(activity, false);
-                finish();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                OtherUtils.hideProgressPop(pgd);
-                ChangeActivity.toActivity(activity, RefreshWifiActivity.class, false, true, false, 0);
-            }
-
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                OtherUtils.hideProgressPop(pgd);
-                ChangeActivity.toActivity(activity, RefreshWifiActivity.class, false, true, false, 0);
-            }
+        // 判断wlanState标记位
+        boolean is2P4_on = apbean_2P4.getApStatus() == Cons.ON;
+        boolean is5G_on = apbean_5G.getApStatus() == Cons.ON;
+        boolean isWlanOn = is2P4_on || is5G_on;// 任意一个打开即可
+        // 提交
+        WlanOnOffHelper wloo = new WlanOnOffHelper();
+        wloo.setOnErrorListener(attr -> {
+            Logger.t("ma_wifi").e("set wlanOnOrOff error:" + attr.getMessage());
+            OtherUtils.hideProgressPop(pgd);
+            showErrorUi(ERROR_UI);
         });
+        wloo.setOnResultErrorListener(attr -> {
+            Logger.t("ma_wifi").e("set wlanOnOrOff error:" + attr.getMessage());
+            OtherUtils.hideProgressPop(pgd);
+            showErrorUi(ERROR_UI);
+        });
+        wloo.setOnSetWlanOffSuccessListener(attr -> {
+            Logger.t("ma_wifi").v("set wlanOff success");
+            OtherUtils.hideProgressPop(pgd);
+            OtherUtils.setWifiActive(activity, false);
+            finish();
+        });
+        wloo.setOnSetWlanOnSuccessListener(attr -> {
+            Logger.t("ma_wifi").v("set wlanOn success");
+            // TOAT: 把resultMW转换成Y900的制式
+            WlanSettingForY900 wlY900 = MWY900Tool.transferMWToY900(resultMW);
+            API.get().setWlanSettingsForY900(wlY900, new MySubscriber() {
+                @Override
+                protected void onSuccess(Object result) {
+                    Logger.t("ma_wifi").v("set wifisetting success");
+                    OtherUtils.hideProgressPop(pgd);
+                    OtherUtils.setWifiActive(activity, false);
+                    finish();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Logger.t("ma_wifi").e("set wifisetting error:" + e.getMessage());
+                    OtherUtils.hideProgressPop(pgd);
+                    ChangeActivity.toActivity(activity, RefreshWifiActivity.class, false, true, false, 0);
+                }
+
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    Logger.t("ma_wifi").e("set wifisetting error:" + error.getMessage());
+                    OtherUtils.hideProgressPop(pgd);
+                    ChangeActivity.toActivity(activity, RefreshWifiActivity.class, false, true, false, 0);
+                }
+            });
+        });
+        if (isWlanOn) {
+            wloo.on();
+        } else {
+            wloo.off();
+        }
     }
 
     /**
@@ -491,10 +558,31 @@ public class SettingwifiRxActivity extends BaseRxActivity {
     /**
      * 显示错误的界面并隐藏Done按钮
      */
-    private void showErrorUi() {
+    private void showErrorUi(int flag) {
+        // 隐藏等待界面
         stopWait();
-        rlWifisettingError.setVisibility(View.VISIBLE);// 显示错误的界面
-        tvWifisettingDone.setVisibility(View.GONE);// 隐藏Done按钮
+        // 隐藏其他界面
+        if (rlWifisettingError != null) {
+            rlWifisettingError.setVisibility(flag == ERROR_UI ? View.VISIBLE : View.GONE);// 错误界面
+        }
+
+        if (rlWifisettingNotChangeWifi != null) {
+            rlWifisettingNotChangeWifi.setVisibility(flag == NOTCHANGE_UI ? View.VISIBLE : View.GONE);// 不能修改视图
+        }
+        if (tvWifisettingDone != null) {
+            tvWifisettingDone.setVisibility(View.GONE);// Done按钮
+        }
+    }
+
+    /**
+     * 显示正常的界面
+     */
+    private void showNormalUi() {
+        // 隐藏等待界面
+        stopWait();
+        rlWifisettingError.setVisibility(View.GONE);
+        rlWifisettingNotChangeWifi.setVisibility(View.GONE);
+        tvWifisettingDone.setVisibility(View.VISIBLE);
     }
 
     /**

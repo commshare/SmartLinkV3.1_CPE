@@ -1,6 +1,7 @@
 package com.alcatel.smartlinkv3.ui.view;
 
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +23,9 @@ import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.common.ENUM.EnumDeviceCheckingStatus;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.helper.SystemInfoHelper;
 import com.alcatel.smartlinkv3.rx.ui.SettingwifiRxActivity;
+import com.alcatel.smartlinkv3.rx.ui.SettingwifiRxY900Activity;
 import com.alcatel.smartlinkv3.ui.activity.SettingAccountActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingBackupRestoreActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingDeviceActivity;
@@ -31,6 +34,8 @@ import com.alcatel.smartlinkv3.ui.activity.SettingNewAboutActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingPowerSavingActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingShareActivity;
 import com.alcatel.smartlinkv3.ui.activity.SettingUpgradeActivity;
+import com.alcatel.smartlinkv3.ui.activity.SmartLinkV3App;
+import com.alcatel.smartlinkv3.utils.OtherUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,10 +199,23 @@ public class ViewSetting extends BaseViewImpl {
     }
 
     private void goToWifiSettingPage() {
-        // 跳转到wifi设置界面
-        // Intent intent = new Intent(m_context, SettingWifiActivity.class);
-        Intent intent = new Intent(m_context, SettingwifiRxActivity.class);
-        m_context.startActivity(intent);
+        ProgressDialog pgd = OtherUtils.showProgressPop(m_context);
+        SystemInfoHelper sf = new SystemInfoHelper(SmartLinkV3App.getInstance());
+        sf.setOnNormalListener(attr -> pgd.dismiss());
+        sf.setOnErrorListener(attr -> toast(R.string.error_info));
+        sf.setOnResultErrorListener(attr -> {
+            Intent intent = new Intent(m_context, SettingwifiRxActivity.class);
+            m_context.startActivity(intent);
+        });
+        sf.setOnNewVersionListener(attr -> {
+            Intent intent = new Intent(m_context, SettingwifiRxActivity.class);
+            m_context.startActivity(intent);
+        });
+        sf.setOnOldVersionListener(attr -> {
+            Intent intent = new Intent(m_context, SettingwifiRxY900Activity.class);
+            m_context.startActivity(intent);
+        });
+        sf.get();
     }
 
     private void goToShareSettingPage() {

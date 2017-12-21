@@ -37,7 +37,7 @@ import butterknife.Unbinder;
  * Created by qianli.ma on 2017/11/2 0002.
  */
 @SuppressLint("ValidFragment")
-public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
+public class SettingwifiRx5GY900Fragment extends BaseSettingwifiRxFragment {
 
     @BindView(R.id.iv_wlan_status)
     ImageView ivWlanStatus;
@@ -77,7 +77,7 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
 
     private View inflate;
 
-    private WlanResult.APListBean ap = SettingwifiRxActivity.apbean_5G;// 从静态读取AP
+    private WlanResult.APListBean ap = SettingwifiRxY900Activity.apbean_5G;// 从静态读取AP
     private PsdBean psdBean = new PsdBean();// 缓存WEP|WPA的初始化值
     private boolean isPsdVisible = false;// 密码是否可见(默认不可见false)
     private String wifipassword;
@@ -304,7 +304,7 @@ public class SettingwifiRx5GFragment extends BaseSettingwifiRxFragment {
             encrytionMode = ap.getSecurityMode() == Conn.WEP ? ap.getWepType() : ap.getWpaType();
             ap.setSecurityMode(Conn.disable);// 对AP赋值
             // 此处应为恢复密码默认值---> 根据CTS的要求,此处恢复密码时
-            // (此处已经由SettingWifiRxActivity@method:uploadWlanSetting()进行上传时规避处理)
+            // (此处已经由SettingWifiRxY900Activity@method:uploadWlanSetting()进行上传时规避处理)
             // reBackKey(ap.getSecurityMode());// 该方法不在此调用
 
         } else {/* 初始的安全策略为无效状态 */

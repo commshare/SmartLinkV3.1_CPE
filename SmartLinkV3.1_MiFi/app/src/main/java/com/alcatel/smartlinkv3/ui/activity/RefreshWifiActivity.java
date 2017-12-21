@@ -27,6 +27,7 @@ import com.alcatel.smartlinkv3.rx.ui.LoginRxActivity;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 import com.alcatel.smartlinkv3.utils.TimerHelper;
+import com.orhanobut.logger.Logger;
 
 public class RefreshWifiActivity extends BaseRxActivity implements OnClickListener {
     private ImageView m_connectImage = null;
@@ -40,6 +41,7 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.t("ma_wifi").v(getClass().getSimpleName());
         OtherUtils.setWifiActive(this, true);// 开启wifi
         clearAllContext();// 清空所有Activity(除当前)
         setContentView(R.layout.activity_refresh);
@@ -65,7 +67,7 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
                     API.get().getLoginState(new MySubscriber<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
-                            System.out.println("loginStateTimer to login success");
+                            Logger.t("ma_wifi").v(getClass().getSimpleName() + ":" + "loginStateTimer");
                             ChangeActivity.toActivity(RefreshWifiActivity.this, LoginRxActivity.class, false, true, false, 0);
                         }
 

@@ -23,7 +23,7 @@ import com.alcatel.smartlinkv3.business.sharing.SambaSettings;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.business.system.Features;
 import com.alcatel.smartlinkv3.business.system.RestoreError;
-import com.alcatel.smartlinkv3.business.system.SystemInfo;
+import com.alcatel.smartlinkv3.business.system.SystemInfoForY900;
 import com.alcatel.smartlinkv3.business.system.SystemStatus;
 import com.alcatel.smartlinkv3.business.update.DeviceNewVersionInfo;
 import com.alcatel.smartlinkv3.business.update.DeviceUpgradeStateInfo;
@@ -203,7 +203,7 @@ public class BusinessMannager {
         return features;
     }
 
-    public SystemInfo getSystemInfo() {
+    public SystemInfoForY900 getSystemInfo() {
         return m_systemManager.getSystemInfoModel();
     }
 

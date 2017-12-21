@@ -117,6 +117,7 @@
                 android:contentDescription="@string/setting_device" />
 
             <FrameLayout
+                android:visibility="gone"
                 android:id="@+id/device_power_saving"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -191,7 +191,7 @@ public class ENUM {
 	 */
 
     public static enum NetworkType {
-        No_service, GPRS, EDGE, HSPA, HSUPA, UMTS, HSPA_PLUS, DC_HSPA_PLUS, LTE, UNKNOWN;
+        No_service, GPRS, EDGE, HSPA, HSUPA, UMTS, HSPA_PLUS, DC_HSPA_PLUS, LTE, LTE_PLUS, WCDMA, CDMA, GSM, UNKNOWN;
 
         public static NetworkType build(int nState) {
             if (nState == 0) {
@@ -212,9 +212,17 @@ public class ENUM {
                 return DC_HSPA_PLUS;
             } else if (nState == 8) {
                 return LTE;
-            } else {
-                return UNKNOWN;
+            } else if (nState == 9) {
+                return LTE_PLUS;
+            } else if (nState == 10) {
+                return WCDMA;
+            } else if (nState == 11) {
+                return CDMA;
+            } else if (nState == 12) {
+                return GSM;
             }
+            return UNKNOWN;
+
         }
     }
 

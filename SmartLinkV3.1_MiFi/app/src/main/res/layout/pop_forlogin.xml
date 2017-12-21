@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent">
+    android:background="@drawable/bg_pop_conner">
 
     <com.zhy.android.percent.support.PercentRelativeLayout
         android:layout_width="match_parent"
@@ -50,23 +50,24 @@
 
             <TextView
                 android:id="@+id/tv_pop_forceLogin_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/cancel"
                 android:textColor="@color/color_deep_grey"
-                app:layout_widthPercent="50%w" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_pop_forceLogin_ok"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/ok"
                 android:textColor="@color/blue_dark_btn"
-                android:textStyle="bold"
-                app:layout_widthPercent="50%w" />
+                android:textStyle="bold" />
 
         </com.zhy.android.percent.support.PercentLinearLayout>
 

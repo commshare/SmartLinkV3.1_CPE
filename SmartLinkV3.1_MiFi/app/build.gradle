@@ -15,8 +15,8 @@ android {
         applicationId "com.alcatel.smartlinkv3"
         minSdkVersion 18
         targetSdkVersion 25
-        versionName '3.3.7'
-        versionCode 34
+        versionName '3.5.0'
+        versionCode 35
     }
 
     compileOptions {
@@ -98,4 +98,6 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.39'
     compile 'com.alibaba:fastjson:1.1.64.android'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.orhanobut:logger:2.1.1'
+    compile 'com.github.ikidou:FragmentBackHandler:2.1'
 }

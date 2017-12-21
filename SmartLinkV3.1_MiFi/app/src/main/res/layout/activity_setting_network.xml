@@ -142,21 +142,6 @@
         android:background="@color/setting_background_color"
         android:orientation="vertical">
 
-        <!-- waitting -->
-        <RelativeLayout
-            android:id="@+id/waiting_progressbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null">
-
-            <ProgressBar
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_centerInParent="true"
-                android:indeterminateDrawable="@drawable/progerss_blue"
-                android:visibility="visible" />
-        </RelativeLayout>
-
         <!-- Network panel -->
         <LinearLayout
             android:id="@+id/level_one_menu"
@@ -362,6 +347,27 @@
                 android:textSize="@dimen/setting_name_size_s" />
 
         </RadioGroup>
+
+        <!-- waitting -->
+        <RelativeLayout
+            android:id="@+id/waiting_progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.5"
+                android:background="@color/white" />
+
+            <ProgressBar
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/progerss_blue"
+                android:visibility="visible" />
+        </RelativeLayout>
 
     </FrameLayout>
 </com.zhy.android.percent.support.PercentRelativeLayout>

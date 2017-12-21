@@ -101,7 +101,7 @@ public class HttpSystem {
 	
 	public static class GetSystemInfoResponse extends BaseResponse
     {
-		private SystemInfo m_systemInfo;
+		private SystemInfoForY900 m_systemInfo;
         
         public GetSystemInfoResponse(IHttpFinishListener callback) 
         {
@@ -112,12 +112,12 @@ public class HttpSystem {
         protected void parseContent(String strJsonResult) 
         {
         	Gson gson = new Gson();
-        	m_systemInfo = gson.fromJson(strJsonResult, SystemInfo.class);
+        	m_systemInfo = gson.fromJson(strJsonResult, SystemInfoForY900.class);
         }
 
         @SuppressWarnings("unchecked")
 		@Override
-        public SystemInfo getModelResult() 
+        public SystemInfoForY900 getModelResult() 
         {
              return m_systemInfo;
         }

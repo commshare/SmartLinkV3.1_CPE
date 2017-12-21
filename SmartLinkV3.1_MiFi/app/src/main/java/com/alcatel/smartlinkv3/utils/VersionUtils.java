@@ -21,7 +21,6 @@ public class VersionUtils {
     public static boolean isOldVersion(String currentVersion) {
         boolean isOld = false;
         List<String> oldVersions = Arrays.asList(VersionUtils.oldVersion);
-        List<String> newVersions = Arrays.asList(VersionUtils.newVersion);
         currentVersion = currentVersion.toLowerCase();
         // 判断旧版本
         for (String olds : oldVersions) {
@@ -30,15 +29,26 @@ public class VersionUtils {
                 break;
             }
         }
-        // 判断新版本
-        for (String news : newVersions) {
+        return isOld;
+    }
+    
+    /**
+     * 是否为新版本
+     *
+     * @param currentVersion
+     * @return
+     */
+    public static boolean isNewVersion(String currentVersion) {
+        boolean isNew = false;
+        List<String> newVersion = Arrays.asList(VersionUtils.newVersion);
+        currentVersion = currentVersion.toLowerCase();
+        // 判断旧版本
+        for (String news : newVersion) {
             if (currentVersion.contains(news)) {
-                isOld = false;
-            } else {
-                isOld = true;
+                isNew = true;
                 break;
             }
         }
-        return isOld;
+        return isNew;
     }
 }

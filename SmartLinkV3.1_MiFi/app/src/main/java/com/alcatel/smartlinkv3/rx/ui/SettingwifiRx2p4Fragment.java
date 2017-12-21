@@ -73,6 +73,8 @@ public class SettingwifiRx2p4Fragment extends BaseSettingwifiRxFragment {
     PercentRelativeLayout rlEncrytion;
     Unbinder unbinder;
 
+    public static EditText et2P4Gssid;
+
     private View inflate;
 
     private WlanResult.APListBean ap = SettingwifiRxActivity.apbean_2P4;// 从静态读取AP
@@ -90,6 +92,7 @@ public class SettingwifiRx2p4Fragment extends BaseSettingwifiRxFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflate = View.inflate(getActivity(), R.layout.fragment_wifirx, null);
         unbinder = ButterKnife.bind(this, inflate);
+        et2P4Gssid = etSsid;
         initPsd();
         initView();
         return inflate;

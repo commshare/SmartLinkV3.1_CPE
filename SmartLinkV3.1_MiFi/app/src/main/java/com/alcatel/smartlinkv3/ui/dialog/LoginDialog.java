@@ -502,7 +502,7 @@ public class LoginDialog implements OnClickListener, OnKeyListener, TextWatcher 
         data.addParam("user_name", USER_NAME);
         data.addParam("password", m_password);
         if (SmartLinkV3App.getInstance().getIsforcesLogin()) {
-            Logs.v("ma_login", "forceLogin");
+            Logs.v("ma_login", "toLogin");
             BusinessMannager.getInstance().sendRequestMessage(MessageUti.USER_FORCE_LOGIN_REQUEST, data);
             closeDialog();
             if (call == null) {

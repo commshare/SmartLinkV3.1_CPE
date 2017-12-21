@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android"> 
-	<item android:id="@android:id/progress"  > 
-	    <clip android:clipOrientation="horizontal"
-	        android:gravity="end|start"
-	        android:drawable="@drawable/battery_progress_data"
-	        >
-	    </clip> 
-	</item> 
-      
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@android:id/background"
+        android:height="37dp"
+        android:drawable="@drawable/battery_progress_bg">
+    </item>
+
+    <item
+        android:id="@android:id/secondaryProgress"
+        android:height="37dp">
+        <clip
+            android:clipOrientation="horizontal"
+            android:drawable="@drawable/battery_progress_data"
+            android:gravity="end">
+        </clip>
+    </item>
+
+    <item
+        android:id="@android:id/progress"
+        android:height="37dp">
+        <clip
+            android:clipOrientation="horizontal"
+            android:drawable="@drawable/battery_progress_data"
+            android:gravity="end">
+        </clip>
+    </item>
+
 </layer-list> 
