@@ -31,6 +31,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.Constants;
 import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -150,11 +151,12 @@ public class LoginRxActivity extends BaseActivityWithBack {
         new CheckBoard() {
             @Override
             public void successful() {
+                Logger.t("ma_login").v("startLogin");
                 OtherUtils otherUtils = new OtherUtils();
                 otherUtils.setOnSwVersionListener(needToEncrypt -> toLogin(needToEncrypt));
                 otherUtils.getDeviceSwVersion();
             }
-        }.checkBoard(this, LoginRxActivity.class, RefreshWifiRxActivity.class);
+        }.checkBoard(this, RefreshWifiRxActivity.class, RefreshWifiRxActivity.class);
     }
 
     /**

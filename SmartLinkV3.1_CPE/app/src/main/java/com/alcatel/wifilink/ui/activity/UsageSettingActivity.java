@@ -680,15 +680,15 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 	}
 	
 	private long megabyte2byte(long megabyte) {
-		return megabyte * 1024 * 1024;
+		return megabyte * 1024l * 1024l;
 	}
 	
 	private long gegabyte2byte(double gegabyte) {
-		return (long) (gegabyte * 1024 * 1024 * 1024);
+		return (long) (gegabyte * 1024l * 1024l * 1024l);
 	}
 
 	private long byte2megabyte(long byteV) {
-		return byteV / (1024 * 1024);
+		return byteV / (1024l * 1024l);
 	}
 	
 	private float byte2gegabyte(long byteV) {

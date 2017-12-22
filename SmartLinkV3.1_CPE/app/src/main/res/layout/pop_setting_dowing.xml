@@ -15,7 +15,7 @@
         android:text="@string/download_text_dling"
         android:textColor="@color/black"
         app:layout_marginTopPercent="3%sh"
-        app:layout_textSizePercent="3%sh" />
+        app:layout_textSizePercent="2.7%sh" />
 
     <TextView
         android:id="@+id/tv_pop_setting_download_per"
@@ -23,10 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_10dip"
         android:layout_toEndOf="@id/tv_pop_setting_download_tip"
-        android:text="0%s"
+        android:text="0%"
         android:textColor="@color/black"
         app:layout_marginTopPercent="3%sh"
-        app:layout_textSizePercent="3%sh" />
+        app:layout_textSizePercent="2.7%sh" />
 
     <!-- 进度条 -->
     <com.daimajia.numberprogressbar.NumberProgressBar
@@ -38,7 +38,7 @@
         app:layout_marginTopPercent="3%sh"
         app:layout_widthPercent="80%sw"
 
-        app:progress_current="10"
+        app:progress_current="0"
         app:progress_max="100"
 
         app:progress_reached_bar_height="5dp"
@@ -61,7 +61,7 @@
         android:gravity="center"
         android:text="@string/cancel"
         app:layout_marginTopPercent="5%sh"
-        app:layout_textSizePercent="3.5%sh"
+        app:layout_textSizePercent="2.7%sh"
         app:layout_widthPercent="60%sw" />
 
     <View

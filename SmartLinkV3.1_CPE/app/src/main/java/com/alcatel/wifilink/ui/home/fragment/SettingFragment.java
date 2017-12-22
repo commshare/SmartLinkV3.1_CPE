@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -32,6 +33,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
+import com.alcatel.wifilink.model.update.DeviceUpgradeState;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
@@ -134,6 +136,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     private String noSimcard;
     private String detected;
     private String initing;
+    private String perText;
+    private ImageView mFirmwareUpgrade_dot;
+    private int upgrade_Temp = 0;// 临时记录升级失效的次数
 
     @Nullable
     @Override
@@ -155,6 +160,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         noSimcard = getString(R.string.home_no_sim);
         detected = getString(R.string.Home_SimCard_Detected);
         initing = getString(R.string.home_initializing);
+        perText = getString(R.string.usage_setting_usagealertunit);
     }
 
     private void initSome() {
@@ -204,14 +210,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void resetUi() {
-        if (activity != null) {
-            activity.tabFlag = Cons.TAB_SETTING;
-            activity.llNavigation.setVisibility(View.VISIBLE);
-            activity.rlBanner.setVisibility(View.VISIBLE);
-        }else {
-            ((HomeRxActivity)getActivity()).tabFlag = Cons.TAB_SETTING;
-            ((HomeRxActivity)getActivity()).llNavigation.setVisibility(View.VISIBLE);
-            ((HomeRxActivity)getActivity()).rlBanner.setVisibility(View.VISIBLE);
+        if (getActivity() != null) {
+            ((HomeRxActivity) getActivity()).tabFlag = Cons.TAB_SETTING;
+            ((HomeRxActivity) getActivity()).llNavigation.setVisibility(View.VISIBLE);
+            ((HomeRxActivity) getActivity()).rlBanner.setVisibility(View.VISIBLE);
+        } else {
+            ((HomeRxActivity) getActivity()).tabFlag = Cons.TAB_SETTING;
+            ((HomeRxActivity) getActivity()).llNavigation.setVisibility(View.VISIBLE);
+            ((HomeRxActivity) getActivity()).rlBanner.setVisibility(View.VISIBLE);
         }
     }
 
@@ -224,7 +230,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
     private void startTimer() {
         if (checkTimer == null) {
-            checkTimer = new TimerHelper(activity) {
+            checkTimer = new TimerHelper(getActivity()) {
                 @Override
                 public void doSomething() {
                     Logger.v("ma_check:" + "settingfragment--> timer");
@@ -248,6 +254,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         mSharingService = (RelativeLayout) m_view.findViewById(R.id.setting_sharing_service);
         mLanguage = (RelativeLayout) m_view.findViewById(R.id.setting_language);
         mFirmwareUpgrade = (RelativeLayout) m_view.findViewById(R.id.setting_firmware_upgrade);
+        mFirmwareUpgrade_dot = (ImageView) m_view.findViewById(R.id.iv_setting_firmware_upgrade_tipdot);// 升级小点
         mRestart = (RelativeLayout) m_view.findViewById(R.id.setting_restart);
         mBackup = (RelativeLayout) m_view.findViewById(R.id.setting_backup);
         mAbout = (RelativeLayout) m_view.findViewById(R.id.setting_about);
@@ -295,7 +302,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 if (isSharingSupported) {
                     goToShareSettingPage();
                 } else {
-                    ToastUtil_m.show(activity, getString(R.string.setting_not_support_sharing_service));
+                    ToastUtil_m.show(getActivity(), getString(R.string.setting_not_support_sharing_service));
                 }
                 break;
             case R.id.setting_language:// 进入语言设置
@@ -309,7 +316,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 break;
             case R.id.setting_backup:// 备份配置
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
-                    verifyStoragePermissions(activity);
+                    verifyStoragePermissions(getActivity());
                 }
                 popDialogFromBottom(Backup_Restore);
                 break;
@@ -325,32 +332,35 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      * U1.点击了升级
      */
     private void clickUpgrade() {
+        Logger.t("ma_upgrade").v("SettingFragment.clickUpgrade");
         FirmUpgradeHelper fh = new FirmUpgradeHelper(getActivity(), true);
         fh.setOnNoNewVersionListener(this::popversion);
-        fh.setOnNewVersionListener(this::popversion);
+        fh.setOnNewVersionListener(attr -> popversion(attr, null));
         fh.checkNewVersion();
     }
 
     /**
      * U2.弹窗(有新版本 | 没有新版本)
      *
-     * @param attr
+     * @param deviceNewVersion
      */
-    private void popversion(DeviceNewVersion attr) {
+    private void popversion(DeviceNewVersion deviceNewVersion, SystemInfo systemInfo) {
+        Logger.t("ma_upgrade").v("get New version --> popversion()");
         upgradeTipDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);// 升级提示
-        // 1.获取状态
-        boolean noNewVersion = attr.getState() == Cons.NO_NEW_VERSION;
+        // 1.获取状态 ( NO_NEW_VERSION || CHECK_ERROR 均为没有版本可以升级 )
+        boolean noNewVersion = deviceNewVersion.getState() == Cons.NO_NEW_VERSION || deviceNewVersion.getState() == Cons.CHECK_ERROR;
         // 2.显示弹窗
         Drawable pop_bg = getResources().getDrawable(R.drawable.bg_pop_conner);
-        View inflate = View.inflate(activity, R.layout.pop_setting_upgrade_checkversion, null);
-        ScreenSize.SizeBean size = ScreenSize.getSize(activity);
+        View inflate = View.inflate(getActivity(), R.layout.pop_setting_upgrade_checkversion, null);
+        ScreenSize.SizeBean size = ScreenSize.getSize(getActivity());
         int width = (int) (size.width * 0.85f);
-        int height = (int) (size.height * 0.19f);
+        int height = (int) (size.height * 0.21f);
         // 3.修改弹窗属性信息
         TextView versionName = (TextView) inflate.findViewById(R.id.tv_pop_setting_rx_upgrade_noNewVersion_version);
         TextView ok = (TextView) inflate.findViewById(R.id.tv_pop_setting_rx_upgrade_ok);
         // 3.1.同上
-        versionName.setText(noNewVersion ? attr.getVersion() : attr.getVersion() + " " + getString(R.string.available));
+        Logger.t("ma_upgrade").v("version:" + deviceNewVersion.getVersion());
+        versionName.setText(noNewVersion ? systemInfo.getSwVersion() : deviceNewVersion.getVersion() + " " + getString(R.string.available));
         ok.setText(noNewVersion ? getString(R.string.ok) : getString(R.string.setting_upgrade));
         ok.setOnClickListener(v -> {
             // 版本弹窗消隐
@@ -371,32 +381,35 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 upgradeTipDialog.show();
             }
         });
-        pop_noNewVersion = new PopupWindows(activity, inflate, width, height, true, pop_bg);
+        pop_noNewVersion = new PopupWindows(getActivity(), inflate, width, height, true, pop_bg);
     }
 
     /**
      * U3.触发FOTA下载
      */
     private void beginDownLoadFOTA() {
+        Logger.t("ma_upgrade").v("SettingFragment.beginDownLoadFOTA");
         isDownloading = true;
         FirmUpgradeHelper fuh = new FirmUpgradeHelper(getActivity(), false);
         fuh.setOnErrorListener(attr -> {
+            Logger.t("ma_upgrade").v("SettingFragment.setOnErrorListener");
             toast(R.string.connect_failed);
             isDownloading = false;
         });
         fuh.setOnResultErrorListener(attr -> {
+            Logger.t("ma_upgrade").v("SettingFragment.setOnResultErrorListener");
             toast(R.string.connect_failed);
             isDownloading = false;
         });
         // 触发成功
         fuh.setOnSetFOTADownSuccessListener(attr -> {
-
+            Logger.t("ma_upgrade").v("SettingFragment.setOnSetFOTADownSuccessListener");
             /* 1.显示进度弹窗 */
             Drawable pop_bg = getResources().getDrawable(R.drawable.bg_pop_conner);
-            View v = View.inflate(activity, R.layout.pop_setting_dowing, null);
-            ScreenSize.SizeBean size = ScreenSize.getSize(activity);
+            View v = View.inflate(getActivity(), R.layout.pop_setting_dowing, null);
+            ScreenSize.SizeBean size = ScreenSize.getSize(getActivity());
             int width = (int) (size.width * 0.85f);
-            int height = (int) (size.height * 0.21f);
+            int height = (int) (size.height * 0.24f);
             RelativeLayout rl = (RelativeLayout) v.findViewById(R.id.rl_pop_setting_download_all);
             rl.setOnClickListener(null);
             TextView per = (TextView) v.findViewById(R.id.tv_pop_setting_download_per);
@@ -419,15 +432,33 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 fuh1.stopUpgrade();
             });
 
+            Logger.t("ma_upgrade").v("SettingFragment.downTimer.start()");
             /* 2.启动定时器 */
             UpgradeHelper uh = new UpgradeHelper(getActivity(), false);
             uh.setOnErrorListener(attr1 -> downError(R.string.setting_upgrade_get_update_state_failed));
             uh.setOnResultErrorListener(attr1 -> downError(R.string.setting_upgrade_get_update_state_failed));
-            uh.setOnNoStartUpdateListener(attr1 -> per.setText(String.valueOf(attr1.getProcess())));
-            uh.setOnUpdatingListener(attr1 -> per.setText(String.valueOf(attr1.getProcess())));
+            uh.setOnNoStartUpdateListener(attr1 -> {
+                per.setText(String.valueOf(attr1.getProcess() + perText));
+                upgrade_Temp++;
+                if (upgrade_Temp > 20) {// 如果断连次数已经达到了1分钟(20次)
+                    upgrade_Temp = 0;
+                    stopDownTimerAndPop();// 停止定时器
+                    downError(R.string.setting_upgrade_get_update_state_failed);// 提示
+                }
+            });
+            uh.setOnUpgradeStateNormalListener(attr1 -> {
+                Log.i("ma_upgrade", "upgrade state: " + attr1.getStatus() + "");
+                Log.i("ma_upgrade", "upgrade process: " + attr1.getProcess() + "");
+            });
+            uh.setOnUpdatingListener(attr1 -> {
+                per.setText(String.valueOf(attr1.getProcess() + perText));// 显示百分比
+                progressBar.setProgress(attr1.getProcess());// 进度条显示进度
+            });
             uh.setOnCompleteListener(attr1 -> {
-                // 2.1.显示进度为100%
-                per.setText(String.valueOf(attr1.getProcess()));
+                // TOAT: 测试升级步骤
+                // 2.1.显示进度
+                per.setText(String.valueOf("100%"));
+                progressBar.setProgress(100);// 进度条显示进度
                 // 2.2.停止定时器 + 进度条消隐
                 stopDownTimerAndPop();
                 // 2.3.修改标记位
@@ -442,7 +473,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 }
             };
             downTimer.start(3000);
-            pop_downloading = new PopupWindows(activity, v, width, height, false, pop_bg);
+            pop_downloading = new PopupWindows(getActivity(), v, width, height, false, pop_bg);
         });
         fuh.triggerFOTA();// 触发FOTA下载
     }
@@ -451,6 +482,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      * U4.触发硬件底层进行升级操作
      */
     private void triggerFOTAUpgrade() {
+        Logger.t("ma_upgrade").v("triggerFOTAUpgrade");
         boradUpgradeDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)// 升级提示
                                      .setTitleText(getString(R.string.setting_upgrade))// title
                                      .setContentText(getString(R.string.setting_upgrade_firmware_warning))// content
@@ -468,10 +500,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      * 正式开始升级
      */
     private void startDeviceUpgrade() {
+        isDownloading = true;
+        Logger.t("ma_upgrade").v("startDeviceUpgrade");
         FirmUpgradeHelper fuh = new FirmUpgradeHelper(getActivity(), false);
-        fuh.setOnErrorListener(attr -> toast(R.string.setting_upgrade_start_update_failed));
-        fuh.setOnResultErrorListener(attr -> toast(R.string.setting_upgrade_start_update_failed));
+        fuh.setOnErrorListener(attr -> downError(R.string.setting_upgrade_start_update_failed));
+        fuh.setOnResultErrorListener(attr -> downError(R.string.setting_upgrade_start_update_failed));
         fuh.setOnStartUpgradeListener(attr -> {
+            Logger.t("ma_upgrade").v("setOnStartUpgradeListener");
             toast(R.string.device_will_restart_later);
             OtherUtils.showProgressPop(getActivity(), getString(R.string.updating));
         });
@@ -488,7 +523,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         if (resId == -1) {
             toast(R.string.connect_failed);
         } else {
-            getString(resId);
+            toast(resId);
         }
         // 4.恢复标记位
         isDownloading = false;
@@ -496,8 +531,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
 
     private void popDialogFromBottom(int itemType) {
-        PopupWindow popupWindow = new PopupWindow(activity);
-        View view = View.inflate(activity, R.layout.dialog_from_bottom, null);
+        PopupWindow popupWindow = new PopupWindow(getActivity());
+        View view = View.inflate(getActivity(), R.layout.dialog_from_bottom, null);
 
         TextView mFirstTxt = (TextView) view.findViewById(R.id.first_txt);
         TextView mSecondTxt = (TextView) view.findViewById(R.id.second_txt);
@@ -531,15 +566,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         });
         mCancelTxt.setOnClickListener(v -> {
             popupWindow.dismiss();
-            backgroundAlpha(activity, 1f);
+            backgroundAlpha(getActivity(), 1f);
         });
-        popupWindow.setOnDismissListener(() -> backgroundAlpha(activity, 1f));
+        popupWindow.setOnDismissListener(() -> backgroundAlpha(getActivity(), 1f));
         popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(getResources().getDrawable(R.color.white));
-        backgroundAlpha(activity, 0.5f);
+        backgroundAlpha(getActivity(), 0.5f);
         popupWindow.setAnimationStyle(R.style.dialogStyle);
         popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
     }
@@ -587,9 +622,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
     private void showBackupSuccessDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.back_up_settings);
-        EditText editText = new EditText(activity);
+        EditText editText = new EditText(getActivity());
         LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LayoutParams.setMargins(20, 0, 20, 0);
         editText.setLayoutParams(LayoutParams);
@@ -598,7 +633,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
         builder.setPositiveButton(R.string.backup, (dialog, which) -> {
             String savePath = editText.getText().toString();
-            SPUtils.getInstance(CONFIG_SPNAME, activity).put(CONFIG_FILE_PATH, savePath);
+            SPUtils.getInstance(CONFIG_SPNAME, getActivity()).put(CONFIG_FILE_PATH, savePath);
             downLoadConfigureFile(savePath);
         });
         builder.show();
@@ -630,13 +665,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
             @Override
             public void onCompleted() {
                 dismissLoadingDialog();
-                ToastUtil_m.show(activity, R.string.succeed);
+                ToastUtil_m.show(getActivity(), R.string.succeed);
             }
 
             @Override
             public void onError(Throwable e) {
                 dismissLoadingDialog();
-                ToastUtil_m.show(activity, R.string.fail);
+                ToastUtil_m.show(getActivity(), R.string.fail);
             }
 
             @Override
@@ -649,7 +684,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
 
     private void showDialogResetFactorySetting() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.reset_router);
         builder.setMessage(R.string.This_will_reset_all_settings_on_your_router_to_factory_defaults_This_action_can_not_be_undone);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -678,21 +713,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
             @Override
             protected void onSuccess(Object result) {
-                ToastUtil_m.show(activity, R.string.succeed);
+                ToastUtil_m.show(getActivity(), R.string.succeed);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onFailure() {
                 super.onFailure();
-                ToastUtil_m.show(activity, R.string.fail);
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 dismissLoadingDialog();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 super.onResultError(error);
-                ToastUtil_m.show(activity, R.string.fail);
+                ToastUtil_m.show(getActivity(), R.string.fail);
                 dismissLoadingDialog();
             }
         });
@@ -733,14 +768,14 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     public int restoreTimes = 0;
 
     private void restore() {
-        String savePath = SPUtils.getInstance(CONFIG_SPNAME, activity).getString(CONFIG_FILE_PATH);
+        String savePath = SPUtils.getInstance(CONFIG_SPNAME, getActivity()).getString(CONFIG_FILE_PATH);
         if (savePath.equals("")) {
-            ToastUtil_m.show(activity, "no backupFile");
+            ToastUtil_m.show(getActivity(), "no backupFile");
             return;
         }
         File file = new File(FileUtils.createFilePath(savePath), "configure.bin");
         if (!file.exists()) {
-            ToastUtil_m.show(activity, "No this file");
+            ToastUtil_m.show(getActivity(), "No this file");
             return;
         }
 
@@ -762,7 +797,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
             public void onCompleted() {
                 restoreTimes = 0;
                 dismissLoadingDialog();
-                ToastUtil_m.show(activity, R.string.succeed);
+                ToastUtil_m.show(getActivity(), R.string.succeed);
             }
 
             @Override
@@ -771,9 +806,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 if (restoreTimes > 12) {
                     dismissLoadingDialog();
                     if (e instanceof SocketTimeoutException) {
-                        ToastUtil_m.show(activity, R.string.succeed);
+                        ToastUtil_m.show(getActivity(), R.string.succeed);
                     } else {
-                        ToastUtil_m.show(activity, R.string.couldn_t_restore_try_again);
+                        ToastUtil_m.show(getActivity(), R.string.couldn_t_restore_try_again);
                     }
                 } else {
                     restore();
@@ -792,21 +827,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
 
     private void showSuccessDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(activity.getString(R.string.complete));
         builder.setCancelable(true);
         builder.show();
     }
 
     private void showFailedDialog(int stringId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(activity.getString(stringId));
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getActivity().getString(stringId));
         builder.setCancelable(true);
         builder.show();
     }
 
     private void showLoadingDialog() {
-        mProgressDialog = new ProgressDialog(activity);
+        mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(activity.getString(R.string.back_up_progress));
         mProgressDialog.show();
 
@@ -835,30 +870,36 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void getDeviceFWCurrentVersion() {
+        // 1.获取当前版本
         RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
             @Override
             protected void onSuccess(SystemInfo result) {
-                mDeviceVersion.setText(result.getSwVersion());
+                mDeviceVersion.setText(result.getSwVersionMain());
+                Logger.t("ma_setting").v(result.toString());
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                super.onResultError(error);
+                Logger.t("ma_upgrade").e("getDeviceFWCurrentVersion.getSystemInfo: " + error.getMessage());
             }
 
             @Override
             protected void onFailure() {
-                super.onFailure();
+                Logger.t("ma_upgrade").e("getDeviceFWCurrentVersion failed");
             }
         });
+        // 2.检测新版本
+        UpgradeHelper uh = new UpgradeHelper(getActivity(), false);
+        uh.setOnNewVersionListener(attr -> mFirmwareUpgrade_dot.setVisibility(View.VISIBLE));
+        uh.checkVersion();
     }
 
     private void showCheckingDlg() {
-        if (activity.isFinishing()) {
+        if (getActivity().isFinishing()) {
             return;
         }
         if (mCheckingDlg == null) {
-            mCheckingDlg = new ProgressDialog(activity);
+            mCheckingDlg = new ProgressDialog(getActivity());
             mCheckingDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mCheckingDlg.setMessage(getString(R.string.checking_for_update));
             mCheckingDlg.setTitle("");
@@ -871,13 +912,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void goSettingLanguagePage() {
-        Intent intent = new Intent(activity, SettingLanguageActivity.class);
+        Intent intent = new Intent(getActivity(), SettingLanguageActivity.class);
         startActivityForResult(intent, SET_LANGUAGE_REQUEST);
     }
 
     private void goToAccountSettingPage() {
         // to setting account activity
-        Intent intent = new Intent(activity, SettingAccountActivity.class);
+        Intent intent = new Intent(getActivity(), SettingAccountActivity.class);
         activity.startActivity(intent);
     }
 
@@ -886,8 +927,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void goEthernetWanConnectionPage() {
-        Intent intent = new Intent(activity, EthernetWanConnectionActivity.class);
-        activity.startActivity(intent);
+        Intent intent = new Intent(getActivity(), EthernetWanConnectionActivity.class);
+        getActivity().startActivity(intent);
     }
 
     private void goToDeviceSettingPage() {
@@ -896,9 +937,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void goToAboutSettingPage() {
-        Intent intent = new Intent(activity, AboutActivity.class);
+        Intent intent = new Intent(getActivity(), AboutActivity.class);
         intent.putExtra("upgradeStatus", upgradeStatus);
-        activity.startActivity(intent);
+        getActivity().startActivity(intent);
     }
 
     @Override
@@ -933,11 +974,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      * 停止下载定时器
      */
     public void stopDownTimerAndPop() {
-        if (downTimer != null) {
-            downTimer.stop();
-        }
         if (pop_downloading != null) {
             pop_downloading.dismiss();
+            Logger.t("ma_upgrade").v("pop dismiss");
+        }
+        if (downTimer != null) {
+            downTimer.stop();
+            Logger.t("ma_upgrade").v("downTimer stop");
         }
     }
 

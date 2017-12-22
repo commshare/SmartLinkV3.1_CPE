@@ -5,16 +5,19 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.network.RX;
-import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.BoardWanHelper;
+import com.alcatel.wifilink.rx.helper.base.SystemInfoHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by qianli.ma on 2017/12/15 0015.
@@ -204,18 +207,31 @@ public class FirmUpgradeHelper {
      * 检查新版本
      */
     private void checkNw() {
+        Logger.t("ma_upgrade").v("FirmUpgradeHelper.checkNw");
         hideDialog();
         Drawable pop_bg = activity.getResources().getDrawable(R.drawable.bg_pop_conner);
         UpgradeHelper uh = new UpgradeHelper(activity, true);
         uh.setOnResultErrorListener(attr -> toast(R.string.setting_upgrade_check_firmware_failed));
         uh.setOnErrorListener(attr -> toast(R.string.setting_upgrade_check_firmware_failed));
-        uh.setOnCheckErrorListener(attr -> toast(R.string.setting_upgrade_check_firmware_failed));
+        uh.setOnCheckErrorListener(this::getCurrentVersion);
 
         uh.setOnServiceNotAvailableListener(attr -> toast(R.string.setting_upgrade_not_available));
         uh.setOnNoConnectListener(attr -> toast(R.string.setting_upgrade_no_connection));
-        uh.setOnNoNewVersionListener(this::noNewVersionNext);
+        uh.setOnNoNewVersionListener(this::getCurrentVersion);
         uh.setOnNewVersionListener(this::newVersionNext);
         uh.checkVersion();
+    }
+
+    /**
+     * 获取当前版本号
+     */
+    private void getCurrentVersion(DeviceNewVersion deviceNewVersion) {
+        Logger.t("ma_upgrade").v("FirmUpgradeHelper.getCurrentVersion");
+        SystemInfoHelper sif = new SystemInfoHelper();
+        sif.setOnErrorListener(attr -> toast(R.string.setting_upgrade_check_firmware_failed));
+        sif.setOnResultErrorListener(attr -> toast(R.string.setting_upgrade_check_firmware_failed));
+        sif.setOnGetSystemInfoSuccessListener(systemInfo -> noNewVersionNext(deviceNewVersion, systemInfo));
+        sif.get();
     }
 
     private OnResultErrorListener onResultErrorListener;
@@ -279,7 +295,7 @@ public class FirmUpgradeHelper {
 
     // 接口OnNoNewVersionListener
     public interface OnNoNewVersionListener {
-        void noNewVersion(DeviceNewVersion attr);
+        void noNewVersion(DeviceNewVersion deviceNewVersion, SystemInfo attr);
     }
 
     // 对外方式setOnNoNewVersionListener
@@ -288,9 +304,9 @@ public class FirmUpgradeHelper {
     }
 
     // 封装方法noNewVersionNext
-    private void noNewVersionNext(DeviceNewVersion attr) {
+    private void noNewVersionNext(DeviceNewVersion deviceNewVersion, SystemInfo attr) {
         if (onNoNewVersionListener != null) {
-            onNoNewVersionListener.noNewVersion(attr);
+            onNoNewVersionListener.noNewVersion(deviceNewVersion, attr);
         }
     }
 

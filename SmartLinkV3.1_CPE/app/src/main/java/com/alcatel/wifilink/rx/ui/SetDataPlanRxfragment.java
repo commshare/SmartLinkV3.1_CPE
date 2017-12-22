@@ -319,7 +319,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         // 1.先获取一次usage-setting
         ush.setOngetSuccessListener(attr -> {
             attr.setUnit(tvmb.getCurrentTextColor() == blue_color ? Cons.GB : Cons.MB);
-            attr.setMonthlyPlan(tvmb.getCurrentTextColor() == blue_color ? num * 1024 * 1024 : num * 1024 * 1024 * 1024);
+            attr.setMonthlyPlan(tvmb.getCurrentTextColor() == blue_color ? num * 1024l * 1024l : num * 1024l * 1024l * 1024l);
             // 2.在提交usage-setting
             UsageSettingHelper ush1 = new UsageSettingHelper(getActivity());
             ush1.setOnSetSuccessListener(attr1 -> pgd.dismiss());

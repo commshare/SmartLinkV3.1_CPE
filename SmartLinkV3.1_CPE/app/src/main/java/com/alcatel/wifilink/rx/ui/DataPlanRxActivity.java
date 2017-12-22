@@ -32,6 +32,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.ScreenSize;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -114,7 +115,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
                 String usage = String.valueOf((int) aFloat);
                 etDataplanRxLimit.setText(result.getMonthlyPlan() == 0 ? "0" : usage);
                 // 设置单位
-                tvDataplanRxLimitUnit.setText(usageByte.unit);
+                tvDataplanRxLimitUnit.setText(result.getUnit() == Cons.MB ? MB : GB);
                 // 设置自动断线
                 boolean isAuto = result.getAutoDisconnFlag() == Cons.ENABLE_AUTODISCONNECT ? true : false;
                 ivDataplanRxAuto.setImageDrawable(isAuto ? switch_on : switch_off);
@@ -235,7 +236,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
     private void usageRequest() {
         String monthly_s = OtherUtils.getEdContent(etDataplanRxLimit);
         int monthly_c = Integer.valueOf(TextUtils.isEmpty(monthly_s) ? "0" : monthly_s);
-        long monthly_b = result.getUnit() == Cons.MB ? monthly_c * 1024 * 1024 : monthly_c * 1024 * 1024 * 1024;
+        long monthly_b = result.getUnit() == Cons.MB ? monthly_c * 1024l * 1024l : monthly_c * 1024l * 1024l * 1024l;
         result.setMonthlyPlan(monthly_b);
         RX.getInstant().setUsageSetting(result, new ResponseObject() {
             @Override
@@ -267,7 +268,6 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
         } else {
             // 检测是否开启了WPS模式
             checkWps();
-
         }
     }
 
@@ -308,6 +308,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
      * 显示单位弹窗
      */
     private void choseUnit() {
+        Logger.t("ma_datarx").v("unit:" + result.getUnit());
         ScreenSize.SizeBean size = ScreenSize.getSize(this);
         int width = (int) (size.width * 0.85f);
         int height = (int) (size.height * 0.18f);
@@ -317,7 +318,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
         // 初始化颜色
         boolean isMb = result.getUnit() == Cons.MB;
         mb.setTextColor(isMb ? check_color : uncheck_color);
-        gb.setTextColor(!isMb ? check_color : uncheck_color);
+        gb.setTextColor(isMb ? uncheck_color : check_color);
         mb.setOnClickListener(v -> setUnit(Cons.MB));
         gb.setOnClickListener(v -> setUnit(Cons.GB));
         pop = new PopupWindows(this, inflate, width, height, new ColorDrawable(Color.TRANSPARENT));

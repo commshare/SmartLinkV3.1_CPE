@@ -197,11 +197,11 @@ public class DataPlanActivity extends BaseActivityWithBack implements View.OnCli
      */
     private long getUnitByte(long data, int unit) {
         if (unit == Constants.UsageSetting.UNIT_MB) {
-            data = data * 1024 * 1024;
+            data = data * 1024l * 1024l;
         } else if (unit == Constants.UsageSetting.UNIT_GB) {
-            data = data * 1024 * 1024 * 1024;
+            data = data * 1024l * 1024l * 1024l;
         } else if (unit == Constants.UsageSetting.UNIT_KB) {
-            data = data * 1024;
+            data = data * 1024l;
         }
         return data;
     }

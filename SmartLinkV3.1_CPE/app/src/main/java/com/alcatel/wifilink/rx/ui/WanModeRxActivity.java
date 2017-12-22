@@ -27,6 +27,7 @@ import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -108,6 +109,7 @@ public class WanModeRxActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.t("ma_wanmode").v("wanmode oncreate");
         EventBus.getDefault().register(this);
         activity = this;
         setContentView(R.layout.activity_wan_mode_rx);
@@ -123,7 +125,8 @@ public class WanModeRxActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void getFlag(String flag) {
+    public void getFlag(String flag) {// 判断是否从向导页跳转过来的
+        Logger.t("ma_wanmode").v(flag);
         this.flag = flag;
     }
 
@@ -137,13 +140,16 @@ public class WanModeRxActivity extends AppCompatActivity {
                 WanModeRxActivity.this.result = result;
                 int wanStatus = result.getStatus();
                 if (wanStatus == Cons.CONNECTED) {
+                    Logger.t("ma_wanmode").v("wanmode CONNECTED");
                     OtherUtils.hideProgressPop(pgd);
                     MODE = result.getConnectType();
                     showCheck(MODE);// 切换到对应的选项板
                     showDetail(MODE, result);// 显示对应的参数
                 } else if (wanStatus == Cons.CONNECTING) {
+                    Logger.t("ma_wanmode").v("wanmode CONNECTING");
                     initData();
                 } else {
+                    Logger.t("ma_wanmode").v("wanmode DISCONNECTED");
                     toast(R.string.check_your_wan_cabling);
                     OtherUtils.hideProgressPop(pgd);
                 }
@@ -151,12 +157,14 @@ public class WanModeRxActivity extends AppCompatActivity {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
+                Logger.t("ma_wanmode").v("wanmode error: " + error.getMessage());
                 toast(R.string.check_your_wan_cabling);
                 OtherUtils.hideProgressPop(pgd);
             }
 
             @Override
             public void onError(Throwable e) {
+                Logger.t("ma_wanmode").v("wanmode error: " + e.getMessage());
                 toast(R.string.check_your_wan_cabling);
                 to(RefreshWifiRxActivity.class);
                 OtherUtils.hideProgressPop(pgd);
@@ -175,7 +183,7 @@ public class WanModeRxActivity extends AppCompatActivity {
             case Cons.PPPOE:
                 etPppoeAccount.setText(result.getAccount());
                 etPppoePsd.setText(result.getPassword());
-                etPppoeMtu.setText(result.getMtu());
+                etPppoeMtu.setText(String.valueOf(result.getMtu()));
                 break;
             case Cons.STATIC:
                 etStaticIpaddress.setText(result.getStaticIpAddress());

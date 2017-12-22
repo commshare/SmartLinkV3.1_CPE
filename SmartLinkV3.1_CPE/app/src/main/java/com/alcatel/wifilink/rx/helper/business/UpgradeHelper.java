@@ -2,6 +2,8 @@ package com.alcatel.wifilink.rx.helper.business;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Handler;
+import android.util.Log;
 
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
@@ -20,10 +22,12 @@ public class UpgradeHelper {
     private Activity activity;
     private boolean isShowWaiting;
     private ProgressDialog pgd;
+    private Handler handler;
 
     public UpgradeHelper(Activity activity, boolean isShowWaiting) {
         this.activity = activity;
         this.isShowWaiting = isShowWaiting;
+        handler = new Handler();
     }
 
     /**
@@ -43,9 +47,11 @@ public class UpgradeHelper {
                         noStartUpdateNext(result);
                         break;
                     case Cons.UPDATING:
+                        Log.i("ma_upgrade",result.getProcess() + "%");
                         updatingNext(result);
                         break;
                     case Cons.COMPLETE:
+                        Logger.t("ma_upgrade").i("success: " + result.getProcess() + "%");
                         completeNext(result);
                         break;
                 }
@@ -157,68 +163,82 @@ public class UpgradeHelper {
             @Override
             protected void onSuccess(Object result) {
                 // 2.在获取查询new version
-                RX.getInstant().getDeviceNewVersion(new ResponseObject<DeviceNewVersion>() {
-                    @Override
-                    protected void onSuccess(DeviceNewVersion result) {
-                        switch (result.getState()) {
-                            case Cons.CHECKING:
-                                checkingNext(result);
-                                setCheck();
-                                break;
-                            case Cons.NEW_VERSION:
-                                pgd.dismiss();
-                                newVersionNext(result);
-                                break;
-                            case Cons.NO_NEW_VERSION:
-                                pgd.dismiss();
-                                noNewVersionNext(result);
-                                break;
-                            case Cons.NO_CONNECT:
-                                pgd.dismiss();
-                                noConnectNext(result);
-                                break;
-                            case Cons.SERVICE_NOT_AVAILABLE:
-                                pgd.dismiss();
-                                serviceNotAvailableNext(result);
-                                break;
-                            case Cons.CHECK_ERROR:
-                                pgd.dismiss();
-                                checkErrorNext(result);
-                                Logger.t("ma_upgrad").v("CHECK_ERROR");
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        pgd.dismiss();
-                        Logger.t("ma_upgrad").v("getDeviceNewVersion:" + e.getMessage());
-                        errorNext(e);
-                    }
-
-                    @Override
-                    protected void onResultError(ResponseBody.Error error) {
-                        pgd.dismiss();
-                        Logger.t("ma_upgrad").v("getDeviceNewVersion:" + error.getMessage());
-                        resultErrorNext(error);
-                    }
-                });
+                getNewVersionDo();
             }
 
             @Override
             public void onError(Throwable e) {
-                pgd.dismiss();
-                Logger.t("ma_upgrad").v("setCheckNewVersion:" + e.getMessage());
+                hideDialog();
+                Logger.t("ma_upgrade").e("setCheckNewVersion:" + e.getMessage());
                 errorNext(e);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                pgd.dismiss();
-                Logger.t("ma_upgrad").v("setCheckNewVersion:" + error.getMessage());
+                hideDialog();
+                Logger.t("ma_upgrade").e("setCheckNewVersion:" + error.getMessage());
                 resultErrorNext(error);
             }
         });
+    }
+
+    /**
+     * 获取查询new version
+     */
+    private void getNewVersionDo() {
+        RX.getInstant().getDeviceNewVersion(new ResponseObject<DeviceNewVersion>() {
+            @Override
+            protected void onSuccess(DeviceNewVersion result) {
+                Logger.t("ma_upgrade").v("new version state: "+result.getState());
+                switch (result.getState()) {
+                    case Cons.CHECKING:
+                        checkingNext(result);
+                        handler.postDelayed(() -> getNewVersionDo(), 3000);
+                        break;
+                    case Cons.NEW_VERSION:
+                        hideDialog();
+                        newVersionNext(result);
+                        break;
+                    case Cons.NO_NEW_VERSION:
+                        hideDialog();
+                        noNewVersionNext(result);
+                        break;
+                    case Cons.NO_CONNECT:
+                        hideDialog();
+                        noConnectNext(result);
+                        break;
+                    case Cons.SERVICE_NOT_AVAILABLE:
+                        hideDialog();
+                        serviceNotAvailableNext(result);
+                        break;
+                    case Cons.CHECK_ERROR:
+                        hideDialog();
+                        checkErrorNext(result);
+                        Logger.t("ma_upgrade").e("CHECK_ERROR");
+                        break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                hideDialog();
+                Logger.t("ma_upgrade").e("getDeviceNewVersion:" + e.getMessage());
+                errorNext(e);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+                hideDialog();
+                Logger.t("ma_upgrade").e("getDeviceNewVersion:" + error.getMessage());
+                resultErrorNext(error);
+            }
+        });
+    }
+
+    private void hideDialog() {
+        if (pgd != null) {
+            pgd.dismiss();
+        }
     }
 
     private OnCheckErrorListener onCheckErrorListener;

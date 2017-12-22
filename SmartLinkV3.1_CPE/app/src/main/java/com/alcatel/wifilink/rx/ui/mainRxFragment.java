@@ -406,6 +406,8 @@ public class mainRxFragment extends Fragment {
         getDevice();
     }
 
+    int temp = 0;
+
     /**
      * 获取流量
      */
@@ -413,6 +415,11 @@ public class mainRxFragment extends Fragment {
         RX.getInstant().getUsageSetting(new ResponseObject<UsageSetting>() {
             @Override
             protected void onSuccess(UsageSetting result) {
+                if (temp == 0) {
+                    Logger.t("ma_usage").v("after usage: " + result.getMonthlyPlan());
+                    temp++;
+                }
+
                 // 设置已使用流量 
                 UsageHelper.Usage usedUsage = UsageHelper.getUsageByte(getActivity(), result.getUsedData());
                 tvUsedUnit.setVisibility(View.VISIBLE);

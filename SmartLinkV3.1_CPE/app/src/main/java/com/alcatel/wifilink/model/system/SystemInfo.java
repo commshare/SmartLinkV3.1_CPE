@@ -159,4 +159,9 @@ public class SystemInfo {
     public void setMacAddress5G(String MacAddress5G) {
         this.MacAddress5G = MacAddress5G;
     }
+
+    @Override
+    public String toString() {
+        return "SystemInfo{" + "\n" + " SwVersion='" + SwVersion + '\'' + "\n" + " HwVersion='" + HwVersion + '\'' + "\n" + " " + "WebUiVersion='" + WebUiVersion + '\'' + "\n" + " HttpApiVersion='" + HttpApiVersion + '\'' + "\n" + " AppVersion='" + AppVersion + '\'' + "\n" + " DeviceName='" + DeviceName + '\'' + "\n" + " IMEI='" + IMEI + '\'' + "\n" + " sn='" + sn + '\'' + "\n" + " MacAddress='" + MacAddress + '\'' + "\n" + " IMSI='" + IMSI + '\'' + "\n" + " ICCID='" + ICCID + '\'' + "\n" + " MsisdnMark=" + MsisdnMark + "\n" + " MSISDN='" + MSISDN + '\'' + "\n" + " SwVersionMain='" + SwVersionMain + '\'' + "\n" + " MacAddress5G='" + MacAddress5G + '\'' + '}';
+    }
 }

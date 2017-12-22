@@ -544,7 +544,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                 } else if (result.getUnit() == Constants.UsageSetting.UNIT_KB) {
                     unit = "KB";
                 }
-                int dataPlanByte = getDataPlanByte(result.getUnit());
+                long dataPlanByte = getDataPlanByte(result.getUnit());
                 long monthPlan = result.getMonthlyPlan() / dataPlanByte;
                 mMonthlyDataPlanText.setText(monthPlan + " " + unit);
                 mBillingDaySpinner.setSelection(result.getBillingDay());
@@ -723,7 +723,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.dialog_monthly_data_plan, null);
         final EditText monthlyNumber = (EditText) v.findViewById(R.id.monthly_number);
-        int dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
+        long dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
         long monthPlan = mUsageSetting.getMonthlyPlan() / dataPlanByte;
         monthlyNumber.setText(monthPlan + "");
         RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radiogroup_monthly_plan);
@@ -750,7 +750,7 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
                     } else if (radioButtonGb.getId() == radioGroup.getCheckedRadioButtonId()) {
                         mUsageSetting.setUnit(Constants.UsageSetting.UNIT_GB);
                     }
-                    int dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
+                    long dataPlanByte = getDataPlanByte(mUsageSetting.getUnit());
                     mUsageSetting.setMonthlyPlan((Long.parseLong(mothlyplan) * dataPlanByte));
                     setUsageSetting(mUsageSetting);
                 } else {
@@ -763,14 +763,14 @@ public class SettingNetworkActivity extends BaseActivityWithBack implements OnCl
         builder.show();
     }
 
-    private int getDataPlanByte(int unit) {
-        int dataPlanByte = 1;
+    private long getDataPlanByte(int unit) {
+        long dataPlanByte = 1;
         if (unit == Constants.UsageSetting.UNIT_MB) {
-            dataPlanByte = dataPlanByte * 1024 * 1024;
+            dataPlanByte = dataPlanByte * 1024l * 1024l;
         } else if (unit == Constants.UsageSetting.UNIT_GB) {
-            dataPlanByte = dataPlanByte * 1024 * 1024 * 1024;
+            dataPlanByte = dataPlanByte * 1024l * 1024l * 1024l;
         } else if (unit == Constants.UsageSetting.UNIT_KB) {
-            dataPlanByte = dataPlanByte * 1024;
+            dataPlanByte = dataPlanByte * 1024l;
         }
         return dataPlanByte;
     }
