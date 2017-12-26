@@ -201,7 +201,7 @@ public class SettingwifiRxY900Activity extends BaseRxActivity {
         WlanSettingY900Helper wlY900h = new WlanSettingY900Helper(this);
         wlY900h.setOnResultErrorListener(attr -> showErrorUi(ERROR_UI));
         wlY900h.setOnErrorListener(attr -> showErrorUi(ERROR_UI));
-        wlY900h.setOnWlanSettingNoramlListener(result -> {
+        wlY900h.setOnWlanSettingY900SuccessListener(result -> {
             checkPanel(wlanState, result);// 选择切换面板等操作
         });
         wlY900h.get();

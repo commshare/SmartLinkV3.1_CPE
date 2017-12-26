@@ -6,6 +6,7 @@ import com.alcatel.smartlinkv3.rx.bean.WlanSettingForY900;
 import com.alcatel.smartlinkv3.rx.tools.API;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by qianli.ma on 2017/12/19 0019.
@@ -23,11 +24,12 @@ public class WlanSettingY900Helper {
         API.get().getWlanSettingsForY900(new MySubscriber<WlanSettingForY900>() {
             @Override
             protected void onSuccess(WlanSettingForY900 result) {
-                wlansettingNormalNext(result);
+                getY900WlanSettingSuccess(result);
             }
 
             @Override
             public void onError(Throwable e) {
+                Logger.t("ma_rx").e(e.getMessage());
                 errorNext(e);
             }
 
@@ -35,7 +37,7 @@ public class WlanSettingY900Helper {
             protected void onResultError(ResponseBody.Error error) {
                 resultErrorNext(error);
             }
-        });   
+        });
     }
 
     private OnWlanSettingNoramlListener onWlanSettingNoramlListener;
@@ -46,12 +48,12 @@ public class WlanSettingY900Helper {
     }
 
     // 对外方式setOnWlanSettingNoramlListener
-    public void setOnWlanSettingNoramlListener(OnWlanSettingNoramlListener onWlanSettingNoramlListener) {
+    public void setOnWlanSettingY900SuccessListener(OnWlanSettingNoramlListener onWlanSettingNoramlListener) {
         this.onWlanSettingNoramlListener = onWlanSettingNoramlListener;
     }
 
     // 封装方法wlansettingNormalNext
-    private void wlansettingNormalNext(WlanSettingForY900 attr) {
+    private void getY900WlanSettingSuccess(WlanSettingForY900 attr) {
         if (onWlanSettingNoramlListener != null) {
             onWlanSettingNoramlListener.wlansettingNormal(attr);
         }

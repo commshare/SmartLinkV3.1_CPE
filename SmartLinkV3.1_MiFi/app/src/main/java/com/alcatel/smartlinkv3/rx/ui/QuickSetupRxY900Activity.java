@@ -27,6 +27,7 @@ import com.alcatel.smartlinkv3.utils.OtherUtils;
 import com.alcatel.smartlinkv3.utils.SPUtils;
 import com.alcatel.smartlinkv3.utils.TimerHelper;
 import com.alcatel.smartlinkv3.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class QuickSetupRxY900Activity extends BaseRxActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logs.v("ma_rx","QuickSetupRxY900Activity");
+        Logs.v("ma_rx", "QuickSetupRxY900Activity");
         setContentView(R.layout.activity_quick_setup_rx);
         ButterKnife.bind(this);
         context = this;
@@ -83,16 +84,18 @@ public class QuickSetupRxY900Activity extends BaseRxActivity {
         pdg = OtherUtils.showProgressPop(this);
         WlanSettingY900Helper wsY900 = new WlanSettingY900Helper(this);
         wsY900.setOnErrorListener(attr -> {
+            Logger.t("ma_rx").e("getWifiInfo: " + attr.getMessage());
             OtherUtils.hideProgressPop(pdg);
             toast(R.string.error_info);
             to(RefreshWifiActivity.class, true);
         });
         wsY900.setOnResultErrorListener(attr -> {
+            Logger.t("ma_rx").e("getWifiInfo result error: " + attr.getMessage());
             OtherUtils.hideProgressPop(pdg);
             toast(R.string.error_info);
             to(RefreshWifiActivity.class, true);
         });
-        wsY900.setOnWlanSettingNoramlListener(result -> {
+        wsY900.setOnWlanSettingY900SuccessListener(result -> {
             wlanResultY900 = result;
             // 隐藏进度条并读取固定安全策略数组
             OtherUtils.hideProgressPop(pdg);
@@ -100,7 +103,7 @@ public class QuickSetupRxY900Activity extends BaseRxActivity {
             // 默认为2.4G
             is2P4G = result.getWMode() != Cons._5G;
             securityMode_default = is2P4G ? result.getSecurityMode() : result.getSecurityMode_5G();
-            String securitymode = securityArray.get(securityMode_default - 1);
+            String securitymode = securityArray.get(securityMode_default - 1 < 0 ? 0 : securityMode_default - 1);
             tvWifiSecurityMode.setText(securitymode);
             // 获取SSID
             ssid_default = is2P4G ? result.getSsid() : result.getSsid_5G();
@@ -250,7 +253,7 @@ public class QuickSetupRxY900Activity extends BaseRxActivity {
      */
     private boolean isChangeWlan() {
         // 模式是否改变
-        boolean isMode = securityArray.get(securityMode_default - 1).equalsIgnoreCase(tvWifiSecurityMode.getText().toString());
+        boolean isMode = securityArray.get(securityMode_default - 1 < 0 ? 0 : securityMode_default - 1).equalsIgnoreCase(tvWifiSecurityMode.getText().toString());
         // wifi name是否改变
         boolean isSSID = ssid_default.equalsIgnoreCase(etWifiName.getText().toString());
         // wifi密码是否改变

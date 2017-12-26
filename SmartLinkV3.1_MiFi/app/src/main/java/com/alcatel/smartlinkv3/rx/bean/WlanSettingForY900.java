@@ -6,35 +6,37 @@ package com.alcatel.smartlinkv3.rx.bean;
 
 public class WlanSettingForY900 {
     /**
-     * WlanState : 0
-     * WlanAPMode : 0
-     * WMode : 3
-     * Ssid : Play Internet 4G LTE-1D0F
-     * SsidHidden : 0
-     * Channel : 0
-     * max_numsta : 32
-     * curr_num : 0
-     * SecurityMode : 4
-     * WepType : 0
-     * WepKey : 1234567890
-     * WpaType : 2
-     * WpaKey : 41524726
-     * CountryCode : PL
-     * ApIsolation : 1
-     * WMode_5G : 3
-     * Ssid_5G : Play Internet 4G LTE-1D0F_5G
-     * SsidHidden_5G : 0
-     * Channel_5G : 0
-     * max_numsta_5G : 32
-     * SecurityMode_5G : 4
-     * WepType_5G : 0
-     * WepKey_5G : 1234567890
-     * WpaType_5G : 2
-     * WpaKey_5G : 41524726
-     * CountryCode_5G : PL
-     * ApIsolation_5G : 0
+     * ## WlanStatus ##
+     * WlanAPMode : 0--> 
+     * WMode : 3--> 
+     * Ssid : Play Internet 4G LTE-1D0F--> 
+     * SsidHidden : 0--> 
+     * Channel : 0--> 
+     * max_numsta : 32--> 
+     * curr_num : 0--> 
+     * SecurityMode : 4--> 
+     * WepType : 0--> 
+     * WepKey : 1234567890--> 
+     * WpaType : 2--> 
+     * WpaKey : 41524726--> 
+     * CountryCode : PL--> 
+     * ApIsolation : 1--> 
+     * 
+     * WMode_5G : 3--> 
+     * Ssid_5G : Play Internet 4G LTE-1D0F_5G--> 
+     * SsidHidden_5G : 0--> 
+     * Channel_5G : 0--> 
+     * max_numsta_5G : 32--> 
+     * SecurityMode_5G : 4--> 
+     * WepType_5G : 0--> 
+     * WepKey_5G : 1234567890--> 
+     * WpaType_5G : 2--> 
+     * WpaKey_5G : 41524726--> 
+     * CountryCode_5G : PL--> 
+     * ApIsolation_5G : 0--> 
      */
 
+    private int wlanState;
     private int WlanAPMode;
     private int WMode;
     private String Ssid;
@@ -62,6 +64,13 @@ public class WlanSettingForY900 {
     private String CountryCode_5G;
     private int ApIsolation_5G;
 
+    public int getWlanState() {
+        return wlanState;
+    }
+
+    public void setWlanState(int wlanState) {
+        this.wlanState = wlanState;
+    }
 
     public int getWlanAPMode() {
         return WlanAPMode;

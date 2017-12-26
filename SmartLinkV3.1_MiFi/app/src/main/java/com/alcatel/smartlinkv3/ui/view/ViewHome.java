@@ -473,6 +473,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         }
         m_connectBtn.setVisibility(View.VISIBLE);
         ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
+        Logger.t("ma_conn").v("conn state: " + internetConnState.m_connectionStatus + "");
         if (m_bConnectPressd == false) {
             if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
                 m_connectBtn.setBackgroundResource(R.drawable.switch_on);
@@ -503,6 +504,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
             m_connectWaiting.setVisibility(View.VISIBLE);
             m_connectBtn.setEnabled(false);
             m_connectBtn.setVisibility(View.VISIBLE);
+            m_connectBtn.setBackgroundResource(R.drawable.switch_off);
         }
 
         String strConnDuration = String.format(home_connected_duration, statictime / 3600, (statictime % 3600) / 60);

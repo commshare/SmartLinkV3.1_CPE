@@ -283,7 +283,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/FtpFileDialog_Theme" />
 
-        <receiver android:name=".appwidget.SmartLinkWidget">
+        <!--<receiver android:name=".appwidget.SmartLinkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange" />
@@ -299,7 +299,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smart_link_widget_provider" />
-        </receiver>
+        </receiver>-->
 
         <service android:name=".common.NotificationService" />
         <!-- <service android:name=".samba.SmbService" /> -->

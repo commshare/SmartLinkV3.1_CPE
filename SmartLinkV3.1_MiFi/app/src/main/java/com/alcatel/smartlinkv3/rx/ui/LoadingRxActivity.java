@@ -16,6 +16,7 @@ import com.alcatel.smartlinkv3.ui.service.LoginService;
 import com.alcatel.smartlinkv3.utils.ChangeActivity;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 import com.alcatel.smartlinkv3.utils.SPUtils;
+import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +54,7 @@ public class LoadingRxActivity extends BaseRxActivity {
         API.get().getLoginState(new MySubscriber<LoginState>() {
             @Override
             protected void onSuccess(LoginState result) {
+                Logger.t("ma_loading").v("loading success");
                 OtherUtils.verifyPermisson(LoadingRxActivity.this);// 申請權限
                 loginService();// 啟動服務
                 goActivity();
@@ -61,13 +63,13 @@ public class LoadingRxActivity extends BaseRxActivity {
             @Override
             public void onError(Throwable e) {
                 toActivity(RefreshWifiActivity.class);
-                System.out.println("ma_load onError");
+                Logger.t("ma_loading").v("loading error: " + e.getMessage());
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
                 toActivity(RefreshWifiActivity.class);
-                System.out.println("ma_load onResultError");
+                Logger.t("ma_loading").v("loading error: " + error.getMessage());
             }
         });
     }
