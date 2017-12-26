@@ -202,7 +202,12 @@ public class WlanResult {
 
         @Override
         public String toString() {
-            return "APListBean{" + "ApIsolation=" + ApIsolation + ", ApStatus=" + ApStatus + ", Bandwidth=" + Bandwidth + ", Channel=" + Channel + ", CountryCode='" + CountryCode + '\'' + ", CurChannel=" + CurChannel + ", curr_num=" + curr_num + ", max_numsta=" + max_numsta + ", SecurityMode=" + SecurityMode + ", Ssid='" + Ssid + '\'' + ", SsidHidden=" + SsidHidden + ", WepKey='" + WepKey + '\'' + ", WepType=" + WepType + ", WlanAPID=" + WlanAPID + ", WMode=" + WMode + ", WpaKey='" + WpaKey + '\'' + ", WpaType=" + WpaType + '}';
+            return "APListBean{" + "\n" + "ApIsolation=" + ApIsolation + "\n" + " ApStatus=" + ApStatus + "\n" + " Bandwidth=" + Bandwidth + "\n" + " Channel=" + Channel + "\n" + " CountryCode='" + CountryCode + '\'' + "\n" + " CurChannel=" + CurChannel + "\n" + " curr_num=" + curr_num + "\n" + " max_numsta=" + max_numsta + "\n" + " SecurityMode=" + SecurityMode + "\n" + " Ssid='" + Ssid + '\'' + "\n" + " SsidHidden=" + SsidHidden + "\n" + " WepKey='" + WepKey + '\'' + "\n" + " WepType=" + WepType + "\n" + " WlanAPID=" + WlanAPID + "\n" + " WMode=" + WMode + "\n" + " WpaKey='" + WpaKey + '\'' + "\n" + " WpaType=" + WpaType + '}';
         }
+    }
+
+    @Override
+    public String toString() {
+        return "WlanResult{" + "\n" + "curr_num=" + curr_num + "\n" + " WlanAPMode=" + WlanAPMode + "\n" + " WiFiOffTime=" + WiFiOffTime + "\n" + " APList=" + APList + '}';
     }
 }

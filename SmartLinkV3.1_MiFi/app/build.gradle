@@ -49,6 +49,7 @@ android {
         javaMaxHeapSize "2g"
         preDexLibraries = false
         jumboMode = true
+        incremental true
 
         // 加快Gradle速度的配置
         // 使用增量模式构建

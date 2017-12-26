@@ -2,15 +2,18 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- 这里引用你默认的背景(此处为灰色的电池) -->
     <item
         android:id="@android:id/background"
         android:height="37dp"
         android:drawable="@drawable/battery_progress_bg">
     </item>
 
+    <!-- 这里指定你的第二进度条的drawable(这个一定要加, 否则不能显示, 可以与第一进度条的drawable一样) -->
     <item
         android:id="@android:id/secondaryProgress"
         android:height="37dp">
+        <!-- 这里要加入clip(裁剪)标签,代表此处将随progress的数值进行裁剪 -->
         <clip
             android:clipOrientation="horizontal"
             android:drawable="@drawable/battery_progress_data"
@@ -18,9 +21,11 @@
         </clip>
     </item>
 
+    <!-- 这里指定你的第一进度条的drawable(此处为蓝色的电池) -->
     <item
         android:id="@android:id/progress"
         android:height="37dp">
+        <!-- 这里要加入clip(裁剪)标签,代表此处将随progress的数值进行裁剪 -->
         <clip
             android:clipOrientation="horizontal"
             android:drawable="@drawable/battery_progress_data"

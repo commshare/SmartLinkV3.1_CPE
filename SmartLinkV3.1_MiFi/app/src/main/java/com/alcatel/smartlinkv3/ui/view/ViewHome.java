@@ -633,7 +633,7 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_3);
             } else if (curNetwork.m_signalStrength == SignalStrength.Level_4) {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
-            } else if (curNetwork.m_signalStrength == SignalStrength.Level_5) {
+            } else {
                 m_signalImageView.setBackgroundResource(R.drawable.home_signal_4);
             }
             //show network type

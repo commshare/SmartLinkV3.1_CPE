@@ -17,6 +17,7 @@ import com.alcatel.smartlinkv3.rx.bean.PsdRuleBean;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
 import com.alcatel.smartlinkv3.rx.impl.wlan.WlanResult;
 import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Cons;
 import com.alcatel.smartlinkv3.rx.tools.FraHelper;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
@@ -192,7 +193,11 @@ public class SettingwifiRxActivity extends BaseRxActivity {
                     tv2p4Checker.setVisibility(View.VISIBLE);
                     tv5GChecker.setVisibility(View.VISIBLE);
                     vSplitBanner.setVisibility(View.VISIBLE);
-                    initFra(clazzs[0], clazzs);
+                    // 2.1.根据当前的模式去显示对应的选项板
+                    int wlanAPMode = result.getWlanAPMode();
+                    initFra(clazzs[wlanAPMode], clazzs);
+                    // 2.2.修改选项板
+                    transferBanner(clazzs[wlanAPMode]);
                 } else if (APExist == Conn.MODE_2P4G) {// 2.4G模式
                     tv2p4Checker.setVisibility(View.VISIBLE);
                     initFra(clazzs[0], clazzs[0]);
@@ -363,7 +368,7 @@ public class SettingwifiRxActivity extends BaseRxActivity {
         }
         // 以上都没有问题--> 直接提交
         if (isDone) {
-            // TODO: 2017/11/4 0004 正式提交
+            // TOAT: 正式提交
             commitWlan();
         }
     }
@@ -372,6 +377,11 @@ public class SettingwifiRxActivity extends BaseRxActivity {
      * ***** 正式提交 *****
      */
     private void commitWlan() {
+        // TOAT: 测试
+        // if (true) {
+        //     Logger.t("ma_wlan").v("wlanCurrentMode: " + result.getWlanAPMode());
+        //     return;
+        // }
         pgd = OtherUtils.showProgressPop(this);
         API.get().setWlanSettings(result, new MySubscriber() {
             @Override
@@ -462,10 +472,15 @@ public class SettingwifiRxActivity extends BaseRxActivity {
      * @param index
      */
     private void transferInfo(int index) {
+        // 1.切换fragment
         Class clazz = clazzs[index];
         transferBanner(clazz);// 切换banner
         fraHelper.transfer(clazz);// 切换fragment
         OtherUtils.hideKeyBoard(this);// 隐藏软键盘
+        // 2.切换wlanAPMode( 0: 2.4G ; 1: 5G )
+        result.setWlanAPMode(index);
+        apbean_2P4.setApStatus(index == Cons._2P4G ? Cons.ENABLE : Cons.DISABLE);
+        apbean_5G.setApStatus(index == Cons._5G ? Cons.ENABLE : Cons.DISABLE);
     }
 
     /**

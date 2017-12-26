@@ -12,6 +12,7 @@
 
         <!-- status -->
         <com.zhy.android.percent.support.PercentRelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

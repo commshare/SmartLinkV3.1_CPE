@@ -31,7 +31,7 @@ public class SetTimeLimitHelper {
      * @param etMin
      */
     public static void addEdwatch(EditText etHour, EditText etMin) {
-        // 修改过程中的限定
+        // ethour 修改过程中的限定
         etHour.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -53,7 +53,7 @@ public class SetTimeLimitHelper {
 
             }
         });
-        // 得到焦点后的限定
+        // ethour 得到焦点后的限定
         etHour.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 int hour = Integer.valueOf(TextUtils.isEmpty(OtherUtils.getEdContent(etHour)) ? "0" : OtherUtils.getEdContent(etHour));
@@ -65,6 +65,7 @@ public class SetTimeLimitHelper {
             }
         });
 
+        // etMin 修改过程中的限定 
         etMin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,6 +90,7 @@ public class SetTimeLimitHelper {
 
             }
         });
+        // etMin 得到焦点后的限定
         etMin.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 int hour = Integer.valueOf(TextUtils.isEmpty(OtherUtils.getEdContent(etHour)) ? "0" : OtherUtils.getEdContent(etHour));
@@ -102,39 +104,5 @@ public class SetTimeLimitHelper {
                 }
             }
         });
-    }
-
-    /**
-     * 设置set time limit
-     *
-     * @param etHour
-     * @param etMin
-     */
-    public void setTimelimit(EditText etHour, EditText etMin) {
-        String hour = OtherUtils.getEdContent(etHour);
-        String min = OtherUtils.getEdContent(etMin);
-        if (TextUtils.isEmpty(hour) || TextUtils.isEmpty(min)) {
-            toast(R.string.not_empty);
-            return;
-        }
-        int hour_i = Integer.valueOf(hour);
-        int min_i = Integer.valueOf(min);
-        // TODO: 2017/12/13 0013
-    }
-
-    private void toast(int resId) {
-        ToastUtil_m.show(activity, resId);
-    }
-
-    private void toastLong(int resId) {
-        ToastUtil_m.showLong(activity, resId);
-    }
-
-    private void toast(String content) {
-        ToastUtil_m.show(activity, content);
-    }
-
-    private void to(Class ac, boolean isFinish) {
-        CA.toActivity(activity, ac, false, isFinish, false, 0);
     }
 }

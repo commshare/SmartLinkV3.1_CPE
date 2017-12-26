@@ -69,12 +69,12 @@ public class LoginRxActivity extends BaseRxActivity {
         OtherUtils.setWifiActive(this, true);
         setContentView(R.layout.activity_login_rx);
         ButterKnife.bind(this);
-        init();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        init();// 初始化密码框
         OtherUtils.setWifiActive(this, true);
         // 停止所有的定时器
         if (SettingAccountActivity.isLogOutClick) {
@@ -98,6 +98,9 @@ public class LoginRxActivity extends BaseRxActivity {
             String psd = SPUtils.getInstance(this).getString(REMEMBER_TEXT, "");
             etLoginPsd.setText(psd);
             ivCheckbox.setImageResource(R.drawable.checkbox_android_on);
+        } else {
+            etLoginPsd.setText("");
+            ivCheckbox.setImageResource(R.drawable.checkbox_android_off);
         }
     }
 
@@ -247,7 +250,6 @@ public class LoginRxActivity extends BaseRxActivity {
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             OtherUtils.hideProgressPop(pgd);
             dialog.dismiss();
-            showResetPop();// 提示重启
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(false);

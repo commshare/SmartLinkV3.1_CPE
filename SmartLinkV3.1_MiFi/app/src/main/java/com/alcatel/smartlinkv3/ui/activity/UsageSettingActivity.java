@@ -47,6 +47,7 @@ import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
 import com.alcatel.smartlinkv3.utils.ToastUtil_m;
+import com.orhanobut.logger.Logger;
 
 import java.text.DecimalFormat;
 
@@ -527,7 +528,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO: 2017/11/6 0006 流量控制是否符合规则
+                // 流量控制是否符合规则
                 if (!TextUtils.isEmpty(String.valueOf(s))) {
                     int monthlyPlan = Integer.valueOf(String.valueOf(s));
                     if (monthlyPlan < 0) {
@@ -661,11 +662,12 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
             m_bIsMonthlyValueEdit = true;
             DataValue usageData = new DataValue();
-            if (usage <= 0) {
+            // TOAT: 2017/12/26 0026 这里把判断取消掉
+            //if (usage <= 0) {
                 usageData.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
                 m_usageAutoDisconnectBtn.setEnabled(false);
                 m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
-            }
+            //}
             Log.i(TAG, "Name=======" + BusinessMannager.getInstance().getFeatures().getDeviceName());
             if (staticSetting.HUnit == 0) {
 
@@ -818,37 +820,52 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         //if (simState.m_SIMState == SIMState.Accessable) {
         UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
         if (m_bIsAutoDisconnectedEdit == false) {
-            if (usageSetting.HMonthlyPlan > 0) {
-                m_usageAutoDisconnectBtn.setEnabled(true);
-                if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
-                    // off
-                    m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
-                } else {
-                    // on
-                    m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
-                }
-            } else {
-                m_usageAutoDisconnectBtn.setEnabled(false);
+
+            m_usageAutoDisconnectBtn.setEnabled(true);
+            if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
+                // off
                 m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+            } else {
+                // on
+                m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
             }
+            
+            // TOAT: 这段为原代码--> 加入了月流量判断,但后期不做月流量判断
+            // if (usageSetting.HMonthlyPlan > 0) {
+            //     m_usageAutoDisconnectBtn.setEnabled(true);
+            //     if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
+            //         // off
+            //         m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+            //     } else {
+            //         // on
+            //         m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
+            //     }
+            // } else {
+            //     m_usageAutoDisconnectBtn.setEnabled(false);
+            //     m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+            // }
         }
     }
 
     private void onBtnUsageAutoDisconnectClick() {
+        Logger.t("ma_usage").v("click disconnect");
         UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
-        if (usageSetting.HMonthlyPlan > 0) {
+        // TOAT: 把月流量判断取消
+        //if (usageSetting.HMonthlyPlan > 0) {
             m_bIsAutoDisconnectedEdit = true;
             DataValue data = new DataValue();
 
             if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
+                Logger.t("ma_usage").v("click disconnect Disable");
                 m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
                 data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Enable);
             } else {
+                Logger.t("ma_usage").v("click disconnect enable");
                 m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
                 data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
             }
             BusinessMannager.getInstance().sendRequestMessage(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET, data);
-        }
+        //}
 
     }
 
