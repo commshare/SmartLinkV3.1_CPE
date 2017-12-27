@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.multidex.MultiDexApplication;
 
 import com.alcatel.wifilink.mediaplayer.proxy.AllShareProxy;
+import com.alcatel.wifilink.rx.helper.base.CrashHanlder;
 import com.alcatel.wifilink.utils.HostnameUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;

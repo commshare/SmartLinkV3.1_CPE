@@ -69,7 +69,7 @@ public abstract class CheckBoard {
             // wifi掉线
             if (ori != null) {
                 // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
-                CA.toActivity(ori, target[1], false, true, false, 0);
+                CA.toActivity(ori, target[1] != null ? target[1] : target[0], false, true, false, 0);
             }
         }
     }

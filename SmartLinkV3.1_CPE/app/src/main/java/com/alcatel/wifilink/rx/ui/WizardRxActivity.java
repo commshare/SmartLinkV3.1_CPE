@@ -23,6 +23,7 @@ import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
@@ -207,6 +208,8 @@ public class WizardRxActivity extends BaseActivityWithBack {
                 logout();
                 break;
             case R.id.tv_wizardrx_banner_skip:
+                Logs.i("ma_login","put wizard true");
+                SP.getInstance(WizardRxActivity.this).putBoolean(Cons.WIZARD_RX, true);
                 to(WifiInitRxActivity.class);
                 break;
             case R.id.rl_sim_rx:

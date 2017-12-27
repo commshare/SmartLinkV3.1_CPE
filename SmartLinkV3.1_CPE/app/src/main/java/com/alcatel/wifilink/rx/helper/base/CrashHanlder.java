@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
+
 public class CrashHanlder implements Thread.UncaughtExceptionHandler {
 
     private Thread.UncaughtExceptionHandler mDefaultHandler;// 自身接口
@@ -38,12 +40,25 @@ public class CrashHanlder implements Thread.UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
-            // 跳转到崩溃提示Activity
-            Intent intent = new Intent(mContext, CrashDialog.class);
+            // 默认处理方式
+            // defaultHandler();
+            
+            // 自定义处理方式
+            Intent intent = new Intent(mContext, RefreshWifiRxActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
             System.exit(0);// 关闭已奔溃的app进程
         }
+    }
+
+    /**
+     * 默认处理方式
+     */
+    private void defaultHandler() {
+        Intent intent = new Intent(mContext, CrashDialog.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+        System.exit(0);// 关闭已奔溃的app进程
     }
 
     /**

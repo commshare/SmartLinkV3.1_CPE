@@ -16,6 +16,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
@@ -106,6 +107,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                 ivLoginRxCheckbox.setImageResource(isRemem ? R.drawable.general_btn_remember_pre : R.drawable.general_btn_remember_nor);
                 break;
             case R.id.bt_loginRx:
+                // int i = 1/0;
                 loginButtonClick();// 点击登陆按钮后的逻辑
                 break;
             case R.id.tv_loginRx_forgot:
@@ -347,8 +349,10 @@ public class LoginRxActivity extends BaseActivityWithBack {
                      */
                     private void isToWizard() {
                         if (SP.getInstance(LoginRxActivity.this).getBoolean(Cons.WIZARD_RX, false)) {
+                            Logs.i("ma_login","to home ac");
                             to(HomeRxActivity.class);
                         } else {
+                            Logs.i("ma_login","to wizard ac");
                             to(WizardRxActivity.class);
                         }
                     }

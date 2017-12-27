@@ -400,10 +400,10 @@
         <activity
             android:name=".ui.wizard.allsetup.SetupWizardActivity"
             android:screenOrientation="portrait" />
-        <activity
+<!--        <activity
             android:name=".ui.home.allsetup.HomeActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" />-->
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTask"
