@@ -540,8 +540,12 @@ public class SettingwifiRxY900Activity extends BaseRxActivity {
         OtherUtils.hideKeyBoard(this);// 隐藏软键盘
         // 2.切换wlanAPMode( 0: 2.4G ; 1: 5G )
         resultMW.setWlanAPMode(index);
-        apbean_2P4.setApStatus(index == Cons._2P4G ? Cons.ENABLE : Cons.DISABLE);
-        apbean_5G.setApStatus(index == Cons._5G ? Cons.ENABLE : Cons.DISABLE);
+        if (apbean_2P4 != null) {
+            apbean_2P4.setApStatus(index == Cons._2P4G ? Cons.ENABLE : Cons.DISABLE);
+        }
+        if (apbean_5G != null) {
+            apbean_5G.setApStatus(index == Cons._5G ? Cons.ENABLE : Cons.DISABLE);
+        }
     }
 
     /**

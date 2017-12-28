@@ -209,9 +209,7 @@ public class mainRxFragment extends Fragment {
         wanHelper.setOnDisconnetingNextListener(wanResult -> getSim());// 获取sim
 
         // 定时获取sim状态
-        simHelper.setOnNownListener(simStatus -> {
-            simNotReady();
-        });
+        simHelper.setOnNownListener(simStatus -> simNotReady());
         simHelper.setOnSimReadyListener(result -> simReady());
         simHelper.setOnSimLockListener(simStatus -> pinPukSimLock());
         simHelper.setOnPinRequireListener(result -> pinPukSimLock());

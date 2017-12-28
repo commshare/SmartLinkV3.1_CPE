@@ -50,13 +50,11 @@ public class SmartLinkWidget extends AppWidgetProvider {
 
   @Override
   public void onDeleted(Context context, int[] appWidgetIds) {
-    // TODO Auto-generated method stub
     super.onDeleted(context, appWidgetIds);
   }
 
   @Override
   public void onDisabled(Context context) {
-    // TODO Auto-generated method stub
     super.onDisabled(context);
   }
 

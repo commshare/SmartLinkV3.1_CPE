@@ -179,19 +179,7 @@ public class LoginRxActivity extends BaseRxActivity {
                                 if (result.getState() == Cons.LOGIN) {
                                     //OtherUtils.initBusiness();// 2.5.启动请求接口
                                     OtherUtils.hideProgressPop(pgd);// 2.6.隐藏进度条
-                                    // 2.7.是否进入过快速设置
-                                    boolean quick = SPUtils.getInstance(LoginRxActivity.this).getBoolean(Conn.QUICK_SETUP, false);
-                                    if (quick) {
-                                        Logs.v("ma_rx", "login quick");
-                                        ChangeActivity.toActivityNormal(LoginRxActivity.this, MainActivity.class, false);
-                                        // ChangeActivity.toActivityNormal(LoginRxActivity.this, TestRxActivity.class, true);
-                                    } else {
-                                        SystemInfoHelper sf = new SystemInfoHelper(LoginRxActivity.this);
-                                        sf.setOnResultErrorListener(attr -> to(QuickSetupRxActivity.class, true));
-                                        sf.setOnOldVersionListener(attr -> to(QuickSetupRxY900Activity.class, true));
-                                        sf.setOnNewVersionListener(attr -> to(QuickSetupRxActivity.class, true));
-                                        sf.get();
-                                    }
+                                    toWizard();
                                 }
                             }
 
@@ -235,6 +223,23 @@ public class LoginRxActivity extends BaseRxActivity {
                 ToastUtil_m.show(LoginRxActivity.this, getString(R.string.refresh_wifi_tip));
             }
         });
+    }
+
+    /**
+     * 是否进入向导页
+     */
+    private void toWizard() {
+        // 2.7.是否进入过快速设置
+        boolean quick = SPUtils.getInstance(this).getBoolean(Conn.QUICK_SETUP, false);
+        if (quick) {
+            ChangeActivity.toActivityNormal(this, MainActivity.class, false);
+        } else {
+            SystemInfoHelper sf = new SystemInfoHelper(this);
+            sf.setOnResultErrorListener(attr -> to(QuickSetupRxActivity.class, true));
+            sf.setOnOldVersionListener(attr -> to(QuickSetupRxY900Activity.class, true));
+            sf.setOnNewVersionListener(attr -> to(QuickSetupRxActivity.class, true));
+            sf.get();
+        }
     }
 
     /**
@@ -293,7 +298,7 @@ public class LoginRxActivity extends BaseRxActivity {
         Drawable bg = getDrawables(R.drawable.bg_pop_conner);
         View inflate = View.inflate(this, R.layout.pop_resetdevice, null);
         inflate.findViewById(R.id.tv_pop_login_reset_ok).setOnClickListener(v -> resetPop.dismiss());
-        resetPop = new PopupWindows(this, inflate, width, height, true,bg);
+        resetPop = new PopupWindows(this, inflate, width, height, true, bg);
     }
 
     /**

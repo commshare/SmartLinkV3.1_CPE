@@ -303,7 +303,7 @@ public class FragmentNetworkSelection extends Fragment implements OnClickListene
 
                 } else if (BaseResponse.RESPONSE_OK == nResult && strErrorCode.length() > 0) {
                     System.err.println("NETWORK_SEARCH_NETWORK_REQUSET");
-                    ToastUtil_m.showSecond(context, R.string.home_connecting_to, 25);
+                    ToastUtil_m.show(context, R.string.home_connecting_to);
                     m_waiting_search_result.setVisibility(View.GONE);
                     m_network_searching_title.setVisibility(View.GONE);
                 } else {

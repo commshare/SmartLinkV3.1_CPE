@@ -76,11 +76,10 @@
         <!-- 新的登陆页 -->
         <activity
             android:name=".rx.ui.LoginRxActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
-        
         <activity
             android:name=".ui.activity.GuideActivity"
             android:launchMode="singleTask"
@@ -93,7 +92,7 @@
             android:name=".rx.ui.QuickSetupRxActivity"
             android:screenOrientation="portrait">
         </activity>
-        
+
         <!-- 新的快速设置页 -->
         <activity
             android:name=".rx.ui.QuickSetupRxY900Activity"
@@ -105,7 +104,7 @@
             android:name=".rx.ui.SettingwifiRxActivity"
             android:screenOrientation="portrait">
         </activity>
-        
+
         <!-- 新的WIFI设置界面(Y900) -->
         <activity
             android:name=".rx.ui.SettingwifiRxY900Activity"
@@ -283,7 +282,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/FtpFileDialog_Theme" />
 
-        <!--<receiver android:name=".appwidget.SmartLinkWidget">
+        <!--
+        <receiver android:name=".appwidget.SmartLinkWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.alcatel.smartlinkv3.business.cpewificonnectchange" />
@@ -299,7 +299,8 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smart_link_widget_provider" />
-        </receiver>-->
+        </receiver>
+        -->
 
         <service android:name=".common.NotificationService" />
         <!-- <service android:name=".samba.SmbService" /> -->
@@ -325,7 +326,6 @@
             android:name=".ui.activity.TestActivity"
             android:screenOrientation="portrait">
         </activity>
-
     </application>
 
 </manifest>

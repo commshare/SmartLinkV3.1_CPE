@@ -96,7 +96,6 @@ public class CustomSpinner extends Spinner implements OnItemClickListener,OnDism
     
     @Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-		// TODO Auto-generated method stub
     	setSelection(position);
     	mAdapters.notifyDataSetChanged();
     	if(mSpinnerItemSelectCallback != null && m_prePosition != position)
@@ -115,7 +114,6 @@ public class CustomSpinner extends Spinner implements OnItemClickListener,OnDism
     	}
     	@Override
     	public int getCount() {
-    		// TODO Auto-generated method stub
     		return list.size();
     	}
 

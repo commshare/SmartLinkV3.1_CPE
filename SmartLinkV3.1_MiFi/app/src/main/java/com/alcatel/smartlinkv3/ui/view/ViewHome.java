@@ -414,9 +414,13 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         m_nosimcardLayout.setVisibility(View.GONE);
         m_connectLayout.setVisibility(View.VISIBLE);
         m_connectToNetworkTextView.setText(curNetwork.m_strNetworkName);
+        // TOAT: 
         ConnectStatusModel internetConnState = BusinessMannager.getInstance().getConnectStatus();
-        if (m_bConnectPressd == false) {
+        Logs.i("ma_internetConnState_conn", "internetConnState: " + internetConnState.m_connectionStatus);
+        if (!m_bConnectPressd) {
+            Logs.i("ma_internetConnState", "m_bConnectPressd:false: Connected");
             if (internetConnState.m_connectionStatus == ConnectionStatus.Connected) {
+                Logs.i("ma_internetConnState", "m_bConnectPressd: true");
                 m_connectToLabel.setText(R.string.home_connected_to);
                 m_connectWaiting.setVisibility(View.GONE);
                 statictime = (long) internetConnState.m_lConnectionTime;
@@ -424,25 +428,40 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
 
             }
             if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+                Logs.i("ma_internetConnState", "m_bConnectPressd:false: Disconnecting");
                 m_connectToLabel.setText(R.string.home_disconnecting_to);
                 m_connectWaiting.setVisibility(View.VISIBLE);
             }
             if (internetConnState.m_connectionStatus == ConnectionStatus.Disconnected) {
+                Logs.i("ma_internetConnState", "m_bConnectPressd:false: Disconnected");
                 m_connectToLabel.setText(R.string.home_disconnected_to);
                 m_connectWaiting.setVisibility(View.GONE);
                 statictime = (long) internetConnState.m_lConnectionTime;
                 staticdata = (long) internetConnState.m_lDlBytes + internetConnState.m_lUlBytes;
             }
             if (internetConnState.m_connectionStatus == ConnectionStatus.Connecting) {
+                Logs.i("ma_internetConnState", "m_bConnectPressd:false: Connecting");
                 m_connectToLabel.setText(R.string.home_connecting_to);
                 m_connectWaiting.setVisibility(View.VISIBLE);
             }
         } else {
+            Logs.i("ma_internetConnState", "m_bConnectPressd:true");
             m_connectWaiting.setVisibility(View.VISIBLE);
-            if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            Logs.i("ma_internetConnState", "m_connectionStatus: " + internetConnState.m_connectionStatus);
+            // TODO: 2017/12/28 0028  注释的这段代码可能会有问题
+            // if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+            //     m_connectToLabel.setText(R.string.home_disconnecting_to);
+            // } else {
+            //     m_connectToLabel.setText(R.string.home_connecting_to);
+            // }
+            // TODO: 2017/12/28 0028  现暂时采用以下这个方式尝试
+            ConnectionStatus connStatus = internetConnState.m_connectionStatus;
+            if (connStatus==ConnectionStatus.Disconnecting||connStatus==ConnectionStatus.Disconnected) {
                 m_connectToLabel.setText(R.string.home_disconnecting_to);
-            } else {
+            } else if (connStatus == ConnectionStatus.Connecting) {
                 m_connectToLabel.setText(R.string.home_connecting_to);
+            } else {
+                m_connectToLabel.setText(R.string.home_connected_to);
             }
         }
 

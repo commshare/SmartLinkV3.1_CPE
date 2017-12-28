@@ -9,6 +9,7 @@ import com.alcatel.smartlinkv3.business.system.SystemInfoForNew;
 import com.alcatel.smartlinkv3.business.system.SystemInfoForY900;
 import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.common.HostnameUtils;
+import com.alcatel.smartlinkv3.rx.bean.SimState;
 import com.alcatel.smartlinkv3.rx.bean.WlanSettingForY900;
 import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressInterceptor;
 import com.alcatel.smartlinkv3.rx.impl.download.DownloadProgressListener;
@@ -255,16 +256,10 @@ public class API {
         subscribe(subscriber, smartLinkApi.request(new RequestBody(Methods.HEART_BEAT)));
     }
 
-    //
-    // /**
-    //  * get sim status
-    //  *
-    //  * @param subscriber callback
-    //  */
-    // public void getSimStatus(MySubscriber<SimStatus> subscriber) {
-    //     subscribe(subscriber, smartLinkApi.getSimStatus(new RequestBody(Methods.GET_SIM_STATUS)));
-    // }
-    //
+    public void getSimStatus(MySubscriber<SimState> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSimStatus(new RequestBody(Methods.GET_SIM_STATUS)));
+    }
+    
     // /**
     //  * unlock pin
     //  *
@@ -584,10 +579,9 @@ public class API {
         @POST("/jrd/webapi")
         Observable<ResponseBody<LoginResult>> forceLogin(@Body RequestBody requestBody);
 
-        //
-        // @POST("/jrd/webapi")
-        // Observable<ResponseBody<SimStatus>> getSimStatus(@Body RequestBody requestBody);
-        //
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SimState>> getSimStatus(@Body RequestBody requestBody);
+
         // @POST("/jrd/webapi")
         // Observable<ResponseBody<AutoValidatePinState>> getAutoValidatePinState(@Body RequestBody requestBody);
         //
