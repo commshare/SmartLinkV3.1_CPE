@@ -248,7 +248,11 @@ public class SettingwifiRxY900Activity extends BaseRxActivity {
             tv2p4Checker.setVisibility(View.VISIBLE);
             tv5GChecker.setVisibility(View.VISIBLE);
             vSplitBanner.setVisibility(View.VISIBLE);
-            initFra(clazzs[0], clazzs);
+            // 2.1.根据当前的模式去显示对应的选项板
+            int wlanAPMode = result.getWlanAPMode();
+            initFra(clazzs[wlanAPMode], clazzs);
+            // 2.2.修改选项板
+            transferBanner(clazzs[wlanAPMode]);
         } else if (APExist == Conn.MODE_2P4G) {// 2.4G模式
             tv2p4Checker.setVisibility(View.VISIBLE);
             initFra(clazzs[0], clazzs[0]);
@@ -404,6 +408,7 @@ public class SettingwifiRxY900Activity extends BaseRxActivity {
     }
 
     private void setWlanSettings() {
+
         pgd = OtherUtils.showProgressPop(this);
         // 判断wlanState标记位
         boolean is2P4_on = apbean_2P4.getApStatus() == Cons.ON;
@@ -533,6 +538,10 @@ public class SettingwifiRxY900Activity extends BaseRxActivity {
         transferBanner(clazz);// 切换banner
         fraHelper.transfer(clazz);// 切换fragment
         OtherUtils.hideKeyBoard(this);// 隐藏软键盘
+        // 2.切换wlanAPMode( 0: 2.4G ; 1: 5G )
+        resultMW.setWlanAPMode(index);
+        apbean_2P4.setApStatus(index == Cons._2P4G ? Cons.ENABLE : Cons.DISABLE);
+        apbean_5G.setApStatus(index == Cons._5G ? Cons.ENABLE : Cons.DISABLE);
     }
 
     /**

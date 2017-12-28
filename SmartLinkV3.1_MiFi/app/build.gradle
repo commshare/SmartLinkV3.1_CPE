@@ -46,7 +46,7 @@ android {
     }
 
     dexOptions {
-        javaMaxHeapSize "2g"
+        javaMaxHeapSize "6144M"
         preDexLibraries = false
         jumboMode = true
         incremental true
