@@ -1,111 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:layout_marginTop="20dp"
-    android:background="@color/setting_background_color">
-    
-    <ScrollView 
+    android:background="@color/setting_background_color"
+    android:orientation="vertical">
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    	<LinearLayout
-	        android:id="@+id/profile_detail_container"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical"
-	        android:visibility="visible">
-        
-        <ImageView
+
+        <LinearLayout
+            android:id="@+id/profile_detail_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_wifi" />
-		<LinearLayout
+
+            <LinearLayout
                 android:id="@+id/profile_detail_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:orientation="horizontal" 
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
                     android:layout_weight="1"
+                    android:gravity="start"
                     android:text="@string/setting_network_profile_management_profile_name"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
-            	<EditText
+
+                <EditText
                     android:id="@+id/edit_profile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
                     android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi"
                     android:inputType="text"
-                     android:textSize="20sp" 
-                    android:gravity="end" 
-                     android:maxLength="32"
-                    android:imeOptions="flagNoExtractUi"/>
-        </LinearLayout>
-        
-		<ImageView
+                    android:maxLength="32"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_wifi" />
-		
-		<LinearLayout
+
+            <LinearLayout
                 android:id="@+id/profile_detail_dial_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:orientation="horizontal" 
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
                     android:layout_weight="1"
+                    android:gravity="start"
                     android:text="@string/setting_network_profile_management_dial_number"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-                
-
-            	<EditText
+                <EditText
                     android:id="@+id/edit_dial_number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
                     android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi"
                     android:inputType="text"
-                     android:textSize="20sp" 
-                    android:gravity="end" 
-                    android:imeOptions="flagNoExtractUi"/>
-        </LinearLayout>
-        
-		<ImageView
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_wifi" />
-		
-		<LinearLayout
+
+            <LinearLayout
                 android:id="@+id/profile_detail_apn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:orientation="horizontal" 
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
                     android:layout_weight="1"
+                    android:gravity="start"
                     android:text="@string/setting_network_profile_management_apn"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
@@ -114,105 +116,109 @@
                     android:id="@+id/edit_apn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
                     android:layout_weight="1"
-                    android:inputType="text"
-                     android:textSize="20sp" 
+                    android:background="@null"
                     android:gravity="end"
-                    android:imeOptions="flagNoExtractUi" />
-        </LinearLayout>
-        
-		<ImageView
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="text"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_wifi" />
-		
-		<LinearLayout
+
+            <LinearLayout
                 android:id="@+id/profile_detail_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:orientation="horizontal" 
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
                     android:layout_weight="1"
+                    android:gravity="start"
                     android:text="@string/setting_network_profile_management_user_name"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-            <EditText
+                <EditText
                     android:id="@+id/edit_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
                     android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi"
                     android:inputType="text"
-                     android:textSize="20sp" 
-                    android:gravity="end" 
-                    android:imeOptions="flagNoExtractUi"/>    
-                
-        </LinearLayout>
-        
-		<ImageView
+                    android:lines="1"
+                    android:maxLength="32"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_wifi" />
-		
-		<LinearLayout
+
+            <LinearLayout
                 android:id="@+id/profile_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:orientation="horizontal" 
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
                     android:layout_weight="1"
+                    android:gravity="start"
                     android:text="@string/setting_network_profile_management_password"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
 
-             <EditText
+                <EditText
                     android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@null"
                     android:layout_weight="1"
-                    android:inputType="text"
-                     android:textSize="20sp" 
+                    android:background="@null"
                     android:gravity="end"
-                    android:imeOptions="flagNoExtractUi" />       
-                
-        </LinearLayout>
-            
-		<ImageView
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:maxLength="32"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
                 android:contentDescription="@string/setting_wifi" />
-		
-		<LinearLayout
+
+            <LinearLayout
                 android:id="@+id/profile_protocal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:orientation="horizontal" 
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
                     android:layout_weight="1"
+                    android:gravity="start"
                     android:text="@string/setting_network_profile_management_protocol"
                     android:textColor="@color/color_black"
                     android:textSize="20sp" />
@@ -220,164 +226,167 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:gravity="end">
 
                     <TextView
                         android:id="@+id/edit_protocal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:ellipsize="end"
+                        android:gravity="end"
                         android:singleLine="true"
-                         android:textSize="20sp" 
-                        android:gravity="end" /> 
-            </FrameLayout>
-        </LinearLayout>
-        <ImageView
+                        android:textSize="20sp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/main_bottom_divider"
-                android:contentDescription="@string/setting_wifi" />    
-		<ImageView
+                android:contentDescription="@string/setting_wifi" />
+
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:background="@color/setting_background_color"
                 android:contentDescription="@string/setting_wifi" />
 
-		<FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" 
-                    android:padding="15dp"
-                    android:id="@+id/profile_set_default"
-                    android:background="@color/color_white">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/setting_set_default"
-                        android:textColor="@color/color_black"
-                         android:textSize="20sp" />
-
-
-                        <TextView
-                            android:id="@+id/btn_default_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="end|center_vertical"
-                            android:gravity="end"
-                            android:background="@drawable/pwd_switcher_off"
-                            android:visibility="visible" />
-           </FrameLayout>
-
-		</LinearLayout>
-	</ScrollView>
-		
-    <RadioGroup
-                android:id="@+id/profile_protocol_selection"
+            <FrameLayout
+                android:id="@+id/profile_set_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left" 
                 android:background="@color/color_white"
-                android:visibility="gone">
+                android:padding="15dp">
 
-                <RadioButton
-                    android:id="@+id/protocol_none"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@android:color/transparent"
-                     android:textSize="20sp" 
-                    android:button="@null"
-                    android:checked="true"
-                    android:drawableStart="@drawable/radiobutton"
-                    android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_protocol_none"
-                    android:textColor="@color/color_black" />
+                    android:layout_height="match_parent"
+                    android:text="@string/setting_set_default"
+                    android:textColor="@color/color_black"
+                    android:textSize="20sp" />
 
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:background="@color/main_bottom_divider" />
+                <TextView
+                    android:id="@+id/btn_default_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end|center_vertical"
+                    android:background="@drawable/pwd_switcher_off"
+                    android:gravity="end"
+                    android:visibility="visible" />
+            </FrameLayout>
 
-                <RadioButton
-                    android:id="@+id/protocol_tcp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@android:color/transparent"
-                     android:textSize="20sp" 
-                    android:button="@null"
-                    android:checked="false"
-                    android:focusable="true"
-                    android:drawableStart="@drawable/radiobutton"
-                    android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_auth_type_pap"
-                    android:textColor="@color/color_black" />
-                
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:background="@color/main_bottom_divider" />
+        </LinearLayout>
+    </ScrollView>
 
-                <RadioButton
-                    android:id="@+id/protocol_udp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@android:color/transparent"
-                     android:textSize="20sp" 
-                    android:button="@null"
-                    android:checked="false"
-                    android:focusable="true"
-                    android:drawableStart="@drawable/radiobutton"
-                    android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_auth_type_chap"
-                    android:textColor="@color/color_black" />
-                
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:background="@color/main_bottom_divider" />
+    <RadioGroup
+        android:id="@+id/profile_protocol_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:gravity="left"
+        android:visibility="gone">
 
-                <RadioButton
-                    android:id="@+id/protocol_tcp_or_udp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@android:color/transparent"
-                     android:textSize="20sp" 
-                    android:button="@null"
-                    android:checked="false"
-                    android:focusable="true"
-                    android:drawableStart="@drawable/radiobutton"
-                    android:enabled="true"
-                    android:paddingBottom="15dip"
-                    android:paddingTop="15dip"
-                    android:text="@string/setting_network_profile_management_auth_type_pap_and_chap"
-                    android:textColor="@color/color_black" />
-     </RadioGroup>
-     <RelativeLayout
+        <RadioButton
+            android:id="@+id/protocol_none"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" 
-            android:id="@+id/profile_waiting_progressbar"
-            android:background="@null"
-            android:visibility="visible"  >
-            <ProgressBar
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_centerInParent="true"
-                android:indeterminateDrawable="@drawable/progerss_blue"
-                />
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:checked="true"
+            android:drawableStart="@drawable/radiobutton"
+            android:enabled="true"
+            android:paddingBottom="15dip"
+            android:paddingTop="15dip"
+            android:text="@string/setting_network_profile_management_protocol_none"
+            android:textColor="@color/color_black"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/main_bottom_divider" />
+
+        <RadioButton
+            android:id="@+id/protocol_tcp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:checked="false"
+            android:drawableStart="@drawable/radiobutton"
+            android:enabled="true"
+            android:focusable="true"
+            android:paddingBottom="15dip"
+            android:paddingTop="15dip"
+            android:text="@string/setting_network_profile_management_auth_type_pap"
+            android:textColor="@color/color_black"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/main_bottom_divider" />
+
+        <RadioButton
+            android:id="@+id/protocol_udp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:checked="false"
+            android:drawableStart="@drawable/radiobutton"
+            android:enabled="true"
+            android:focusable="true"
+            android:paddingBottom="15dip"
+            android:paddingTop="15dip"
+            android:text="@string/setting_network_profile_management_auth_type_chap"
+            android:textColor="@color/color_black"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/main_bottom_divider" />
+
+        <RadioButton
+            android:id="@+id/protocol_tcp_or_udp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:checked="false"
+            android:drawableStart="@drawable/radiobutton"
+            android:enabled="true"
+            android:focusable="true"
+            android:paddingBottom="15dip"
+            android:paddingTop="15dip"
+            android:text="@string/setting_network_profile_management_auth_type_pap_and_chap"
+            android:textColor="@color/color_black"
+            android:textSize="20sp" />
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/profile_waiting_progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progerss_blue"
+            />
     </RelativeLayout>
-                
+
 </FrameLayout>

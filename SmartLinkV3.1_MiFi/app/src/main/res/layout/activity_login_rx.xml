@@ -68,7 +68,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/checkbox_android_off"
             app:layout_heightPercent="10%h"
-            app:layout_widthPercent="10%h" />
+            app:layout_widthPercent="20%h" />
 
         <!-- tip text -->
         <TextView
@@ -80,8 +80,6 @@
             android:layout_toRightOf="@id/iv_login_remenberPsd_checkbox"
             android:text="@string/login_remenber_psd"
             android:textColor="@color/color_light_gray"
-            app:layout_marginLeftPercent="3%w"
-            app:layout_marginStartPercent="3%w"
             app:layout_textSizePercent="8%h" />
 
     </com.zhy.android.percent.support.PercentRelativeLayout>
@@ -116,6 +114,7 @@
         android:gravity="center"
         android:text="@string/login_forgot_password"
         android:textColor="@color/color_light_gray"
-        app:layout_marginTopPercent="5%h"
+        app:layout_marginTopPercent="7%h"
+        app:layout_heightPercent="7%h"
         app:layout_textSizePercent="2.5%h" />
 </com.zhy.android.percent.support.PercentRelativeLayout>

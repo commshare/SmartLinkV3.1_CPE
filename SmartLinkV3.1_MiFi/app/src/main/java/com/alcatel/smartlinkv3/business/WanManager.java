@@ -94,7 +94,7 @@ public class WanManager extends BaseManager {
             return;
         if (m_getConnetStatusTask == null) {
             m_getConnetStatusTask = new GetConnectStatusTask();
-            m_getConnectStatusRollTimer.scheduleAtFixedRate(m_getConnetStatusTask, 0, 3 * 1000);
+            m_getConnectStatusRollTimer.scheduleAtFixedRate(m_getConnetStatusTask, 0, 2000);
         }
     }
 
@@ -111,11 +111,7 @@ public class WanManager extends BaseManager {
                         if (strErrcode.length() == 0) {
                             ConnectStatusResult connectStatusResult = response.getModelResult();
                             m_connectStatus.setValue(connectStatusResult);
-                        } else {
-
                         }
-                    } else {
-                        //Log
                     }
 
                     Intent megIntent = new Intent(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET);

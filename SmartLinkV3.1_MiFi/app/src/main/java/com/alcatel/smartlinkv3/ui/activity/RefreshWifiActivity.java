@@ -20,6 +20,7 @@ import com.alcatel.smartlinkv3.common.CPEConfig;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.rx.impl.login.LoginState;
 import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Logs;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.rx.ui.BaseRxActivity;
@@ -63,7 +64,8 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
             public void doSomething() {
                 // 檢查wifi是否連接
                 boolean wiFiActive = OtherUtils.isWiFiActive(RefreshWifiActivity.this);
-                if (wiFiActive) {// 檢查是否連接上設備
+                if (wiFiActive) {
+                    // 檢查是否連接上設備
                     API.get().getLoginState(new MySubscriber<LoginState>() {
                         @Override
                         protected void onSuccess(LoginState result) {
@@ -73,18 +75,24 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
 
                         @Override
                         protected void onResultError(ResponseBody.Error error) {
-                            System.out.println("loginStateTimer to login failed");
+                            Logs.v("ma_wifi", "getloginFailed: " + error.getMessage());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logs.v("ma_wifi", "getloginFailed: " + e.getMessage());
                         }
                     });
                 }
             }
         };
-        loginStatusTimer.start(3000);
+        loginStatusTimer.start(2000);
     }
 
     private void stopTimer() {
         if (loginStatusTimer != null) {
             loginStatusTimer.stop();
+            loginStatusTimer = null;
         }
     }
 
@@ -208,7 +216,6 @@ public class RefreshWifiActivity extends BaseRxActivity implements OnClickListen
         this.registerReceiver(m_msgReceiver, new IntentFilter(MessageUti.SYSTEM_GET_FEATURES_ROLL_REQUSET));
         // showActivity(this);
         showUI();
-        System.out.println("onResume");
         loginStateTimer();// 設備連接定時器
     }
 

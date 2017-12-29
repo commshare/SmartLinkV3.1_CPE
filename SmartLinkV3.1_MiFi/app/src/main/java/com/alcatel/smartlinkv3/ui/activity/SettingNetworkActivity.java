@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -114,6 +115,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         OtherUtils.contexts.add(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting_network);
@@ -322,7 +324,7 @@ public class SettingNetworkActivity extends BaseFragmentActivity implements OnCl
                     Log.v("STACKFRAGMENT", m_fragment_tag_stack.peek());
                 }
                 m_add_and_delete_container.setVisibility(View.GONE);
-                m_edit_or_done_container.setVisibility(View.VISIBLE);
+                m_edit_or_done_container.setVisibility(View.GONE);
                 m_tv_title.setText(R.string.setting_network_profile_management_delete_profile);
                 m_delete_menu = true;
                 break;

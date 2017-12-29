@@ -601,8 +601,19 @@ public class ViewHome extends BaseViewImpl implements OnClickListener {
         showNetworkState();
         showConnctBtnView();
 
-        if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+        // TOAT: 该段代码可能有问题
+        // if (internetConnState.m_connectionStatus == ConnectionStatus.Connected || internetConnState.m_connectionStatus == ConnectionStatus.Disconnecting) {
+        //     BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_DISCONNECT_REQUSET, null);
+        // } else {
+        //     BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET, null);
+        // }
+        ConnectionStatus state = internetConnState.m_connectionStatus;
+        if (state == ConnectionStatus.Connected) {
             BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_DISCONNECT_REQUSET, null);
+        } else if (state == ConnectionStatus.Connecting) {
+            toast(R.string.home_connecting_to);
+        } else if (state == ConnectionStatus.Disconnecting) {
+            toast(R.string.home_disconnecting_to);
         } else {
             BusinessMannager.getInstance().sendRequestMessage(MessageUti.WAN_CONNECT_REQUSET, null);
         }

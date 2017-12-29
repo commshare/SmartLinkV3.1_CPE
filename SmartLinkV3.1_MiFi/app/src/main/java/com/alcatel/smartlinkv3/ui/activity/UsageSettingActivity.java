@@ -43,6 +43,7 @@ import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.rx.impl.usage.UsageSetting;
 import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.Logs;
 import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.alcatel.smartlinkv3.rx.tools.ResponseBody;
 import com.alcatel.smartlinkv3.utils.OtherUtils;
@@ -96,13 +97,13 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
     private class UsageSettingReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET)) {
+            if (MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET.equalsIgnoreCase(intent.getAction())) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-                    // updateUI();
-                }
-            } else if (intent.getAction().equals(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET)) {
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //     // updateUI();
+                // }
+            } else if (MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET.equals(intent.getAction())) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 String msgRes = null;
@@ -113,12 +114,14 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
                     msgRes = UsageSettingActivity.this.getString(R.string.usage_clear_history_fail);
                     Toast.makeText(UsageSettingActivity.this, msgRes, Toast.LENGTH_SHORT).show();
                 }
-            } else if (intent.getAction().equals(MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET) || intent.getAction().equals(MessageUti.WAN_CONNECT_REQUSET) || intent.getAction().equals(MessageUti.WAN_DISCONNECT_REQUSET)) {
+            } else if (MessageUti.WAN_GET_CONNECT_STATUS_ROLL_REQUSET.equals(intent.getAction())//  连接状态
+                               || MessageUti.WAN_CONNECT_REQUSET.equals(intent.getAction())// 
+                               || MessageUti.WAN_DISCONNECT_REQUSET.equals(intent.getAction())) {//
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
-                if (nResult == 0) {
-                    // updateUI();
-                }
-            } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET)) {
+                // if (nResult == 0) {
+                //     // updateUI();
+                // }
+            } else if (MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET.equals(intent.getAction())) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 if (nResult == 0 && strErrorCode.length() == 0) {
@@ -130,23 +133,23 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
                 m_bIsMonthlyValueEdit = false;
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-                    // showSettingMonthly();
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //     // showSettingMonthly();
+                // }
             } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_USED_DATA_REQUSET)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-                    //updateUI();
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //     //updateUI();
+                // }
             } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_TIME_LIMIT_FLAG_REQUSET)) {
                 m_bIsTimeLimitStatusEdit = false;
                 showTimeLimitInfo();
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //
+                // }
             } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_TIME_LIMIT_TIMES_REQUSET)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
@@ -157,25 +160,25 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_USED_TIMES_REQUSET)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-                    //updateUI();
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //     //updateUI();
+                // }
             } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET)) {
                 m_bIsAutoDisconnectedEdit = false;
                 showUsageAutoDisconnectBtn();
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //
+                // }
             } else if (intent.getAction().equals(MessageUti.WAN_SET_ROAMING_CONNECT_FLAG_REQUSET)) {
                 m_bIsRoamingDisconnectedEdit = false;
                 showRoamingAutoDisconnectBtn();
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //
+                // }
             } else if (intent.getAction().equals(MessageUti.WAN_GET_CONNTCTION_SETTINGS_ROLL_REQUSET)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
@@ -185,9 +188,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             } else if (intent.getAction().equals(MessageUti.STATISTICS_SET_UNIT_REQUSET)) {
                 int nResult = intent.getIntExtra(MessageUti.RESPONSE_RESULT, 0);
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
-                if (nResult == 0 && strErrorCode.length() == 0) {
-                    // setSettingMonthly();
-                }
+                // if (nResult == 0 && strErrorCode.length() == 0) {
+                //     // setSettingMonthly();
+                // }
             }
         }
     }
@@ -274,7 +277,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         try {
             this.unregisterReceiver(m_usettingreceiver);
         } catch (Exception e) {
-
+            Logs.t("ma_usage").vv(e.getMessage());
         }
 
         m_bIsMonthlyValueEdit = false;
@@ -370,9 +373,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         String monthlyStr = OtherUtils.getEdittext(m_monthlyValue);
         monthlyTraffic = TextUtils.isEmpty(monthlyStr) ? 0 : Long.valueOf(monthlyStr);
         long monthlyPlan = (spinnerPosition == Conn.MB) ? // 参数
-                                   (1024 * 1024 * monthlyTraffic) : (1024 * 1024 * 1024 * monthlyTraffic);
+                                   (1024L * 1024L * monthlyTraffic) : (1024L * 1024L * 1024L * monthlyTraffic);
         m_monthlyValue.setText(String.valueOf(monthlyTraffic));
         usageResult.setMonthlyPlan(monthlyPlan);
+        usageResult.setUnit(spinnerPosition == Conn.MB ? Conn.MB : Conn.GB);
 
         // set time limit
         int timeLimit = 1;
@@ -381,9 +385,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         m_timeLimit.setText(String.valueOf(timeLimit));
         usageResult.setTimeLimitTimes(timeLimit);
 
-        // System.out.println("ma_usage: billingday--> " + usageResult.getBillingDay()
-        //                            + ";monthly plan--> " + usageResult.getMonthlyPlan()
-        //                            + ";timelimit--> " + m_timeLimit);
+        // TOAT:Y900不能使用B为单位进行相乘
+        if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y901")) {
+            usageResult.setMonthlyPlan(usageResult.getUnit() == Conn.MB ? usageResult.getMonthlyPlan() / 1024 / 1024 : usageResult.getMonthlyPlan() / 1024 / 1024 / 1024);
+        }
 
         // 2. 提交
         API.get().setUsageSetting(usageResult, new MySubscriber() {
@@ -432,11 +437,11 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(String.valueOf(s))) {
                     int billDay = Integer.valueOf(String.valueOf(s));
-                    // TODO: 2017/11/6 0006 日期是否符合规则
+                    // 日期是否符合规则
                     if (billDay < 1) {
                         m_billingValue.setText("1");
                     } else if (billDay > 31) {
-                        m_billingValue.setText("31");
+                        m_billingValue.setText(String.valueOf(31));
                     }
                     m_billingValue.setSelection(m_billingValue.getText().toString().length());
                 }
@@ -468,7 +473,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         // temporary behavior :just cancel edit focus
         m_timeLimitDisconnectBtn.requestFocusFromTouch();
         InputMethodManager imm = (InputMethodManager) UsageSettingActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(m_billingValue.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(m_billingValue.getWindowToken(), 0);
+        }
     }
 
     private void showSettingBilling() {
@@ -479,10 +486,10 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             m_billingValue.setEnabled(true);
             m_billingVal = statistic.HBillingDay;
             if (m_billingVal > 0) {
-                if (!(m_billingValue.isFocused() == true || m_bIsBillingValueEdit == true))
-                    m_billingValue.setText("" + m_billingVal);
+                if (!(m_billingValue.isFocused() || m_bIsBillingValueEdit))
+                    m_billingValue.setText(String.valueOf(m_billingVal));
             } else {
-                if (!(m_billingValue.isFocused() == true || m_bIsBillingValueEdit == true))
+                if (!(m_billingValue.isFocused() || m_bIsBillingValueEdit))
                     m_billingValue.setText("");
             }
 
@@ -512,7 +519,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             usageData.addParam("billing_day", usage);
             BusinessMannager.getInstance().sendRequestMessage(MessageUti.STATISTICS_SET_BILLING_DAY_REQUSET, usageData);
         } else {
-            m_billingValue.setText("" + m_billingVal);
+            m_billingValue.setText(String.valueOf(m_billingVal));
         }
 
     }
@@ -534,7 +541,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
                     if (monthlyPlan < 0) {
                         m_monthlyValue.setText("0");
                     } else if (monthlyPlan > 1024) {
-                        m_monthlyValue.setText("1024");
+                        m_monthlyValue.setText(String.valueOf(1024));
                     }
                     m_monthlyValue.setSelection(m_monthlyValue.getText().toString().length());
                 }
@@ -594,7 +601,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         // temporary behavior :just cancel edit focus
         m_timeLimitDisconnectBtn.requestFocusFromTouch();
         InputMethodManager imm = (InputMethodManager) UsageSettingActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(m_monthlyValue.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(m_monthlyValue.getWindowToken(), 0);
+        }
     }
 
     private void showSettingMonthly() {
@@ -605,23 +614,24 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             //change the interface by zhanghao 20170626
 
             UsageRecordResult statisticTem = BusinessMannager.getInstance().getUsageRecord();
-            m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, (long) statisticTem.HUseData));
+            m_consumptionValue.setText(CommonUtil.ConvertTrafficToStringFromMB(this, statisticTem.HUseData));
 
             //end to change;
 
             m_monthlyValue.setEnabled(true);
             m_monthlyVal = statistic.HMonthlyPlan;
+            Logs.t("ma_usage").ii("value: " + m_monthlyVal);
             if (m_monthlyVal > 0) {
-                if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true)) {
+                if (!(m_monthlyValue.isFocused() || m_bIsMonthlyValueEdit)) {
                     if (statistic.HUnit == 0) {
-                        m_monthlyValue.setText("" + byte2megabyte(m_monthlyVal));
+                        m_monthlyValue.setText(String.valueOf(byte2megabyte(m_monthlyVal)));
                     } else {
-                        m_monthlyValue.setText("" + new DecimalFormat("0.###").format(byte2gegabyte(m_monthlyVal)));
+                        m_monthlyValue.setText(String.valueOf(new DecimalFormat("0.###").format(byte2gegabyte(m_monthlyVal))));
                     }
                 }
 
             } else {
-                if (!(m_monthlyValue.isFocused() == true || m_bIsMonthlyValueEdit == true))
+                if (!(m_monthlyValue.isFocused() || m_bIsMonthlyValueEdit))
                     m_monthlyValue.setText("");
             }
 
@@ -664,9 +674,9 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             DataValue usageData = new DataValue();
             // TOAT: 2017/12/26 0026 这里把判断取消掉
             //if (usage <= 0) {
-                usageData.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
-                m_usageAutoDisconnectBtn.setEnabled(false);
-                m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+            usageData.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
+            m_usageAutoDisconnectBtn.setEnabled(false);
+            m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
             //}
             Log.i(TAG, "Name=======" + BusinessMannager.getInstance().getFeatures().getDeviceName());
             if (staticSetting.HUnit == 0) {
@@ -695,21 +705,21 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y901"))
             return megabyte;
         else
-            return megabyte * 1024 * 1024;
+            return megabyte * 1024L * 1024L;
     }
 
     private long gegabyte2byte(double gegabyte) {
         if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y901"))
             return (long) gegabyte;
         else
-            return (long) (gegabyte * 1024 * 1024 * 1024);
+            return (long) (gegabyte * 1024L * 1024L * 1024L);
     }
 
     private long byte2megabyte(long byteV) {
         if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y901"))
             return byteV;
         else
-            return byteV / (1024 * 1024);
+            return byteV / (1024L * 1024L);
     }
 
     private float byte2gegabyte(long byteV) {
@@ -722,7 +732,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
 
     private void showTimeLimitInfo() {
         UsageSettingModel setting = BusinessMannager.getInstance().getUsageSettings();
-        if (!(m_timeLimit.isInputMethodTarget() == true || this.m_bIsTimeLimitEdit == true)) {
+        if (!(m_timeLimit.isInputMethodTarget() || this.m_bIsTimeLimitEdit)) {
             if (setting.HTimeLimitTimes > 0) {
                 m_timeLimit.setText(String.valueOf(setting.HTimeLimitTimes));
             } else {
@@ -730,7 +740,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             }
         }
 
-        if (m_bIsTimeLimitStatusEdit == false) {
+        if (!m_bIsTimeLimitStatusEdit) {
             if (setting.HTimeLimitTimes > 0) {
                 m_timeLimitDisconnectBtn.setEnabled(true);
                 if (setting.HTimeLimitFlag == OVER_TIME_STATE.Disable) {
@@ -764,13 +774,17 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
                         m_timeLimit.setText("1");
                         m_timeLimit.setSelection(m_timeLimit.getText().toString().length());
                     }
+                    if (time > 43200) {
+                        m_timeLimit.setText(String.valueOf(MAX_DISCONNECT_TIME_VALUE));
+                        m_timeLimit.setSelection(m_timeLimit.getText().toString().length());
+                    }
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() == 1 && s.toString().equalsIgnoreCase("0")) {
-                    m_timeLimit.setText("");
+                    m_timeLimit.setText("1");
                 }
             }
         });
@@ -819,7 +833,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         SimStatusModel simState = BusinessMannager.getInstance().getSimStatus();
         //if (simState.m_SIMState == SIMState.Accessable) {
         UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
-        if (m_bIsAutoDisconnectedEdit == false) {
+        if (!m_bIsAutoDisconnectedEdit) {
 
             m_usageAutoDisconnectBtn.setEnabled(true);
             if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
@@ -829,7 +843,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
                 // on
                 m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
             }
-            
+
             // TOAT: 这段为原代码--> 加入了月流量判断,但后期不做月流量判断
             // if (usageSetting.HMonthlyPlan > 0) {
             //     m_usageAutoDisconnectBtn.setEnabled(true);
@@ -852,19 +866,19 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
         // TOAT: 把月流量判断取消
         //if (usageSetting.HMonthlyPlan > 0) {
-            m_bIsAutoDisconnectedEdit = true;
-            DataValue data = new DataValue();
+        m_bIsAutoDisconnectedEdit = true;
+        DataValue data = new DataValue();
 
-            if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
-                Logger.t("ma_usage").v("click disconnect Disable");
-                m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
-                data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Enable);
-            } else {
-                Logger.t("ma_usage").v("click disconnect enable");
-                m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
-                data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
-            }
-            BusinessMannager.getInstance().sendRequestMessage(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET, data);
+        if (usageSetting.HAutoDisconnFlag == OVER_DISCONNECT_STATE.Disable) {
+            Logger.t("ma_usage").v("click disconnect Disable");
+            m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_on);
+            data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Enable);
+        } else {
+            Logger.t("ma_usage").v("click disconnect enable");
+            m_usageAutoDisconnectBtn.setBackgroundResource(R.drawable.switch_off);
+            data.addParam("auto_disconn_flag", OVER_DISCONNECT_STATE.Disable);
+        }
+        BusinessMannager.getInstance().sendRequestMessage(MessageUti.STATISTICS_SET_AUTO_DISCONN_FLAG_REQUSET, data);
         //}
 
     }
@@ -895,7 +909,7 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
         //if (simState.m_SIMState == SIMState.Accessable) {
         UsageSettingModel usageSetting = BusinessMannager.getInstance().getUsageSettings();
         ConnectionSettingsModel connectionSetting = BusinessMannager.getInstance().getConnectSettings();
-        if (m_bIsRoamingDisconnectedEdit == false) {
+        if (!m_bIsRoamingDisconnectedEdit) {
             //				if (usageSetting.HMonthlyPlan > 0) {
             m_roamingDisconnectBtn.setEnabled(true);
             if (connectionSetting.HRoamingConnect == OVER_ROAMING_STATE.Disable) {

@@ -158,7 +158,7 @@ public class API {
             Context context = SmartLinkV3App.getInstance().getApplicationContext();
             // 形式: http://网关如192.168.3.1/
             String wifiGateWay = WifiUtils.getWifiGateWay(context);
-            // String wifiIp = WifiUtils.getWifiIp(context);
+            // String wifiIp = WifiUtils.getWifiIp(context);;
             Log.d("ma_load", wifiGateWay);
             String ip = Conn.IP_PRE + wifiGateWay + Conn.IP_SUFFIX;
             Log.d("ma_load", ip);

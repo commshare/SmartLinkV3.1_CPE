@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,10 +19,12 @@ import com.alcatel.smartlinkv3.business.model.SimStatusModel;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 import com.alcatel.smartlinkv3.business.statistics.UsageRecordResult;
 import com.alcatel.smartlinkv3.common.CommonUtil;
+import com.alcatel.smartlinkv3.common.Conn;
 import com.alcatel.smartlinkv3.common.ENUM;
 import com.alcatel.smartlinkv3.common.ENUM.SIMState;
 import com.alcatel.smartlinkv3.common.MessageUti;
 import com.alcatel.smartlinkv3.httpservice.BaseResponse;
+import com.alcatel.smartlinkv3.rx.tools.Logs;
 import com.alcatel.smartlinkv3.ui.activity.UsageSettingActivity;
 import com.orhanobut.logger.Logger;
 
@@ -49,13 +50,13 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
     private TextView m_roamingdata;
     private TextView m_roamingdowndata;
     private TextView m_roamingupdata;
-	/*roaming_panel  end*/
+                /*roaming_panel  end*/
 
     /*duration_panel  start*/
     private ImageView m_durationwarn;
     private TextView m_durationtotaltime;
     private TextView m_durationtime;
-	/*duration_panel  end*/
+                /*duration_panel  end*/
 
     private ViewUsageBroadcastReceiver m_viewUsageMsgReceiver;
 
@@ -86,7 +87,6 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
                 String strErrorCode = intent.getStringExtra(MessageUti.RESPONSE_ERROR_CODE);
                 if (nResult == 0 && strErrorCode.length() == 0) {
                     updateUI();
-                } else {
                 }
             }
         }
@@ -129,7 +129,6 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
         m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_HISTORY_ROLL_REQUSET));
         m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_CLEAR_ALL_RECORDS_REQUSET));
         m_context.registerReceiver(m_viewUsageMsgReceiver, new IntentFilter(MessageUti.STATISTICS_GET_USAGE_SETTINGS_ROLL_REQUSET));
-
         updateUI();
     }
 
@@ -154,8 +153,6 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
             case R.id.home_set_monthly_data_plan:
                 go2UsageSettingActivity();
                 break;
-            default:
-                break;
         }
     }
 
@@ -167,11 +164,11 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
     }
 
     private void updateUI() {
+        Logs.t("ma_usage").ii("roll get usage");
         int nProgress = 0;
         UsageRecordResult m_UsageRecordResult = BusinessMannager.getInstance().getUsageRecord();
         UsageSettingModel statistic = BusinessMannager.getInstance().getUsageSettings();
         SimStatusModel sim = BusinessMannager.getInstance().getSimStatus();
-
 
         if (statistic.HMonthlyPlan != 0) {
             m_homeSetMonthlyBtn.setVisibility(View.GONE);
@@ -181,24 +178,39 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
             long temMonthlyPlay = -1;
 
             if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y901")) {
-                temp = CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.HUseData) + " of " +
-                        getDataValueFor901(this.m_context, statistic);
-                if (statistic.HUnit == 0)
-                    temMonthlyPlay = statistic.HMonthlyPlan * 1024 * 1024 ;
-                else if (statistic.HUnit == 1)
-                    temMonthlyPlay = statistic.HMonthlyPlan * 1024 * 1024*1024;
+                Logs.t("ma_usage").ii("roll get y901");
+                temp = CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.HUseData) + " of " + getDataValueFor901(this.m_context, statistic);
+                if (statistic.HUnit == 0) {
+                    temMonthlyPlay = statistic.HMonthlyPlan * 1024l * 1024l;
+                } else if (statistic.HUnit == 1) {
+                    temMonthlyPlay = statistic.HMonthlyPlan * 1024l * 1024l * 1024l;
+                }
+                Logs.t("ma_usage").ii("temMonthlyPlay: " + temMonthlyPlay);
+
             } else {
-                temp = CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.HUseData) + " of "
-                        + CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) statistic.HMonthlyPlan);
+                Logs.t("ma_usage").ii("roll get mw40");
+                temp = CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.HUseData) + " of " + CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) statistic.HMonthlyPlan);
                 temMonthlyPlay = statistic.HMonthlyPlan;
             }
             m_homedata.setText(temp);
             nProgress = (int) (m_UsageRecordResult.HUseData * m_homedataprogress.getMax() / temMonthlyPlay);
-            Log.v("text", "p11111   nProgress=" + nProgress);
             if (nProgress > m_homedataprogress.getMax())
                 nProgress = m_homedataprogress.getMax();
             m_homedataprogress.setProgress(nProgress);
-            if (m_UsageRecordResult.HUseData > statistic.HMonthlyPlan) {
+            
+            
+            long hUseData = m_UsageRecordResult.HUseData;
+            float tempHUseData = hUseData;
+            // TOAT: 对于Y901产品, 需要根据单位缩小比例
+            if (BusinessMannager.getInstance().getFeatures().getDeviceName().equalsIgnoreCase("Y901")) {
+                tempHUseData = statistic.HUnit == Conn.MB ? hUseData * 1f / 1024 / 1024 : hUseData * 1f / 1024 / 1024 / 1024;
+            }
+
+            Logs.t("ma_usage").vv("used usage: " + m_UsageRecordResult.HUseData);
+            Logs.t("ma_usage").vv("tempHUseData usage: " + tempHUseData);
+            Logs.t("ma_usage").vv("month usage: " + statistic.HMonthlyPlan);
+
+            if (tempHUseData > statistic.HMonthlyPlan) {
                 m_homewarn.setVisibility(View.VISIBLE);
             } else {
                 m_homewarn.setVisibility(View.GONE);
@@ -219,14 +231,11 @@ public class ViewUsage extends BaseViewImpl implements OnClickListener {
         m_homedowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.HCurrUseDL));
         m_homeupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.HCurrUseUL));
 
-
         m_roamingdowndata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.RCurrUseDL));
         m_roamingupdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.RCurrUseUL));
         m_roamingdata.setText(CommonUtil.ConvertTrafficToStringFromMB(this.m_context, (long) m_UsageRecordResult.RoamUseData));
 
-
         String durationformat = this.getView().getResources().getString(R.string.usage_duration);
-        Log.v("time", "pccccc CurrConnTimes=" + m_UsageRecordResult.CurrConnTimes + "TConnTimes=" + m_UsageRecordResult.TConnTimes);
         String strCurrDuration = String.format(durationformat, m_UsageRecordResult.CurrConnTimes / 3600, (m_UsageRecordResult.CurrConnTimes % 3600) / 60);
         m_durationtime.setText(strCurrDuration);
         String strTotalDuration = String.format(durationformat, m_UsageRecordResult.TConnTimes / 3600, (m_UsageRecordResult.TConnTimes % 3600) / 60);

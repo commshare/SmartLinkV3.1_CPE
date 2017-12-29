@@ -8,7 +8,6 @@ import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 
 import com.alcatel.smartlinkv3.R;
-import com.alcatel.smartlinkv3.business.BusinessMannager;
 import com.alcatel.smartlinkv3.business.model.UsageDataMode;
 import com.alcatel.smartlinkv3.business.model.UsageSettingModel;
 
