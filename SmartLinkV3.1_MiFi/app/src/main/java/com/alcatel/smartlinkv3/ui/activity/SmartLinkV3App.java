@@ -35,9 +35,9 @@ public class SmartLinkV3App extends Application {
         HostnameUtils.setVerifyHostName();// https认证
         // x.Ext.init(this);
         
-        // 全局异常捕获
-        // CrashHandler crashHandler = CrashHandler.getInstance();
-        // crashHandler.init(getApplicationContext());
+        // TOAT 全局异常捕获
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());
         
         // 初始化接口
         // BusinessMannager.getInstance();

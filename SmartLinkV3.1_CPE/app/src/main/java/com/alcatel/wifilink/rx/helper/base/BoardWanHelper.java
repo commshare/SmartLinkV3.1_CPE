@@ -234,20 +234,20 @@ public class BoardWanHelper {
                 normalNext(result);
                 int status = result.getStatus();
                 switch (status) {
-                    case Cons.CONNECTED:
+                    case Cons.CONNECTED:// 2
                         Log.v("ma_boardwan", "wan connected");
                         connectedNext(result);
                         break;
-                    case Cons.CONNECTING:
+                    case Cons.CONNECTING:// 1
                         Log.v("ma_boardwan", "wan connecting");
                         connectingNext(result);
                         delayRepeatGetWanstatu();
                         break;
-                    case Cons.DISCONNECTED:
+                    case Cons.DISCONNECTED:// 0
                         Log.v("ma_boardwan", "wan disconnected");
                         disconnectedNext(result);
                         break;
-                    case Cons.DISCONNECTING:
+                    case Cons.DISCONNECTING:// 3
                         Log.v("ma_boardwan", "wan wan disconneting");
                         disconnectingNext(result);
                         break;

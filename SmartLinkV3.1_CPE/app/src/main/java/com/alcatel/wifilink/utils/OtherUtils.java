@@ -70,6 +70,7 @@ public class OtherUtils {
 
     /**
      * 获取某个contactId下所有的smsid
+     *
      * @param scList
      * @return
      */
@@ -212,15 +213,18 @@ public class OtherUtils {
 
                         @Override
                         public void onError(Throwable e) {
+                            Logs.v("ma_couldn_connect", "startHeartBeat1: " + e.getMessage());
                             clear(oriActivity, acTimeout);
                         }
 
                         @Override
                         protected void onResultError(ResponseBody.Error error) {
+                            Logs.v("ma_couldn_connect", "startHeartBeat2: " + error.getMessage());
                             clear(oriActivity, acTimeout);
                         }
                     });
                 } else {// wifi失效
+                    Logs.v("ma_couldn_connect", "no wifi");
                     clear(oriActivity, acTimeout);
                 }
             }
@@ -231,7 +235,7 @@ public class OtherUtils {
 
     private static void clear(Activity oriActivity, Class acTimeout) {
         // 出错, 跳转到目标界面
-        Log.v("ma_couldn_connect", "otherutils startHeartBeat error");
+        Log.v("ma_couldn_connect", "clear startHeartBeat error");
         CA.toActivity(oriActivity, acTimeout, false, true, false, 0);
     }
 

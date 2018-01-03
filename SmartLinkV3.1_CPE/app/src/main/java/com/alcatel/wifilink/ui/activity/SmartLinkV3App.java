@@ -40,7 +40,7 @@ public class SmartLinkV3App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         // 1.初始化全局异常类
-        CrashHanlder.getInstance().init(this);
+        // CrashHanlder.getInstance().init(this);
         // 2.初始化其他参数
         m_instance = this;
         contexts = new ArrayList<>();

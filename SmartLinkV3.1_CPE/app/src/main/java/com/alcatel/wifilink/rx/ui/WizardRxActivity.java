@@ -195,7 +195,32 @@ public class WizardRxActivity extends BaseActivityWithBack {
     }
 
     private void heartTimer() {
-        heartTimerHelper = OtherUtils.startHeartBeat(this, LoginRxActivity.class, LoginRxActivity.class);
+        heartTimerHelper = new TimerHelper(this) {
+            @Override
+            public void doSomething() {
+                RX.getInstant().heartBeat(new ResponseObject() {
+                    @Override
+                    protected void onSuccess(Object result) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logs.t("ma_wizard").vv("code: " + e.getMessage());
+                        toast(R.string.log_out);
+                        to(LoginRxActivity.class);
+                    }
+
+                    @Override
+                    protected void onResultError(ResponseBody.Error error) {
+                        Logs.t("ma_wizard").vv("code: " + error.getCode() + "; error msg: " + error.getMessage());
+                        to(RefreshWifiRxActivity.class);
+                    }
+                });
+            }
+        };
+        heartTimerHelper.start(3000);
+        // heartTimerHelper = OtherUtils.startHeartBeat(this, LoginRxActivity.class, LoginRxActivity.class);
     }
 
     @OnClick({R.id.tv_wizardrx_banner_skip,// skip
@@ -208,7 +233,7 @@ public class WizardRxActivity extends BaseActivityWithBack {
                 logout();
                 break;
             case R.id.tv_wizardrx_banner_skip:
-                Logs.i("ma_login","put wizard true");
+                Logs.i("ma_login", "put wizard true");
                 SP.getInstance(WizardRxActivity.this).putBoolean(Cons.WIZARD_RX, true);
                 to(WifiInitRxActivity.class);
                 break;

@@ -21,6 +21,7 @@ public class WanSettingsResult {
     private int DurationTime;
     private String WanType;
 
+
     public String getSubNetMask() {
         return SubNetMask;
     }
@@ -135,21 +136,6 @@ public class WanSettingsResult {
 
     @Override
     public String toString() {
-        return "WanSettings{" +
-                "SubNetMask='" + SubNetMask + '\'' +
-                ", Gateway='" + Gateway + '\'' +
-                ", IpAddress='" + IpAddress + '\'' +
-                ", Mtu=" + Mtu +
-                ", ConnectType=" + ConnectType +
-                ", PrimaryDNS='" + PrimaryDNS + '\'' +
-                ", SecondaryDNS='" + SecondaryDNS + '\'' +
-                ", Account='" + Account + '\'' +
-                ", Password='" + Password + '\'' +
-                ", Status=" + Status +
-                ", StaticIpAddress='" + StaticIpAddress + '\'' +
-                ", pppoeMtu=" + pppoeMtu +
-                ", DurationTime=" + DurationTime +
-                ", WanType='" + WanType + '\'' +
-                '}';
+        return "WanSettings{" + "\n" + "SubNetMask='" + SubNetMask + '\'' + "\n" + ", Gateway='" + Gateway + '\'' + "\n" + ", IpAddress='" + IpAddress + '\'' + "\n" + ", Mtu=" + Mtu + "\n" + ", ConnectType=" + ConnectType + "\n" + ", PrimaryDNS='" + PrimaryDNS + '\'' + "\n" + ", SecondaryDNS='" + SecondaryDNS + '\'' + "\n" + ", Account='" + Account + '\'' + "\n" + ", Password='" + Password + '\'' + "\n" + ", Status=" + Status + "\n" + ", StaticIpAddress='" + StaticIpAddress + '\'' + "\n" + ", pppoeMtu=" + pppoeMtu + "\n" + ", DurationTime=" + DurationTime + "\n" + ", WanType='" + WanType + '\'' + "\n" + '}';
     }
 }

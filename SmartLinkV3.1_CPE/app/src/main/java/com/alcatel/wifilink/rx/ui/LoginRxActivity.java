@@ -3,6 +3,7 @@ package com.alcatel.wifilink.rx.ui;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -185,14 +186,18 @@ public class LoginRxActivity extends BaseActivityWithBack {
         RX.getInstant().login(account, passwd, new ResponseObject<LoginResult>() {
             @Override
             protected void onSuccess(LoginResult loginResult) {
+                Logs.v("ma_loginrx", "login success");
                 RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                     @Override
                     protected void onSuccess(LoginState loginState) {
                         if (loginState.getState() == Cons.LOGIN) {
+                            Logs.v("ma_loginrx", "state is : " + loginState.getState());
+                            Logs.v("ma_loginrx", "token is : " + loginResult.getToken());
                             // getInstant token
                             RX.getInstant().updateToken(loginResult.getToken());
-                            // 判断连接的模式从而决定是否进入wizard向导页
+                            // 判断连接的模式从而决定是否进入wizard向导页--> (延迟2秒)
                             getConnectMode();
+                            // new Handler().postDelayed(LoginRxActivity.this::getConnectMode, 2000);
                         }
                     }
 
@@ -225,7 +230,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                Log.v("ma_loginrx", "error: " + error.getCode() + ";errormes: " + error.getMessage());
+                Log.v("ma_loginrx", "login impl error: " + error.getCode() + ";errormes: " + error.getMessage());
                 OtherUtils.hideProgressPop(pgd);
                 if (Cons.PASSWORD_IS_NOT_CORRECT.equals(error.getCode())) {
                     showRemainTimes();// 显示剩余次数
@@ -349,10 +354,10 @@ public class LoginRxActivity extends BaseActivityWithBack {
                      */
                     private void isToWizard() {
                         if (SP.getInstance(LoginRxActivity.this).getBoolean(Cons.WIZARD_RX, false)) {
-                            Logs.i("ma_login","to home ac");
+                            Logs.i("ma_login", "to home ac");
                             to(HomeRxActivity.class);
                         } else {
-                            Logs.i("ma_login","to wizard ac");
+                            Logs.i("ma_login", "to wizard ac");
                             to(WizardRxActivity.class);
                         }
                     }
@@ -368,7 +373,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                Log.v("ma_loginrx", "error: " + error.getCode() + ";errormes: " + error.getMessage());
+                Log.v("ma_loginrx", "get wan setting error: " + error.getCode() + ";errormes: " + error.getMessage());
                 OtherUtils.hideProgressPop(pgd);
                 ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
             }

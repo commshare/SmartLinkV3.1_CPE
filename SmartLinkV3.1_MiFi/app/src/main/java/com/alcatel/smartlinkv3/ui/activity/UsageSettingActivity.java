@@ -537,11 +537,22 @@ public class UsageSettingActivity extends BaseActivity implements OnClickListene
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // 流量控制是否符合规则
                 if (!TextUtils.isEmpty(String.valueOf(s))) {
-                    int monthlyPlan = Integer.valueOf(String.valueOf(s));
-                    if (monthlyPlan < 0) {
+                    int inputValue = Integer.valueOf(String.valueOf(s));
+                    if (inputValue < 0) {
                         m_monthlyValue.setText("0");
-                    } else if (monthlyPlan > 1024) {
+                    } else if (inputValue > 1024 & spinnerPosition == Conn.MB) {
+                        // 直接修改为GB级
+                        int gbs = inputValue % 1000 > 500 ? inputValue / 1000 + 1 : inputValue / 1000;
+                        m_monthlyValue.setText(String.valueOf(gbs));
+                        m_unit_selector.setSelection(Conn.GB);
+                        spinnerPosition = Conn.GB;
+                    } else if (inputValue > 1024 & spinnerPosition == Conn.GB) {
                         m_monthlyValue.setText(String.valueOf(1024));
+                        // 提示对应的值
+                        // String unit = String.valueOf(m_unit_selector.getAdapter().getItem(spinnerPosition));
+                        String gb = getString(R.string.home_GB);
+                        String maxDes = getString(R.string.usage_maximum_monthly_plan_notice) + ":1024" + gb;
+                        toast(maxDes);
                     }
                     m_monthlyValue.setSelection(m_monthlyValue.getText().toString().length());
                 }

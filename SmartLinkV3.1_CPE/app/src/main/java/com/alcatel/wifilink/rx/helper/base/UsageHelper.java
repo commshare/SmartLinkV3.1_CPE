@@ -120,7 +120,7 @@ public class UsageHelper {
         return (float) (Math.round(value * dimension)) / dimension;
     }
     
-    /* 保留两位小数 */
+    /* 保留N位小数 */
     private static float mathRoundByDimension(float value,int dimen) {
         long dimension = dimen;// 两位小数此处如为100,则表示保留两位小数, 4位小数, 此处为10000....依此类推
         return (float) (Math.round(value * dimension)) / dimension;

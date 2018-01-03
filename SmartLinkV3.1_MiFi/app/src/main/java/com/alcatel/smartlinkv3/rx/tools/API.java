@@ -62,7 +62,7 @@ public class API {
     private static API api;
 
     private String token;
-    private int TIMEOUT = 20;
+    private int TIMEOUT = 60;
     public static String gateWay;
 
     public static final String SP_GLOBAL_INFO = "global_info";

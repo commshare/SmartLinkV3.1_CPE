@@ -272,7 +272,7 @@ public class MobileNetworkRxFragment extends Fragment implements FragmentBackHan
                 clickRoaming();
                 break;
             case R.id.rl_mobilenetwork_setDataPlan:// 设置流量计划
-                activity.fraHelpers.transfer(activity.clazz[Cons.TAB_SET_DATA_PLAN]);
+                clickSetDataPlan();
                 break;
             case R.id.iv_mobilenetwork_mode_arrow:// 模式切换4G|3G|2G
             case R.id.tv_mobilenetwork_mode_mode:// 模式切换4G|3G|2G
@@ -288,6 +288,13 @@ public class MobileNetworkRxFragment extends Fragment implements FragmentBackHan
                 clickChangePin();
                 break;
         }
+    }
+
+    /**
+     * 点击了set data plan 操作
+     */
+    private void clickSetDataPlan() {
+        activity.fraHelpers.transfer(activity.clazz[Cons.TAB_SET_DATA_PLAN]);
     }
 
     /**

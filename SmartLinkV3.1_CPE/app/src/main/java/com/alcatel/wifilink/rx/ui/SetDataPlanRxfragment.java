@@ -1,8 +1,6 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -98,7 +96,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
     private PopupWindows pop_setTimelimit;
     private PopupWindows pop_monthly;
     private Drawable pop_bg;
-
+    private int count = 0;
 
     @Nullable
     @Override
@@ -152,6 +150,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
 
     @Override
     public void onHiddenChanged(boolean hidden) {
+        count = 0;
         if (!hidden) {
             activity.tabFlag = Cons.TAB_SET_DATA_PLAN;
             activity.llNavigation.setVisibility(View.GONE);
@@ -362,10 +361,10 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         ScreenSize.SizeBean size = ScreenSize.getSize(getActivity());
         int width = (int) (size.width * 0.85f);
         int height = (int) (size.height * 0.36f);
-        inflate.findViewById(R.id.tv_pop_setPlan_alert_90).setOnClickListener(v -> saveAlert(90));
-        inflate.findViewById(R.id.tv_pop_setPlan_alert_80).setOnClickListener(v -> saveAlert(80));
-        inflate.findViewById(R.id.tv_pop_setPlan_alert_70).setOnClickListener(v -> saveAlert(70));
-        inflate.findViewById(R.id.tv_pop_setPlan_alert_60).setOnClickListener(v -> saveAlert(60));
+        inflate.findViewById(R.id.tv_pop_setPlan_alert_90).setOnClickListener(v -> saveAlertAndShowPop(90));
+        inflate.findViewById(R.id.tv_pop_setPlan_alert_80).setOnClickListener(v -> saveAlertAndShowPop(80));
+        inflate.findViewById(R.id.tv_pop_setPlan_alert_70).setOnClickListener(v -> saveAlertAndShowPop(70));
+        inflate.findViewById(R.id.tv_pop_setPlan_alert_60).setOnClickListener(v -> saveAlertAndShowPop(60));
         pop_alert = new PopupWindows(getActivity(), inflate, width, height, true, pop_bg);
     }
 
@@ -480,13 +479,36 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
     }
 
     /**
-     * 保存流量警告值
+     * 保存流量警告值 & 弹出剩余流量提示
      *
      * @param value
      */
-    private void saveAlert(int value) {
+    private void saveAlertAndShowPop(int value) {
+        // 1.保存警告值
         pop_alert.dismiss();
         SP.getInstance(getActivity()).putInt(Cons.USAGE_LIMIT, value);
+        // 2.弹出剩余流量
+        ProgressDialog pgd = OtherUtils.showProgressPop(getActivity());
+        UsageSettingHelper ush = new UsageSettingHelper(getActivity());
+        ush.setOnErrorListener(attr -> pgd.dismiss());
+        ush.setOnResutlErrorListener(attr -> pgd.dismiss());
+        ush.setOngetSuccessListener(attr -> {
+            if (count == 0) {// 1.首次显示
+                float usedData = attr.getUsedData() * 1f;
+                float monthlyPlan = attr.getMonthlyPlan() * 1f;
+                if (monthlyPlan > 0) {// 2.非无限流量的情况下
+                    String des = getString(R.string.home_usage_over_redial_message);// 3.超出月流量--> 显示警告
+                    if (usedData < monthlyPlan) {// 3.没有超出--> 显示剩余百分比
+                        String per_s = (int) (((monthlyPlan - usedData) / monthlyPlan) * 100)+"%";
+                        des = String.format(getString(R.string.about_x_data_remain), per_s);
+                    }
+                    toastLong(des);// 4.吐司提示
+                }
+                count++;
+            }
+            pgd.dismiss();
+        });
+        ush.getUsageSetting();
     }
 
     private void toast(int resId) {
@@ -495,6 +517,10 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
 
     private void toastLong(int resId) {
         ToastUtil_m.showLong(getActivity(), resId);
+    }
+
+    private void toastLong(String content) {
+        ToastUtil_m.showLong(getActivity(), content);
     }
 
     private void toast(String content) {

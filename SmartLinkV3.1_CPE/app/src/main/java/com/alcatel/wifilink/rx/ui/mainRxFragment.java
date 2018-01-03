@@ -15,10 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.UsageSettingHelper;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
