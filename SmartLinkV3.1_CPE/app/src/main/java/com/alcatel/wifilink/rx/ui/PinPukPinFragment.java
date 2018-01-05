@@ -72,6 +72,13 @@ public class PinPukPinFragment extends Fragment {
         return inflate;
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            initUi();
+        }
+    }
+
     /**
      * 初始化资源
      */
@@ -96,6 +103,7 @@ public class PinPukPinFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // 获取剩余次数
         getRemainTime();
     }
 
@@ -148,6 +156,9 @@ public class PinPukPinFragment extends Fragment {
             case R.id.tv_pin_rx_checkbox:
                 boolean isCheck = ivPinRxCheckbox.getDrawable() == check_pic;
                 ivPinRxCheckbox.setImageDrawable(isCheck ? uncheck_pic : check_pic);
+                String pin = OtherUtils.getEdContent(etPinRx);
+                SP.getInstance(getActivity()).putString(Cons.PIN_REMEM_STR_RX, ivPinRxCheckbox.getDrawable() == check_pic ? pin : "");
+                SP.getInstance(getActivity()).putBoolean(Cons.PIN_REMEM_FLAG_RX, ivPinRxCheckbox.getDrawable() == check_pic);
                 break;
         }
     }

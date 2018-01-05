@@ -26,6 +26,7 @@ import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.AppInfo;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.FraHelpers;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
@@ -150,6 +151,16 @@ public class HomeRxActivity extends BaseActivityWithBack {
         initFragment();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TOAT: 此处需要重复调用一下刷新fragment的方法--> 否则的话无法切换回setting界面
+        Logs.t("ma_home").vv("tabFlag: " + tabFlag);
+        if (tabFlag == Cons.TAB_SETTING) {
+            transferTabAndFragment(Cons.TAB_SETTING);
+        }
+    }
+
     private void initRes() {
         container = R.id.fl_homeRx_container;
         home_logo_pre = getResources().getDrawable(R.drawable.tab_home_pre);
@@ -255,6 +266,8 @@ public class HomeRxActivity extends BaseActivityWithBack {
             }
         };
         curActTimer.start(200);
+        // TOGO 2018/1/5 0005 注意: 如果添加该段代码后出现了bug,请注销
+        OtherUtils.timerList.add(curActTimer);
     }
 
     /**
@@ -396,13 +409,13 @@ public class HomeRxActivity extends BaseActivityWithBack {
      * @param tabFlag
      */
     public void transferUi(int tabFlag) {
-        // 1.切换fragment
-        fraHelpers.transfer(clazz[tabFlag]);
-        // 2.切换标题栏
-        rlBanner.setVisibility(tabFlag == Cons.TAB_MAIN ? View.GONE : View.VISIBLE);
+        // 1.切换标题栏
+        rlBanner.setVisibility(tabFlag == Cons.TAB_MAIN || tabFlag == Cons.TAB_SETTING ? View.GONE : View.VISIBLE);
         ivBack.setVisibility(tabFlag == Cons.TAB_PIN | tabFlag == Cons.TAB_PUK ? View.VISIBLE : View.GONE);
         tvLogout.setVisibility(tabFlag == Cons.TAB_SETTING ? View.VISIBLE : View.GONE);
         ivSmsNew.setVisibility(tabFlag == Cons.TAB_SMS ? View.VISIBLE : View.GONE);
+        // 2.切换fragment
+        fraHelpers.transfer(clazz[tabFlag]);
         // 3.显示标题栏文本
         if (tabFlag == Cons.TAB_WIFI) {
             tvTitle.setText(getString(R.string.wifi_settings));

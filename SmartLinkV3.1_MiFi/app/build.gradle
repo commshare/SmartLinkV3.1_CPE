@@ -15,7 +15,7 @@ android {
         applicationId "com.alcatel.smartlinkv3"
         minSdkVersion 18
         targetSdkVersion 25
-        versionName '3.5.0'
+        versionName '3.5.1'
         versionCode 35
     }
 

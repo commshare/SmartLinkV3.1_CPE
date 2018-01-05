@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,17 +34,17 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.model.system.SystemInfo;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
-import com.alcatel.wifilink.model.update.DeviceUpgradeState;
-import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.RX;
-import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.BoardWanHelper;
 import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
+import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.rx.helper.business.FirmUpgradeHelper;
 import com.alcatel.wifilink.rx.helper.business.UpgradeHelper;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
+import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.ui.activity.AboutActivity;
 import com.alcatel.wifilink.ui.activity.EthernetWanConnectionActivity;
 import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
@@ -52,7 +53,6 @@ import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
-import com.alcatel.wifilink.ui.home.helper.temp.ConnectionStates;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.FileUtils;
 import com.alcatel.wifilink.utils.OtherUtils;
@@ -139,6 +139,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     private String perText;
     private ImageView mFirmwareUpgrade_dot;
     private int upgrade_Temp = 0;// 临时记录升级失效的次数
+    private TextView tvLogout;
+    int count = 0;
 
     @Nullable
     @Override
@@ -210,15 +212,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void resetUi() {
-        if (getActivity() != null) {
-            ((HomeRxActivity) getActivity()).tabFlag = Cons.TAB_SETTING;
-            ((HomeRxActivity) getActivity()).llNavigation.setVisibility(View.VISIBLE);
-            ((HomeRxActivity) getActivity()).rlBanner.setVisibility(View.VISIBLE);
-        } else {
-            ((HomeRxActivity) getActivity()).tabFlag = Cons.TAB_SETTING;
-            ((HomeRxActivity) getActivity()).llNavigation.setVisibility(View.VISIBLE);
-            ((HomeRxActivity) getActivity()).rlBanner.setVisibility(View.VISIBLE);
+        if (activity == null) {
+            activity = (HomeRxActivity) getActivity();
         }
+        activity.tabFlag = Cons.TAB_SETTING;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.GONE);// 已经自定义banner--> 此处设置公类的banner为gone
     }
 
     private void stopTimer() {
@@ -246,6 +245,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
 
     private void init() {
+        tvLogout = (TextView) m_view.findViewById(R.id.tv_settingrx_logout);
+        tvLogout.setOnClickListener(this);
         mLoginPassword = (RelativeLayout) m_view.findViewById(R.id.setting_login_password);
         mMobileNetwork = (RelativeLayout) m_view.findViewById(R.id.setting_mobile_network);
         mMobileNetworkSimSocket = (TextView) m_view.findViewById(R.id.tv_setting_sim_socket);// SIM开关显示
@@ -289,6 +290,10 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
+            case R.id.tv_settingrx_logout:// 登出
+                logout();
+                break;
             case R.id.setting_login_password:// 修改密码
                 goToAccountSettingPage();
                 break;
@@ -335,7 +340,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         Logger.t("ma_upgrade").v("SettingFragment.clickUpgrade");
         FirmUpgradeHelper fh = new FirmUpgradeHelper(getActivity(), true);
         fh.setOnNoNewVersionListener(this::popversion);
-        fh.setOnNewVersionListener(attr -> popversion(attr, null));
+        fh.setOnNewVersionListener(attr -> popversion(attr, null));// 有新版本
         fh.checkNewVersion();
     }
 
@@ -392,11 +397,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         isDownloading = true;
         FirmUpgradeHelper fuh = new FirmUpgradeHelper(getActivity(), false);
         fuh.setOnErrorListener(attr -> {
+            count = 0;
             Logger.t("ma_upgrade").v("SettingFragment.setOnErrorListener");
             toast(R.string.connect_failed);
             isDownloading = false;
         });
         fuh.setOnResultErrorListener(attr -> {
+            count = 0;
             Logger.t("ma_upgrade").v("SettingFragment.setOnResultErrorListener");
             toast(R.string.connect_failed);
             isDownloading = false;
@@ -433,6 +440,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
             });
 
             Logger.t("ma_upgrade").v("SettingFragment.downTimer.start()");
+            
             /* 2.启动定时器 */
             UpgradeHelper uh = new UpgradeHelper(getActivity(), false);
             uh.setOnErrorListener(attr1 -> downError(R.string.setting_upgrade_get_update_state_failed));
@@ -455,21 +463,54 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 progressBar.setProgress(attr1.getProcess());// 进度条显示进度
             });
             uh.setOnCompleteListener(attr1 -> {
-                // TOAT: 测试升级步骤
-                // 2.1.显示进度
-                per.setText(String.valueOf("100%"));
-                progressBar.setProgress(100);// 进度条显示进度
-                // 2.2.停止定时器 + 进度条消隐
-                stopDownTimerAndPop();
-                // 2.3.修改标记位
-                isDownloading = false;
-                // 2.3.延迟2秒弹窗提示用户是否触发底层升级
-                new Handler().postDelayed(this::triggerFOTAUpgrade, 500);
+                if (count == 0) {
+                    // 2.1.显示进度
+                    per.setText(String.valueOf("100%"));
+                    progressBar.setProgress(100);// 进度条显示进度
+                    // 2.2.停止定时器 + 进度条消隐
+                    stopDownTimerAndPop();
+                    // 2.3.修改标记位
+                    isDownloading = false;
+                    // 2.3.延迟2秒弹窗提示用户是否触发底层升级
+                    new Handler().postDelayed(this::triggerFOTAUpgrade, 2000);
+                    // 2.4.修改标记位
+                    count++;
+                }
             });
+
+            /* -------------------------------------------- 定时器获取WAN以及SIM的连接状态 -------------------------------------------- */
+            // SIM状态
+            BoardSimHelper bsh = new BoardSimHelper(getActivity());
+            bsh.setOnRollRequestOnError(e -> downError(-1));
+            bsh.setOnRollRequestOnResultError(error -> downError(-1));
+            bsh.setOnNormalSimstatusListener(simStatus -> {
+                int simState = simStatus.getSIMState();
+                if (simState == Cons.READY) {
+                    // 获取下载进度
+                    uh.getDownState();
+                } else {
+                    // 弹出提示并隐藏弹窗
+                    downError(R.string.qs_pin_unlock_can_not_connect_des);
+                }
+            });
+
+            // WAN状态
+            BoardWanHelper bwh = new BoardWanHelper(getActivity());
+            bwh.setOnError(e -> bsh.boardTimer());
+            bwh.setOnResultError(error -> bsh.boardTimer());
+            bwh.setOnDisConnetedNextListener(wanResult -> bsh.boardTimer());
+            bwh.setOnDisconnetingNextListener(wanResult -> bsh.boardTimer());
+            bwh.setOnConnetingNextListener(wanResult -> bsh.boardTimer());
+            bwh.setOnConnetedNextListener(wanResult -> uh.getDownState());// 请求下载进度
+
+            /* -------------------------------------------- 定时器获取WAN以及SIM的连接状态 -------------------------------------------- */
+
+            // 创建定时器
             downTimer = new TimerHelper(getActivity()) {
                 @Override
                 public void doSomething() {
-                    uh.getDownState();// 请求下载进度
+                    // 轮训WAN口--> 成功:获取进度 + 失败: 获取SIM卡--> 成功:获取进度 + 失败:提示
+                    bwh.boardTimer();
                 }
             };
             downTimer.start(3000);
@@ -489,6 +530,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                                      .setCancelText(getString(R.string.cancel))// cancel
                                      .setConfirmText(getString(R.string.ok))// ok
                                      .setConfirmClickListener(dialog -> {
+                                         stopDownTimerAndPop();
                                          boradUpgradeDialog.dismiss();// 消隐
                                          startDeviceUpgrade();
                                      }).showCancelButton(true)// cancel
@@ -497,7 +539,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     /**
-     * 正式开始升级
+     * U5.正式开始升级
      */
     private void startDeviceUpgrade() {
         isDownloading = true;
@@ -528,7 +570,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         // 4.恢复标记位
         isDownloading = false;
     }
-
 
     private void popDialogFromBottom(int itemType) {
         PopupWindow popupWindow = new PopupWindow(getActivity());
@@ -869,6 +910,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         activity.startActivity(intent);
     }
 
+    /**
+     * 获取fw当前版本
+     */
     private void getDeviceFWCurrentVersion() {
         // 1.获取当前版本
         RX.getInstant().getSystemInfo(new ResponseObject<SystemInfo>() {
@@ -974,6 +1018,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      * 停止下载定时器
      */
     public void stopDownTimerAndPop() {
+        count = 0;
         if (pop_downloading != null) {
             pop_downloading.dismiss();
             Logger.t("ma_upgrade").v("pop dismiss");
@@ -988,5 +1033,18 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     public boolean onBackPressed() {
         // 如果在下载中, 则自己处理返回按钮的逻辑
         return isDownloading;
+    }
+
+    /**
+     * 退出
+     */
+    private void logout() {
+        OtherUtils.clearAllTimer();
+        new LogoutHelper(getActivity()) {
+            @Override
+            public void logoutFinish() {
+                to(LoginRxActivity.class, true);
+            }
+        };
     }
 }

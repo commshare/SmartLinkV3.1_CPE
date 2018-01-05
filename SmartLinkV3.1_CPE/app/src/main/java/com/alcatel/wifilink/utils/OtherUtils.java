@@ -41,6 +41,8 @@ import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.orhanobut.logger.Logger;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -185,6 +187,48 @@ public class OtherUtils {
                                 + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."// 3
                                 + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";   // 4
         return Pattern.matches(ipRule, content);
+    }
+
+    /**
+     * IP、submask高级匹配
+     *
+     * @param ipAddress
+     */
+    public static boolean ipSuperMatch(String ipAddress) {
+        Logs.t("ma_ip").vv("ip address: " + ipAddress);
+        if (TextUtils.isEmpty(ipAddress)) {// 空值
+            Logs.t("ma_ip").vv("ip address: " + "empty");
+            return false;
+        }
+        if (!ipAddress.contains(".")) {// 不含点
+            Logs.t("ma_ip").vv("ip address: " + "not dot");
+            return false;
+        }
+        String[] address = ipAddress.split("\\.");
+        for (String s : address) {// 全部是点没有数字
+            if (TextUtils.isEmpty(s)) {
+                return false;
+            }
+        }
+        Logs.t("ma_ip").vv("ip address: " + "normal");
+        List<Integer> ips = new ArrayList<>();
+        for (String s : address) {
+            ips.add(Integer.valueOf(s));
+        }
+        int num0 = ips.get(0);
+        int num1 = ips.get(1);
+        int num2 = ips.get(2);
+        int num3 = ips.get(3);
+
+        Logs.t("ma_ip").vv(num0 + ":" + num1 + ":" + num2 + ":" + num3);
+        if ((num0 <= 0 || num0 == 127 || num0 > 223) || // num0
+                    (num1 < 0 || num1 > 255) || // num1
+                    (num2 < 0 || num2 > 255) || // num2
+                    (num3 <= 0 || num3 >= 255)) {// num3
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**

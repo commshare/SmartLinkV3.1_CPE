@@ -88,7 +88,7 @@ public class BoardSimHelper {
                     }
                 });
             }
-        }.checkBoard(activity, LoginRxActivity.class);
+        }.checkBoard(activity, LoginRxActivity.class,RefreshWifiRxActivity.class);
     }
 
     /**
@@ -122,7 +122,7 @@ public class BoardSimHelper {
                     }
                 });
             }
-        }.checkBoard(activity, LoginRxActivity.class);
+        }.checkBoard(activity, LoginRxActivity.class,RefreshWifiRxActivity.class);
     }
 
     /**

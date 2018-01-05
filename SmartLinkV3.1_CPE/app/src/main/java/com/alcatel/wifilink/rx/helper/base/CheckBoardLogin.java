@@ -74,7 +74,7 @@ public abstract class CheckBoardLogin {
                 }
             };
         }
-        checkBoardTimer.checkBoard(activity, LoginRxActivity.class);
+        checkBoardTimer.checkBoard(activity, LoginRxActivity.class, RefreshWifiRxActivity.class);
     }
 
 
@@ -125,7 +125,7 @@ public abstract class CheckBoardLogin {
                 }
             };
         }
-        checkBoardClick.checkBoard(activity, LoginRxActivity.class);
+        checkBoardClick.checkBoard(activity, LoginRxActivity.class, RefreshWifiRxActivity.class);
     }
 
 

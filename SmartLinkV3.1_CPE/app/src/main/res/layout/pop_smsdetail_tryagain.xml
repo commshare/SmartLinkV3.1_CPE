@@ -47,10 +47,10 @@
             android:gravity="center"
             android:text="@string/cancel"
             android:textColor="@color/gray"
-            app:alphaFactor="0.5"
+            app:alphaFactor="0.2"
             app:hover="true"
             app:layout_textSizePercent="32%h"
-            app:rippleColor="@color/gray11" />
+            app:rippleColor="@color/mg_blue" />
 
         <com.alcatel.wifilink.appwidget.RippleView
             android:id="@+id/tv_smsdetail_tryagain_confirm"
@@ -60,10 +60,10 @@
             android:gravity="center"
             android:text="@string/smsdetail_tryagain_confirm"
             android:textColor="@color/sms_detail_tryagain"
-            app:alphaFactor="0.5"
+            app:alphaFactor="0.2"
             app:hover="true"
             app:layout_textSizePercent="32%h"
-            app:rippleColor="@color/gray11" />
+            app:rippleColor="@color/mg_blue" />
     </com.zhy.android.percent.support.PercentLinearLayout>
 
     <View

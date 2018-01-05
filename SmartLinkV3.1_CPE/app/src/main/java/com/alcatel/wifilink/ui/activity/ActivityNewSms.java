@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
 import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.rx.helper.base.SmsWatcher;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sms.SMSSaveParam;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
@@ -69,6 +70,7 @@ public class ActivityNewSms extends BaseActivityWithBack implements OnClickListe
         m_etNumber = (EditText) findViewById(R.id.edit_number);
         m_etNumber.setText("");
         m_etContent = (EditText) findViewById(R.id.edit_content);
+        new SmsWatcher(this, m_etContent);
         m_etContent.setText("");
         setEditTextChangedListener();
 

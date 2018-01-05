@@ -140,7 +140,6 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     /* **** setSmsLongClickPoint **** */
     private void setSmsLongClickPoint(SmsHolder holder, int position) {
-        Logger.t("ma_smsstate").v(smsContactList.get(position).getState() + "");
         // 初始化状态
         holder.iv_smsLongClickPoint.setVisibility(SmsFragments.isLongClick ? VISIBLE : GONE);
         holder.iv_smsLongClickPoint.setImageDrawable(check_off);

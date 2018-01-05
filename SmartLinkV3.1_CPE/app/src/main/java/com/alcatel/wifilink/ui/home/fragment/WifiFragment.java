@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
@@ -94,6 +96,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     private String[] mWepEncryptionSettings;
     private TimerHelper wifiTimer;
     private HomeRxActivity activity;
+    private RelativeLayout rlWait;
 
     public WifiFragment() {
 
@@ -107,16 +110,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     private void resetUi() {
-        if (activity != null) {
-            activity.tabFlag = Cons.TAB_WIFI;
-            activity.llNavigation.setVisibility(View.VISIBLE);
-            activity.rlBanner.setVisibility(View.VISIBLE);
-        } else {
-            ((HomeRxActivity)getActivity()).tabFlag = Cons.TAB_WIFI;
-            ((HomeRxActivity)getActivity()).llNavigation.setVisibility(View.VISIBLE);
-            ((HomeRxActivity)getActivity()).rlBanner.setVisibility(View.VISIBLE);
+        if (activity == null) {
+            activity = (HomeRxActivity) getActivity();
         }
-        
+        activity.tabFlag = Cons.TAB_WIFI;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -141,6 +140,9 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        rlWait = (RelativeLayout) view.findViewById(R.id.rl_wifiSettingrx_wait);
+        rlWait.setOnClickListener(v -> ToastUtil_m.show(getActivity(), getString(R.string.connecting)));
 
         m2GSettingsGroup = (ViewGroup) view.findViewById(R.id.ll_settings_2g);
         m5GSettingsGroup = (ViewGroup) view.findViewById(R.id.ll_settings_5g);
@@ -201,7 +203,9 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
     }
 
     @Override
@@ -240,7 +244,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             }
         });
     }
-   
+
     private void updateUIWithWlanSettings() {
         if (mOriginSettings == null) {
             return;
@@ -323,7 +327,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             m2GSettingsGroup.setVisibility(View.GONE);
             m5GSettingsGroup.setVisibility(View.GONE);
             mDividerView.setVisibility(View.GONE);
-
         }
     }
 
@@ -387,14 +390,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
     }
 
     private void showApplySettingsDlg() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(R.string.warning);
-        builder.setMessage(R.string.connectedlist_will_be_restarted_to_apply_new_settings);
-        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-            applySettings();
-        });
-        builder.setNegativeButton(R.string.cancel, null);
-        builder.create().show();
+        applySettings();
     }
 
     private void applySettings() {
@@ -494,7 +490,16 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
                 }
             }
         }
-        setWlanRequest();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(R.string.warning);
+        builder.setMessage(R.string.connectedlist_will_be_restarted_to_apply_new_settings);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            setWlanRequest();
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.create().show();
+       
     }
 
 
@@ -506,34 +511,36 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
             @Override
             public void onStart() {
                 super.onStart();
-                showLoadingDialog();
+                rlWait.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onSuccess(Object result) {
                 Log.d("ma_wififragment", "wififragment success");
                 // checkLoginState();
-                OtherUtils.setWifiActive(getActivity(), false);
-                popDismiss();
-                CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                new Handler().postDelayed(() -> {
+                    // TODO: 2018/1/4 0004 此处等待测试验证在做决定是否执行以下逻辑
+                    rlWait.setVisibility(View.GONE);
+                    //OtherUtils.setWifiActive(getActivity(), false);
+                    //CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
+                }, 30 * 1000);
             }
 
             @Override
             public void onError(Throwable e) {
-                super.onError(e);
-                popDismiss();
+                rlWait.setVisibility(View.GONE);
                 CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                popDismiss();
+                rlWait.setVisibility(View.GONE);
                 CA.toActivity(getActivity(), RefreshWifiActivity.class, false, true, false, 0);
             }
 
             @Override
             protected void onFailure() {
-                popDismiss();
+                rlWait.setVisibility(View.GONE);
             }
         });
     }

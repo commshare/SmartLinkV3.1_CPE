@@ -97,6 +97,13 @@ public class PinPukPukFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            initUi();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         getRemainTime();
@@ -160,6 +167,9 @@ public class PinPukPukFragment extends Fragment {
             case R.id.tv_puk_remempin_rx_checkbox:
                 Drawable checkBox = ivPukRemempinRxCheckbox.getDrawable() == check_pic ? uncheck_pic : check_pic;
                 ivPukRemempinRxCheckbox.setImageDrawable(checkBox);
+                String pin = OtherUtils.getEdContent(etPukResetpinRx);
+                SP.getInstance(getActivity()).putString(Cons.PIN_REMEM_STR_RX, ivPukRemempinRxCheckbox.getDrawable() == check_pic ? pin : "");
+                SP.getInstance(getActivity()).putBoolean(Cons.PIN_REMEM_FLAG_RX, ivPukRemempinRxCheckbox.getDrawable() == check_pic);
                 break;
             case R.id.bt_puk_rx_unlock:
                 unlockPukClick();

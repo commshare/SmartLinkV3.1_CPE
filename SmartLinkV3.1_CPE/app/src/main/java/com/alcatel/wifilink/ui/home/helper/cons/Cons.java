@@ -196,8 +196,8 @@ public class Cons {
     public static final String WPS_IS_WORKING = "050503";
     public static final String GET_SYSTEM_STATUS_FAIL = "050503";
 
-    public static final int AUTO = 0;
-    public static final int MANUAL = 1;
+    public static final int MANUAL = 0;
+    public static final int AUTO = 1;
 
     public static final String INVALID_PIN = "020201";
 

@@ -591,8 +591,10 @@
     <string name="Blocked">Blocked</string>
     <string name="mtu_not_match">MTU must between 576 and 1500</string>
     <string name="Set_connected_device_black_failed">Set connected device block failed.</string>
-
     <string name="crash_tip">Connection timeout, your mobile phone and your device has been disconnected, check your device signal is normal, please restart your device or WIFI, and then relanded APP</string>
     <string name="reset_tip">Please operate your reset button on the device to restore the factory settings</string>
+    
     <string name="about_x_data_remain">About %s data remaining</string>
+    <string name="sms_max_length">SMS can enter %d characters at most</string>
+    <string name="check_sim_normal_or_no_cost">Please check whether your SIM card is normal or no cost</string>
 </resources>

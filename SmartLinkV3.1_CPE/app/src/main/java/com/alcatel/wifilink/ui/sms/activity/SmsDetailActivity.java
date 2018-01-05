@@ -16,6 +16,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.rx.helper.base.SmsWatcher;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.sms.SMSContactList;
@@ -81,16 +83,25 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
     private boolean toastFlag = true;
     private String dateTimebanner = "";
     private String ActivityName = "SmsDetailActivity";
+    private int current_sms_num = 0;// 最近一次获取到的短信条数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logs.t("ma_sms_oncreate_ac").vv("ma_sms_oncreate_ac: " + getClass().getSimpleName());
+        ActivityName = getClass().getSimpleName();
         setContentView(R.layout.activity_sms_detail);
         ButterKnife.bind(this);
         actionbar = getSupportActionBar();
         EventBus.getDefault().register(this);
+        initEvent();
         initView();
         initData();
+    }
+
+    private void initEvent() {
+        //  添加短信字数限制监听
+        new SmsWatcher(this, etSmsdetailSend);
     }
 
 
@@ -179,6 +190,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        current_sms_num = 0;
         timerHelper.stop();
     }
 
@@ -317,22 +329,24 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                         protected void onSuccess(SMSContactList result) {
                             for (SMSContactList.SMSContact scc : result.getSMSContactList()) {
                                 long contactId = scc.getContactId();
+                                // 1.是当前的contact id
                                 if (contactId == smsContact.getContactId()) {
-                                    // 获取当前号码的未读消息数
+                                    // 2.获取当前号码的未读消息数
                                     int unreadCount = scc.getUnreadCount();
                                     if (unreadCount > 0) {/* 如果有未读消息 */
-                                        // 用户是否停留在短信详情页
-                                        if (HomeRxActivity.CURRENT_ACTIVITY.equalsIgnoreCase(ActivityName)) {// 当前
-                                            realToGetContent();// 向接口发起请求
-                                        } else {// 用户离开
-                                            // 把未读消息数量保存到MAP中
+                                        // 3.用户是否停留在短信详情页
+                                        if (HomeRxActivity.CURRENT_ACTIVITY.contains(ActivityName)) {
+                                            // 4.向接口发起请求
+                                            realToGetContent();
+                                        } else {
+                                            // 3.用户离开
+                                            // 4.把未读消息数量保存到MAP中
                                             HomeRxActivity.smsUnreadMap.put(contactId, unreadCount);
                                         }
                                     } else {/* 没有未读消息, 直接获取内容--> 正常显示已读的消息 */
                                         realToGetContent();// 向接口发起请求
                                     }
                                 }
-
                             }
                         }
 
@@ -358,15 +372,24 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                 RX.getInstant().getSMSContentList(ssp, new ResponseObject<SMSContentList>() {
                     @Override
                     protected void onSuccess(SMSContentList result) {
+                        boolean isLast = false;
                         // 1. refresh the list
                         smsContentList = result;
+                        // 1.1.获取最新信息数
+                        int newSize = smsContentList.getSMSContentList().size();
+                        if (newSize > current_sms_num) {
+                            isLast = true;// 如果最新获取到的信息数比临时缓存的大, 则修改[滚动到最后一条]标记
+                        }
+                        // 更新临时最新消息数
+                        current_sms_num = newSize;
+                        // 刷新适配器
                         if (adapter != null) {
-                            adapter.notifys(smsContentList, isSetRcvToLast);
+                            adapter.notifys(smsContentList, isLast);
                         }
                         // 2. refresh the router time
                         setPositionTextTime();
                         // 3. force to  set rcv position to last
-                        if (isSetRcvToLast) {
+                        if (isLast) {
                             setRecyclePositionToLast(adapter.getItemCount() - 1);
                         }
                     }

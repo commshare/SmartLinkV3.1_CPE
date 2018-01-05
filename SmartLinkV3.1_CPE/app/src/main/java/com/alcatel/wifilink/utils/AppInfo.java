@@ -43,7 +43,7 @@ public class AppInfo {
         String activityName = runningTasks.get(0).topActivity.getShortClassName();// 得到最顶端的Activity名称
         return activityName;
     }
-    
+
     /**
      * 获取当前正在运行的Activity名(简称)
      *
@@ -53,7 +53,9 @@ public class AppInfo {
     public static String getCurrentActivitySimpleName(Context context) {
         ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
         List<RunningTaskInfo> runningTasks = am.getRunningTasks(5);
-        String activityName = runningTasks.get(0).topActivity.getClass().getSimpleName();// 得到最顶端的Activity名称
+        String compnetName = runningTasks.get(0).topActivity.toShortString();
+        String activityName = runningTasks.get(0).topActivity.getShortClassName();// 得到最顶端的Activity名称
+        // String activityName = runningTasks.get(0).topActivity.getClass().getSimpleName();
         return activityName;
     }
 

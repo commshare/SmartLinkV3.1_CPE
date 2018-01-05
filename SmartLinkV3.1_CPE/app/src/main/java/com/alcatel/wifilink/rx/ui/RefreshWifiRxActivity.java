@@ -1,5 +1,6 @@
 package com.alcatel.wifilink.rx.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -53,24 +54,29 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
      */
     private void checkBorads() {
         boolean iswifi = OtherUtils.isWifiConnect(this);
+        ProgressDialog pgd = OtherUtils.showProgressPop(this);
         if (iswifi) {
             RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                 @Override
                 protected void onSuccess(LoginState result) {
+                    OtherUtils.hideProgressPop(pgd);
                     to(LoginRxActivity.class, true);
                 }
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    OtherUtils.hideProgressPop(pgd);
                     showDialog();
                 }
 
                 @Override
                 public void onError(Throwable e) {
+                    OtherUtils.hideProgressPop(pgd);
                     showDialog();
                 }
             });
         } else {
+            OtherUtils.hideProgressPop(pgd);
             showDialog();
         }
     }

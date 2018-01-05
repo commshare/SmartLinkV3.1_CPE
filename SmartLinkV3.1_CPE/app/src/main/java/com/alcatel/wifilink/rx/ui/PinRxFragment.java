@@ -31,8 +31,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class PinRxFragment extends Fragment implements FragmentBackHandler{
-// public class PinRxFragment extends Fragment  {
+public class PinRxFragment extends Fragment implements FragmentBackHandler {
+    // public class PinRxFragment extends Fragment  {
 
     @BindView(R.id.et_pin_rx)
     EditText etPinRx;
@@ -73,9 +73,10 @@ public class PinRxFragment extends Fragment implements FragmentBackHandler{
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
+            initUi();
             getRemainTime();
             resetUI();
-        } 
+        }
     }
 
     private void resetUI() {
@@ -159,8 +160,11 @@ public class PinRxFragment extends Fragment implements FragmentBackHandler{
                 break;
             case R.id.iv_pin_rx_checkbox:
             case R.id.tv_pin_rx_checkbox:
-                boolean isCheck = ivPinRxCheckbox.getDrawable() == check_pic;
-                ivPinRxCheckbox.setImageDrawable(isCheck ? uncheck_pic : check_pic);
+                boolean isCheck = ivPinRxCheckbox.getDrawable() == check_pic;// current is check
+                ivPinRxCheckbox.setImageDrawable(isCheck ? uncheck_pic : check_pic);// modify to uncheck
+                String pin = OtherUtils.getEdContent(etPinRx);
+                SP.getInstance(getActivity()).putString(Cons.PIN_REMEM_STR_RX, ivPinRxCheckbox.getDrawable() == check_pic ? pin : ""); 
+                SP.getInstance(getActivity()).putBoolean(Cons.PIN_REMEM_FLAG_RX, ivPinRxCheckbox.getDrawable() == check_pic);
                 break;
         }
     }

@@ -1,35 +1,74 @@
-<LinearLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_grey"
-    android:orientation="vertical">
+    android:background="@color/color_bg_grey">
 
-    <ScrollView
+    <!-- banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_settingRx_banner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%h">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/main_setting"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_settingrx_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:text="@string/log_out"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="23%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- info -->
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_settingRx_banner"
+        android:background="@color/color_bg_grey">
+
+        <!-- 总布局 -->
+        <com.zhy.android.percent.support.PercentLinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <!-- 1.change password  -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_login_password_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/settings_ic_account" />
+                    android:src="@drawable/settings_ic_account"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,166 +80,163 @@
                     android:layout_toRightOf="@id/setting_login_password_pic"
                     android:text="@string/setting_account"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    app:layout_textSizePercent="25%h" />
 
                 <ImageView
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
-            </RelativeLayout>
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            <RelativeLayout
+            <!-- 2.mobile network -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/setting_mobile_network"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
-                <RelativeLayout
-                    android:id="@+id/setting_mobile_network"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/setting_mobile_network_pic"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dip"
-                    android:background="@color/color_white">
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
+                    android:src="@drawable/settings_ic_mobile"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
-                    <ImageView
-                        android:id="@+id/setting_mobile_network_pic"
-                        android:layout_width="@dimen/dimen_30dip"
-                        android:layout_height="@dimen/dimen_30dip"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="@dimen/dimen_20dip"
-                        android:layout_marginLeft="@dimen/dimen_20dip"
-                        android:layout_marginStart="@dimen/dimen_20dip"
-                        android:layout_marginTop="@dimen/dimen_20dip"
-                        android:src="@drawable/settings_ic_mobile" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dimen_10dip"
-                        android:layout_marginStart="@dimen/dimen_10dip"
-                        android:layout_toEndOf="@id/setting_mobile_network_pic"
-                        android:layout_toRightOf="@id/setting_mobile_network_pic"
-                        android:text="@string/setting_mobile_network"
-                        android:textColor="@color/black_text"
-                        android:textSize="@dimen/font_size_normal" />
-
-                    <ImageView
-                        android:id="@+id/setting_mobile_network_arrow"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/common_margin"
-                        android:layout_marginRight="@dimen/common_margin"
-                        android:contentDescription="@string/setting_wifi"
-                        android:src="@drawable/right_arrow_big" />
-
-                    <TextView
-                        android:id="@+id/tv_setting_sim_socket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/dimen_10dip"
-                        android:layout_marginRight="@dimen/dimen_10dip"
-                        android:layout_toLeftOf="@id/setting_mobile_network_arrow"
-                        android:layout_toStartOf="@id/setting_mobile_network_arrow"
-                        android:text="@string/setting_off_state"
-                        android:textColor="@color/grey_text"
-                        android:textSize="@dimen/font_size_normal" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_0.5dip"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginLeft="@dimen/dimen_10dip"
-                        android:layout_marginStart="@dimen/dimen_10dip"
-                        android:layout_toEndOf="@id/setting_mobile_network_pic"
-                        android:layout_toRightOf="@id/setting_mobile_network_pic"
-                        android:background="@color/grey_line"
-                        android:visibility="visible" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/setting_ethernet_wan"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/setting_mobile_network"
-                    android:background="@color/color_white">
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
+                    android:layout_toEndOf="@id/setting_mobile_network_pic"
+                    android:layout_toRightOf="@id/setting_mobile_network_pic"
+                    android:text="@string/setting_mobile_network"
+                    android:textColor="@color/black_text"
+                    app:layout_textSizePercent="25%h" />
 
-                    <ImageView
-                        android:id="@+id/setting_ethernet_wan_pic"
-                        android:layout_width="@dimen/dimen_30dip"
-                        android:layout_height="@dimen/dimen_30dip"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="@dimen/dimen_20dip"
-                        android:layout_marginLeft="@dimen/dimen_20dip"
-                        android:layout_marginStart="@dimen/dimen_20dip"
-                        android:layout_marginTop="@dimen/dimen_20dip"
-                        android:src="@drawable/settings_ic_wan" />
+                <ImageView
+                    android:id="@+id/setting_mobile_network_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dimen_10dip"
-                        android:layout_marginStart="@dimen/dimen_10dip"
-                        android:layout_toEndOf="@id/setting_ethernet_wan_pic"
-                        android:layout_toRightOf="@id/setting_ethernet_wan_pic"
-                        android:text="@string/ethernet_wan_connection"
-                        android:textColor="@color/black_text"
-                        android:textSize="@dimen/font_size_normal" />
+                <TextView
+                    android:id="@+id/tv_setting_sim_socket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_10dip"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:layout_toLeftOf="@id/setting_mobile_network_arrow"
+                    android:layout_toStartOf="@id/setting_mobile_network_arrow"
+                    android:text="@string/setting_off_state"
+                    android:textColor="@color/grey_text"
+                    app:layout_textSizePercent="25%h" />
 
-                    <ImageView
-                        android:id="@+id/setting_ethernet_wan_arrow"
-                        android:layout_width="@dimen/dimen_20dip"
-                        android:layout_height="@dimen/dimen_20dip"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/common_margin"
-                        android:layout_marginRight="@dimen/common_margin"
-                        android:contentDescription="@string/setting_wifi"
-                        android:src="@drawable/right_arrow_big" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tv_setting_wan_socket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/dimen_10dip"
-                        android:layout_marginRight="@dimen/dimen_10dip"
-                        android:layout_toLeftOf="@id/setting_ethernet_wan_arrow"
-                        android:layout_toStartOf="@id/setting_ethernet_wan_arrow"
-                        android:text="@string/setting_off_state"
-                        android:textSize="@dimen/font_size_normal" />
+            <!-- 3.connect wan ethernet -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/setting_ethernet_wan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/setting_mobile_network"
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
-                </RelativeLayout>
-            </RelativeLayout>
+                <ImageView
+                    android:id="@+id/setting_ethernet_wan_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
+                    android:src="@drawable/settings_ic_wan"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
-            <RelativeLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
+                    android:layout_toEndOf="@id/setting_ethernet_wan_pic"
+                    android:layout_toRightOf="@id/setting_ethernet_wan_pic"
+                    android:text="@string/ethernet_wan_connection"
+                    android:textColor="@color/black_text"
+                    app:layout_textSizePercent="25%h"
+                    app:layout_widthPercent="45%w" />
+
+                <ImageView
+                    android:id="@+id/setting_ethernet_wan_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
+
+                <TextView
+                    android:id="@+id/tv_setting_wan_socket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_10dip"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:layout_toLeftOf="@id/setting_ethernet_wan_arrow"
+                    android:layout_toStartOf="@id/setting_ethernet_wan_arrow"
+                    android:text="@string/setting_off_state"
+                    app:layout_textSizePercent="25%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- 4.sharing service -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_sharing_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_sharing_service_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/settings_ic_sharing" />
+                    android:src="@drawable/settings_ic_sharing"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -212,37 +248,41 @@
                     android:layout_toRightOf="@id/setting_sharing_service_pic"
                     android:text="@string/setting_share"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    app:layout_textSizePercent="25%h" />
 
                 <ImageView
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
-            </RelativeLayout>
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            <RelativeLayout
+            <!-- 5.language -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_language_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/setting_language" />
+                    android:src="@drawable/setting_language"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -254,39 +294,43 @@
                     android:layout_toRightOf="@id/setting_language_pic"
                     android:text="@string/language"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    app:layout_textSizePercent="25%h" />
 
                 <ImageView
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
-            </RelativeLayout>
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            <RelativeLayout
+            <!-- 6.firmware updates -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_firmware_upgrade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_firmware_upgrade_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/settings_ic_upgrade" />
+                    android:src="@drawable/settings_ic_upgrade"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
-                <RelativeLayout
+                <com.zhy.android.percent.support.PercentRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -302,7 +346,7 @@
                         android:maxLines="1"
                         android:text="@string/setting_firmware_upgrade"
                         android:textColor="@color/black_text"
-                        android:textSize="@dimen/font_size_normal" />
+                        app:layout_textSizePercent="25%h" />
 
                     <TextView
                         android:id="@+id/setting_firmware_upgrade_version"
@@ -311,31 +355,35 @@
                         android:layout_alignLeft="@id/tv_firmware_update"
                         android:layout_alignStart="@id/tv_firmware_update"
                         android:layout_below="@id/tv_firmware_update"
-                        android:layout_marginTop="3dp"
+                        android:text="@string/setting_upgrade_no_new_version"
                         android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_10sp" />
+                        app:layout_textSizePercent="20%h" />
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/iv_setting_firmware_upgrade_tipdot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_8dip"
-                        android:layout_width="@dimen/dimen_8dip"
-                        android:layout_height="@dimen/dimen_8dip"
                         android:layout_toEndOf="@id/tv_firmware_update"
-                        android:src="@drawable/tab_sms_new" />
-                </RelativeLayout>
+                        android:src="@drawable/tab_sms_new"
+                        android:visibility="gone"
+                        app:layout_heightPercent="15%h"
+                        app:layout_widthPercent="15%h" />
+                </com.zhy.android.percent.support.PercentRelativeLayout>
 
                 <ImageView
                     android:id="@+id/setting_firmware_upgrade_arrow"
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -344,24 +392,26 @@
                     android:background="@color/grey_line"
                     android:visibility="visible" />
 
-            </RelativeLayout>
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            <RelativeLayout
+            <!-- 7.restart & reset -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_restart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_restart_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/settings_ic_restart" />
+                    android:src="@drawable/settings_ic_restart"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -373,18 +423,20 @@
                     android:layout_toRightOf="@id/setting_restart_pic"
                     android:text="@string/setting_restart_reset"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    app:layout_textSizePercent="25%h" />
 
                 <ImageView
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -393,24 +445,26 @@
                     android:background="@color/grey_line"
                     android:visibility="visible" />
 
-            </RelativeLayout>
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            <RelativeLayout
+            <!-- 8.backup & restore -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_backup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_backup_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/settings_ic_backup" />
+                    android:src="@drawable/settings_ic_backup"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -422,38 +476,42 @@
                     android:layout_toRightOf="@id/setting_backup_pic"
                     android:text="@string/setting_backup_restore"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    app:layout_textSizePercent="25%h" />
 
                 <ImageView
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
 
-            </RelativeLayout>
+            </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            <RelativeLayout
+            <!-- 9.about -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
-                android:background="@color/color_white">
+                android:background="@color/color_white"
+                app:layout_heightPercent="9%sh">
 
                 <ImageView
                     android:id="@+id/setting_about_pic"
-                    android:layout_width="@dimen/dimen_30dip"
-                    android:layout_height="@dimen/dimen_30dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginBottom="@dimen/dimen_20dip"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginTop="@dimen/dimen_20dip"
-                    android:src="@drawable/settings_ic_about" />
+                    android:src="@drawable/settings_ic_about"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -465,21 +523,22 @@
                     android:layout_toRightOf="@id/setting_about_pic"
                     android:text="@string/setting_about"
                     android:textColor="@color/black_text"
-                    android:textSize="@dimen/font_size_normal" />
+                    app:layout_textSizePercent="25%h" />
 
                 <ImageView
-                    android:layout_width="@dimen/dimen_20dip"
-                    android:layout_height="@dimen/dimen_20dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/common_margin"
                     android:layout_marginRight="@dimen/common_margin"
                     android:contentDescription="@string/setting_wifi"
-                    android:src="@drawable/right_arrow_big" />
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
 
-            </RelativeLayout>
-        </LinearLayout>
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+        </com.zhy.android.percent.support.PercentLinearLayout>
     </ScrollView>
-
-</LinearLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

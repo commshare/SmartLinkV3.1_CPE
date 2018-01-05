@@ -129,16 +129,12 @@ public class SmsFragments extends Fragment implements FragmentBackHandler {
      * 重置banner & navigation
      */
     private void resetUi() {
-        if (activity != null) {
-            activity.tabFlag = Cons.TAB_SMS;
-            activity.llNavigation.setVisibility(View.VISIBLE);
-            activity.rlBanner.setVisibility(View.VISIBLE);
-        } else {
-            ((HomeRxActivity) getActivity()).tabFlag = Cons.TAB_SMS;
-            ((HomeRxActivity) getActivity()).llNavigation.setVisibility(View.VISIBLE);
-            ((HomeRxActivity) getActivity()).rlBanner.setVisibility(View.VISIBLE);
+        if (activity == null) {
+            activity = (HomeRxActivity) getActivity();
         }
-
+        activity.tabFlag = Cons.TAB_SMS;
+        activity.llNavigation.setVisibility(View.VISIBLE);
+        activity.rlBanner.setVisibility(View.VISIBLE);
     }
 
     /**

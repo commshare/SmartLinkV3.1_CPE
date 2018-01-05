@@ -198,6 +198,9 @@ public class LoginRxActivity extends BaseActivityWithBack {
                             // 判断连接的模式从而决定是否进入wizard向导页--> (延迟2秒)
                             getConnectMode();
                             // new Handler().postDelayed(LoginRxActivity.this::getConnectMode, 2000);
+                        } else {
+                            OtherUtils.hideProgressPop(pgd);
+                            ToastUtil_m.show(LoginRxActivity.this,getString(R.string.smsdetail_tryagain_confirm));
                         }
                     }
 

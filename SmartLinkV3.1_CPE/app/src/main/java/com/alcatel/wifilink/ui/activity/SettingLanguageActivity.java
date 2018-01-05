@@ -39,7 +39,6 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_language);
         setTitle(R.string.language);

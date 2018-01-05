@@ -15,6 +15,7 @@ import com.alcatel.wifilink.model.sms.SMSContentList;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.sms.helper.SmsContentSortHelper;
 import com.alcatel.wifilink.ui.sms.helper.SmsReSendHelper;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.ScreenSize;
 
@@ -69,7 +70,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
         clearAll();// 1. clear all first
         this.smsContentList = smsContentList;// 2.deliver data
         refreshAll();// 3.operate all data ui
-        notifyDataSetChanged();// 4.refresh ui 
+        notifyDataSetChanged();// 4.refresh ui
         if (toLast) {
             lm.scrollToPositionWithOffset(getItemCount() - 1, 0);
         }
@@ -255,6 +256,7 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
 
     /* A3-重新封装出新的内容对象 */
     private void hiberNewbean() {
+        Logs.t("ma_sms").vv("sortScbList size: " + sortScbList.size());
         for (SMSContentList.SMSContentBean scb : sortScbList) {
             NewSMSContentBean nscb = new NewSMSContentBean();
             nscb.isSelected = false;
@@ -288,11 +290,14 @@ public class SmsDetatilAdapter extends RecyclerView.Adapter<SmsDetailHolder> {
         Drawable pop_bg = context.getResources().getDrawable(R.drawable.bg_pop_conner);
         View inflate = View.inflate(context, R.layout.pop_smsdetail_tryagain, null);
         int width = (int) (ScreenSize.getSize(context).width * 0.75f);
-        int height = (int) (ScreenSize.getSize(context).height * 0.22f);
+        int height = (int) (ScreenSize.getSize(context).height * 0.215f);
         tv_cancel = (RippleView) inflate.findViewById(R.id.tv_smsdetail_tryagain_cancel);
         tv_confirm = (RippleView) inflate.findViewById(R.id.tv_smsdetail_tryagain_confirm);
         tv_cancel.setOnClickListener(v -> failedPop.dismiss());
-        tv_confirm.setOnClickListener(v -> sendAgain(scb));
+        tv_confirm.setOnClickListener(v -> {
+            failedPop.dismiss();
+            sendAgain(scb);
+        });
         failedPop = new PopupWindows(context, inflate, width, height, true, pop_bg);
     }
 

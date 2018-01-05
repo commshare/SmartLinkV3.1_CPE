@@ -14,6 +14,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
@@ -306,12 +307,24 @@ public class WanModeRxActivity extends AppCompatActivity {
                         toast(R.string.not_empty);
                         return;
                     }
-                    // IP规则匹配判断
+                    // IP基本规则匹配判断
                     boolean ip_match = OtherUtils.ipMatch(ipaddress);
                     boolean subnet_match = OtherUtils.ipMatch(subnetMask);
-                    if (!ip_match | !subnet_match) {
+
+                    // IP高级规则匹配判断
+                    boolean ip_super_match = OtherUtils.ipSuperMatch(ipaddress);
+                    boolean subnet_super_match = OtherUtils.ipSuperMatch(subnetMask);
+
+                    if (!ip_match || !ip_super_match) {
+                        Logs.t("ma_ip").vv("ip: " + ip_match + ";ip_super: " + ip_super_match);
                         String ipValid = getString(R.string.ip_address) + " " + getString(R.string.connect_failed);
                         toast(ipValid);
+                        return;
+                    }
+                    if (!subnet_match || !subnet_super_match) {
+                        Logs.t("ma_ip").vv("subnet: " + subnet_match + ";subnet_super: " + subnet_super_match);
+                        String subnetValid = getString(R.string.subnet_mask) + " " + getString(R.string.connect_failed);
+                        toast(subnetValid);
                         return;
                     }
                     break;

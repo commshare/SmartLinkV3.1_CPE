@@ -1,59 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.zhy.android.percent.support.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <!-- 总布局 -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/rl_sms"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_70dip">
+        android:layout_height="wrap_content"
+        app:layout_heightPercent="9%sh">
 
         <!-- **** unread point **** -->
         <ImageView
             android:id="@+id/iv_smsPoint"
-            android:layout_width="@dimen/dimen_15dip"
-            android:layout_height="@dimen/dimen_15dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/view"
             android:layout_alignStart="@+id/view"
-            android:layout_alignTop="@+id/imageView2" />
+            android:layout_alignTop="@+id/imageView2"
+            app:layout_heightPercent="25%h"
+            app:layout_widthPercent="25%h" />
 
         <!-- **** long click point **** -->
         <ImageView
             android:id="@+id/iv_smsLongClickPoint"
-            android:layout_width="@dimen/dimen_15dip"
-            android:layout_height="@dimen/dimen_15dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/view"
             android:layout_alignStart="@+id/view"
             android:layout_alignTop="@+id/imageView2"
             android:background="@color/white"
             android:src="@drawable/checkbox_android_off"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:layout_heightPercent="25%h"
+            app:layout_widthPercent="25%h" />
 
         <!-- **** sms info **** -->
-        <RelativeLayout
+        <com.zhy.android.percent.support.PercentRelativeLayout
             android:id="@+id/rl_smsInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/dimen_30dip"
-            android:layout_marginLeft="@dimen/dimen_10dip"
-            android:layout_marginRight="@dimen/dimen_30dip"
-            android:layout_marginStart="@dimen/dimen_10dip"
             android:layout_toEndOf="@id/iv_smsPoint"
             android:layout_toRightOf="@id/iv_smsPoint"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            app:layout_marginLeftPercent="15%h"
+            app:layout_marginRightPercent="50%h">
 
             <!-- username -->
             <TextView
                 android:id="@+id/tv_smsPhone"
-                android:layout_width="@dimen/dimen_150dip"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:singleLine="true"
                 android:text="PhoneNum"
-                android:textSize="@dimen/dimen_textsize_18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_textSizePercent="27%h"
+                app:layout_widthPercent="50%w" />
 
             <!-- sms count -->
             <TextView
@@ -64,21 +70,23 @@
                 android:layout_marginStart="@dimen/dimen_20dip"
                 android:layout_toEndOf="@id/tv_smsPhone"
                 android:layout_toRightOf="@id/tv_smsPhone"
-                android:text="2"
+                android:text="0"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/dimen_textsize_16sp" />
+                app:layout_textSizePercent="27%h" />
 
             <!-- send failed logo -->
             <ImageView
                 android:id="@+id/iv_smsSendFailed"
-                android:layout_width="@dimen/dimen_15dip"
-                android:layout_height="@dimen/dimen_15dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_20dip"
                 android:layout_marginStart="@dimen/dimen_20dip"
                 android:layout_toEndOf="@id/tv_smsCount"
                 android:layout_toRightOf="@id/tv_smsCount"
                 android:src="@drawable/sms_prompt"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:layout_heightPercent="20%h"
+                app:layout_widthPercent="20%h" />
 
             <!-- content -->
             <TextView
@@ -92,7 +100,7 @@
                 android:maxLines="1"
                 android:text="contentcontentcontentcontentcontentcontentcontentcontent"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/dimen_textsize_16sp" />
+                app:layout_textSizePercent="23%h" />
 
             <!-- sms date -->
             <TextView
@@ -104,20 +112,22 @@
                 android:layout_alignParentRight="true"
                 android:text="6/6/2017"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/dimen_textsize_16sp" />
+                app:layout_textSizePercent="23%h" />
 
-        </RelativeLayout>
+        </com.zhy.android.percent.support.PercentRelativeLayout>
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="@dimen/dimen_15dip"
-            android:layout_height="@dimen/dimen_15dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dimen_10dip"
-            android:layout_marginRight="@dimen/dimen_10dip"
-            android:src="@drawable/sms_next" />
+            android:layout_marginEnd="@dimen/dimen_5dip"
+            android:layout_marginRight="@dimen/dimen_5dip"
+            android:src="@drawable/sms_next"
+            app:layout_heightPercent="23%h"
+            app:layout_widthPercent="23%h" />
 
         <!-- **** split **** -->
         <View
@@ -129,6 +139,6 @@
             android:layout_marginRight="@dimen/dimen_10dip"
             android:background="@color/gray" />
 
-    </RelativeLayout>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

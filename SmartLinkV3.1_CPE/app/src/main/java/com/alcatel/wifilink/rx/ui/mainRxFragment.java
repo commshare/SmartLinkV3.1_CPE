@@ -245,6 +245,9 @@ public class mainRxFragment extends Fragment {
     }
 
     private void resetUi() {
+        if (activity == null) {
+            activity = (HomeRxActivity)getActivity();
+        }
         activity.tabFlag = Cons.TAB_MAIN;
         activity.llNavigation.setVisibility(View.VISIBLE);
         activity.rlBanner.setVisibility(View.GONE);

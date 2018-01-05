@@ -92,7 +92,7 @@ public class BoardWanHelper {
                 }
             };
         }
-        checkBoardClick.checkBoard(activity, LoginRxActivity.class);
+        checkBoardClick.checkBoard(activity, LoginRxActivity.class,RefreshWifiRxActivity.class);
     }
 
     /**
@@ -129,7 +129,7 @@ public class BoardWanHelper {
                 }
             };
         }
-        checkBoardRoll.checkBoard(activity, LoginRxActivity.class);
+        checkBoardRoll.checkBoard(activity, LoginRxActivity.class, RefreshWifiRxActivity.class);
     }
 
     /**

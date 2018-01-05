@@ -39,7 +39,9 @@ public abstract class CheckBoard {
      */
     public void checkBoard(Activity ori, Class... target) {
         // 检测wifi是否有连接
-        if (OtherUtils.isWifiConnect(ori)) {
+        boolean wifiConnect = OtherUtils.isWifiConnect(ori);
+        if (wifiConnect) {
+            yesWifiNext(wifiConnect);
             // 请求接口前
             onPrepare();
             RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
@@ -47,10 +49,12 @@ public abstract class CheckBoard {
                 protected void onSuccess(LoginState result) {
                     onSuccessful();// 请求接口成功后
                     successful();
+                    loginStateNext(result);
                 }
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    resultErrorNext(error);
                     allError();
                     onResultErrors(error);// 请求接口中途错误
                     // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
@@ -59,6 +63,7 @@ public abstract class CheckBoard {
 
                 @Override
                 public void onError(Throwable e) {
+                    errorNext(e);
                     allError();
                     onErrors(e);// 请求接口错误溢出
                     // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
@@ -66,11 +71,107 @@ public abstract class CheckBoard {
                 }
             });
         } else {
+            noWifiNext(wifiConnect);
             // wifi掉线
             if (ori != null) {
                 // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
                 CA.toActivity(ori, target[1] != null ? target[1] : target[0], false, true, false, 0);
             }
+        }
+    }
+
+    private OnLoginstateListener onLoginstateListener;
+
+    // 接口OnLoginstateListener
+    public interface OnLoginstateListener {
+        void loginState(LoginState attr);
+    }
+
+    // 对外方式setOnLoginstateListener
+    public void setOnLoginstateListener(OnLoginstateListener onLoginstateListener) {
+        this.onLoginstateListener = onLoginstateListener;
+    }
+
+    // 封装方法loginStateNext
+    private void loginStateNext(LoginState attr) {
+        if (onLoginstateListener != null) {
+            onLoginstateListener.loginState(attr);
+        }
+    }
+
+    private OnYesWifiListener onYesWifiListener;
+
+    // 接口OnYesWifiListener
+    public interface OnYesWifiListener {
+        void yesWifi(boolean attr);
+    }
+
+    // 对外方式setOnYesWifiListener
+    public void setOnYesWifiListener(OnYesWifiListener onYesWifiListener) {
+        this.onYesWifiListener = onYesWifiListener;
+    }
+
+    // 封装方法yesWifiNext
+    private void yesWifiNext(boolean attr) {
+        if (onYesWifiListener != null) {
+            onYesWifiListener.yesWifi(attr);
+        }
+    }
+
+    private OnNoWifiListener onNoWifiListener;
+
+    // 接口OnNoWifiListener
+    public interface OnNoWifiListener {
+        void noWifi(boolean attr);
+    }
+
+    // 对外方式setOnNoWifiListener
+    public void setOnNoWifiListener(OnNoWifiListener onNoWifiListener) {
+        this.onNoWifiListener = onNoWifiListener;
+    }
+
+    // 封装方法noWifiNext
+    private void noWifiNext(boolean attr) {
+        if (onNoWifiListener != null) {
+            onNoWifiListener.noWifi(attr);
+        }
+    }
+
+    private OnResultErrorListener onResultErrorListener;
+
+    // 接口OnResultErrorListener
+    public interface OnResultErrorListener {
+        void resultError(ResponseBody.Error attr);
+    }
+
+    // 对外方式setOnResultErrorListener
+    public void setOnResultErrorListener(OnResultErrorListener onResultErrorListener) {
+        this.onResultErrorListener = onResultErrorListener;
+    }
+
+    // 封装方法resultErrorNext
+    private void resultErrorNext(ResponseBody.Error attr) {
+        if (onResultErrorListener != null) {
+            onResultErrorListener.resultError(attr);
+        }
+    }
+
+    private OnErrorListener onErrorListener;
+
+    // 接口OnErrorListener
+    public interface OnErrorListener {
+        void error(Throwable attr);
+    }
+
+    // 对外方式setOnErrorListener
+    public void setOnErrorListener(OnErrorListener onErrorListener) {
+        this.onErrorListener = onErrorListener;
+    }
+
+    // 封装方法errorNext
+    private void errorNext(Throwable attr) {
+        if (onErrorListener != null) {
+            onErrorListener.error(attr);
         }
     }
 
