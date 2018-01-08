@@ -184,13 +184,13 @@ public class BusinessMannager {
             Log.d(TAG, "No have this method:" + strMessageId);
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-
+            Log.d(TAG, "IllegalArgumentException:" + e.getMessage());
         } catch (IllegalAccessException e) {
-
+            Log.d(TAG, "IllegalAccessException:" + e.getMessage());
         } catch (InvocationTargetException e) {
-
+            Log.d(TAG, "InvocationTargetException:" + e.getMessage());
         } catch (Exception e) {
-
+            Log.d(TAG, "Other Exception:" + e.getMessage());
         }
     }
 

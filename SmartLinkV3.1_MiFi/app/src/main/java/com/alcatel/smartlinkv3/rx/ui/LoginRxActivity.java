@@ -294,7 +294,7 @@ public class LoginRxActivity extends BaseRxActivity {
     private void showResetPop() {
         ScreenSize.SizeBean size = ScreenSize.getSize(this);
         int width = (int) (size.width * 0.80f);
-        int height = (int) (size.height * 0.15f);
+        int height = (int) (size.height * 0.21f);
         Drawable bg = getDrawables(R.drawable.bg_pop_conner);
         View inflate = View.inflate(this, R.layout.pop_resetdevice, null);
         inflate.findViewById(R.id.tv_pop_login_reset_ok).setOnClickListener(v -> resetPop.dismiss());

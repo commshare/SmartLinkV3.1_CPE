@@ -6,41 +6,26 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_pop_conner">
 
-    <com.zhy.android.percent.support.PercentRelativeLayout
-        android:id="@+id/rl_pop_login_reset_title"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_pop_login_reset_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:layout_marginTopPercent="3%sh">
-
-        <TextView
-            android:id="@+id/tv_pop_login_reset_reboot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setting_device_btn_reboot"
-            android:textColor="@color/blue_btn"
-            app:layout_textSizePercent="2.7%sh" />
-
-        <TextView
-            android:id="@+id/tv_pop_login_reset_device"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_10dip"
-            android:layout_toEndOf="@id/tv_pop_login_reset_reboot"
-            android:text="@string/setting_device"
-            android:textColor="@color/blue_btn"
-            app:layout_textSizePercent="2.7%sh" />
-
-    </com.zhy.android.percent.support.PercentRelativeLayout>
+        android:text="@string/login_forgot_password_and_reset"
+        android:textColor="@color/blue_btn"
+        app:layout_marginLeftPercent="7%h"
+        app:layout_marginRightPercent="7%h"
+        app:layout_marginTopPercent="3%sh"
+        app:layout_textSizePercent="2.7%sh" />
 
     <TextView
         android:id="@+id/tv_pop_login_reset_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_pop_login_reset_title"
+        android:layout_below="@id/tv_pop_login_reset_title"
         android:layout_centerHorizontal="true"
         android:text="@string/ok"
-        app:layout_marginTopPercent="3%sh"
+        app:layout_marginTopPercent="5%sh"
         app:layout_textSizePercent="3%sh" />
 
     <View
