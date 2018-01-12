@@ -71,6 +71,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
     @Override
     protected void onResume() {
         super.onResume();
+        OtherUtils.transferLanguage(this);
         OtherUtils.clearAllTimer();
         OtherUtils.stopHomeTimer();
         OtherUtils.clearContexts(getClass().getSimpleName());

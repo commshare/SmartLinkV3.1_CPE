@@ -36,6 +36,10 @@ public abstract class TimerHelper {
         timer.schedule(timerTask, 0, period);
     }
 
+    /**
+     * 延迟启动
+     * @param delay 单位毫秒
+     */
     public void startDelay(int delay) {
         timer = new Timer();
         timerTask = new TimerTask() {
@@ -48,8 +52,8 @@ public abstract class TimerHelper {
     }
 
     /**
-     * @param delay  单位秒
-     * @param period 单位秒
+     * @param delay  单位毫秒
+     * @param period 单位毫秒
      */
     public void start(int delay, int period) {
         timer = new Timer();
@@ -59,7 +63,7 @@ public abstract class TimerHelper {
                 doSomething();
             }
         };
-        timer.schedule(timerTask, delay * 1000, period * 1000);
+        timer.schedule(timerTask, delay, period);
     }
 
     /**

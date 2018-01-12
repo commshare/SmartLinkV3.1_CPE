@@ -2,16 +2,25 @@ package com.alcatel.wifilink.rx.helper.business;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
+import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.appwidget.CountDownTextView;
+import com.alcatel.wifilink.appwidget.PopupWindows;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ScreenSize;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -23,8 +32,14 @@ public class UpgradeHelper {
     private boolean isShowWaiting;
     private ProgressDialog pgd;
     private Handler handler;
+    private TimerHelper countDownHelper;
+    private PopupWindows countDown_pop;// 倒计时弹框
+    private CountDownTextView ctv;// 倒计时文本
+    private TimerHelper countDownTimer;
+    private boolean isContinueChecking = true;// 是否允许在checking状态下继续获取状态
 
     public UpgradeHelper(Activity activity, boolean isShowWaiting) {
+        isContinueChecking = true;
         this.activity = activity;
         this.isShowWaiting = isShowWaiting;
         handler = new Handler();
@@ -47,7 +62,7 @@ public class UpgradeHelper {
                         noStartUpdateNext(result);
                         break;
                     case Cons.UPDATING:
-                        Log.i("ma_upgrade",result.getProcess() + "%");
+                        Log.i("ma_upgrade", result.getProcess() + "%");
                         updatingNext(result);
                         break;
                     case Cons.COMPLETE:
@@ -152,9 +167,46 @@ public class UpgradeHelper {
      */
     public void checkVersion() {
         if (isShowWaiting) {
-            pgd = OtherUtils.showProgressPop(activity);
+
+            try {
+                startCountDownView();// 1.启动倒计时view
+                startCountDownTimer();// 2.启动延时器(延迟180秒)
+            } catch (Exception e) {
+                Logger.t("ma_upgrade").e("err_pop: " + e.getMessage());
+                pgd = OtherUtils.showProgressPop(activity);
+            }
         }
         setCheck();
+    }
+
+    /**
+     * 启动延时器(延迟180秒)
+     */
+    private void startCountDownTimer() {
+        countDownTimer = new TimerHelper(activity) {
+            @Override
+            public void doSomething() {
+                isContinueChecking = false;
+                activity.runOnUiThread(() -> hideDialog());
+                ToastUtil_m.show(activity, R.string.could_not_update_try_again);
+            }
+        };
+        countDownTimer.startDelay(180 * 1000);
+    }
+
+    /**
+     * 启动倒计时view
+     */
+    private void startCountDownView() {
+        View inflate = View.inflate(activity, R.layout.pop_countdown_upgrade, null);
+        ctv = (CountDownTextView) inflate.findViewById(R.id.ctv_pop_upgrade);
+        ctv.setCount(180);
+        ctv.setTopColor(Color.parseColor("#009AFF"));
+        ctv.setBottomColor(Color.parseColor("#009AFF"));
+        ctv.run();
+        int width = (int) (ScreenSize.getSize(activity).width * 0.85f);
+        int height = (int) (ScreenSize.getSize(activity).height * 0.12f);
+        countDown_pop = new PopupWindows(activity, inflate, width, height, false, new ColorDrawable(Color.TRANSPARENT));
     }
 
     private void setCheck() {
@@ -186,58 +238,91 @@ public class UpgradeHelper {
      * 获取查询new version
      */
     private void getNewVersionDo() {
-        RX.getInstant().getDeviceNewVersion(new ResponseObject<DeviceNewVersion>() {
-            @Override
-            protected void onSuccess(DeviceNewVersion result) {
-                Logger.t("ma_upgrade").v("new version state: "+result.getState());
-                switch (result.getState()) {
-                    case Cons.CHECKING:
-                        checkingNext(result);
-                        handler.postDelayed(() -> getNewVersionDo(), 3000);
-                        break;
-                    case Cons.NEW_VERSION:
-                        hideDialog();
-                        newVersionNext(result);
-                        break;
-                    case Cons.NO_NEW_VERSION:
-                        hideDialog();
-                        noNewVersionNext(result);
-                        break;
-                    case Cons.NO_CONNECT:
-                        hideDialog();
-                        noConnectNext(result);
-                        break;
-                    case Cons.SERVICE_NOT_AVAILABLE:
-                        hideDialog();
-                        serviceNotAvailableNext(result);
-                        break;
-                    case Cons.CHECK_ERROR:
-                        hideDialog();
-                        checkErrorNext(result);
-                        Logger.t("ma_upgrade").e("CHECK_ERROR");
-                        break;
+        if (isContinueChecking) {// 是否允许获取状态(该标记位是在180秒后如果状态还是checking则认为失败)
+            RX.getInstant().getDeviceNewVersion(new ResponseObject<DeviceNewVersion>() {
+                @Override
+                protected void onSuccess(DeviceNewVersion result) {
+                    Logger.t("ma_upgrade").v("new version state: " + result.getState());
+                    switch (result.getState()) {
+                        case Cons.CHECKING:
+                            checkingNext(result);
+                            // handler.postDelayed(() -> getNewVersionDo(), 300);
+                            getNewVersionDo();
+                            break;
+                        case Cons.NEW_VERSION:
+                            hideDialog();
+                            newVersionNext(result);
+                            break;
+                        case Cons.NO_NEW_VERSION:
+                            hideDialog();
+                            noNewVersionNext(result);
+                            break;
+                        case Cons.NO_CONNECT:
+                            hideDialog();
+                            noConnectNext(result);
+                            break;
+                        case Cons.SERVICE_NOT_AVAILABLE:
+                            hideDialog();
+                            serviceNotAvailableNext(result);
+                            break;
+                        case Cons.CHECK_ERROR:
+                            hideDialog();
+                            checkErrorNext(result);
+                            Logger.t("ma_upgrade").e("CHECK_ERROR");
+                            break;
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                hideDialog();
-                Logger.t("ma_upgrade").e("getDeviceNewVersion:" + e.getMessage());
-                errorNext(e);
-            }
+                @Override
+                public void onError(Throwable e) {
+                    hideDialog();
+                    Logger.t("ma_upgrade").e("getDeviceNewVersion:" + e.getMessage());
+                    errorNext(e);
+                }
 
-            @Override
-            protected void onResultError(ResponseBody.Error error) {
-                hideDialog();
-                Logger.t("ma_upgrade").e("getDeviceNewVersion:" + error.getMessage());
-                resultErrorNext(error);
-            }
-        });
+                @Override
+                protected void onResultError(ResponseBody.Error error) {
+                    hideDialog();
+                    Logger.t("ma_upgrade").e("getDeviceNewVersion:" + error.getMessage());
+                    resultErrorNext(error);
+                }
+            });
+        } else {
+            hideDialog();
+            ToastUtil_m.show(activity, R.string.could_not_update_try_again);
+        }
+
     }
 
     private void hideDialog() {
         if (pgd != null) {
             pgd.dismiss();
+        }
+        if (countDown_pop != null) {
+            countDown_pop.dismiss();
+        }
+        if (ctv != null) {
+            ctv.setCount(180);
+            ctv.pause();
+        }
+    }
+
+    private OnNormalGetNewVersionDoListener onNormalGetNewVersionDoListener;
+
+    // 接口OnNormalGetNewVersionDoListener
+    public interface OnNormalGetNewVersionDoListener {
+        void normalGetNewVersionDo(DeviceNewVersion attr);
+    }
+
+    // 对外方式setOnNormalGetNewVersionDoListener
+    public void setOnNormalGetNewVersionDoListener(OnNormalGetNewVersionDoListener onNormalGetNewVersionDoListener) {
+        this.onNormalGetNewVersionDoListener = onNormalGetNewVersionDoListener;
+    }
+
+    // 封装方法normalGetNewVersionDoNext
+    private void normalGetNewVersionDoNext(DeviceNewVersion attr) {
+        if (onNormalGetNewVersionDoListener != null) {
+            onNormalGetNewVersionDoListener.normalGetNewVersionDo(attr);
         }
     }
 

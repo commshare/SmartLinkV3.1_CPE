@@ -54,7 +54,7 @@
             android:background="@drawable/smsdetail_sendtext_bg"
             android:hint="@string/message"
             android:maxHeight="@dimen/dimen_80dip"
-            android:maxLength="70"
+            android:maxLength="1530"
             android:minHeight="@dimen/dimen_40dip"
             android:paddingLeft="@dimen/dimen_8dip"
             android:paddingStart="@dimen/dimen_8dip"

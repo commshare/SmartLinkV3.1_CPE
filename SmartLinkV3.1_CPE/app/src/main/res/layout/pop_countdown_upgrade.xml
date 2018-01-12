@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pop_conner"
+        app:layout_heightPercent="12%sh">
+
+        <ProgressBar
+            android:id="@+id/pg_pop_upgrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_20dip"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <TextView
+            android:id="@+id/tv_pop_upgrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="60%w"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_10dip"
+            android:layout_toEndOf="@id/pg_pop_upgrade"
+            android:text="@string/checking_for_update"
+            android:textColor="@color/mg_blue"
+            app:layout_textSizePercent="20%h" />
+
+        <com.alcatel.wifilink.appwidget.CountDownTextView
+            android:id="@+id/ctv_pop_upgrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_20dip"
+            android:text="180"
+            android:textColor="@color/mg_blue"
+            app:layout_textSizePercent="20%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

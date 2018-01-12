@@ -12,6 +12,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -34,6 +35,7 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refreshrx_activity);
         ButterKnife.bind(this);
+        Logs.t("ma_permission").vv("refreshrx onCreate");
     }
 
     @Override
@@ -85,18 +87,16 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
      * 显示连接失败对话框
      */
     public void showDialog() {
-        if (dialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.refresh_get_connected);
-            builder.setMessage(R.string.refresh_manage_device_tips);
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                // 前往wifi选择界面
-                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-            });
-            dialog = builder.create();
-            dialog.setOnDismissListener(dialog -> dialog = null);
-            dialog.show();
-        }
+        dialog = null;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.refresh_get_connected);
+        builder.setMessage(R.string.refresh_manage_device_tips);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            // 前往wifi选择界面
+            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        });
+        dialog = builder.create();
+        dialog.show();
     }
 
     /**

@@ -12,6 +12,8 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.BoardWanHelper;
+import com.alcatel.wifilink.rx.helper.base.ConnectSettingHelper;
+import com.alcatel.wifilink.rx.helper.base.ConnectStatusHelper;
 import com.alcatel.wifilink.rx.helper.base.SystemInfoHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.CA;
@@ -195,9 +197,18 @@ public class FirmUpgradeHelper {
         bsh.setOnNormalSimstatusListener(simStatus -> {
             int simState = simStatus.getSIMState();
             if (simState != Cons.READY) {
+                Logger.t("ma_upgrade").e("sim is not ready");
                 toast(R.string.qs_pin_unlock_can_not_connect_des);
             } else {
-                checkNw();// 检查新版本
+                // 加入拨号连接的判断, 如果没有拨号连接则提示没有拨号
+                ConnectStatusHelper csh = new ConnectStatusHelper();
+                csh.setOnResultError(error -> toast(R.string.qs_pin_unlock_can_not_connect_des));
+                csh.setOnError(e -> toast(R.string.qs_pin_unlock_can_not_connect_des));
+                csh.setOnDisConnecting(result -> toast(R.string.setting_upgrade_no_connection));
+                csh.setOnDisConnected(result -> toast(R.string.setting_upgrade_no_connection));
+                csh.setOnConnecting(result -> toast(R.string.setting_upgrade_no_connection));
+                csh.setOnConnected(result -> checkNw());// 检查新版本
+                csh.getStatus();
             }
         });
         bsh.boardTimer();
@@ -208,7 +219,7 @@ public class FirmUpgradeHelper {
      */
     private void checkNw() {
         Logger.t("ma_upgrade").v("FirmUpgradeHelper.checkNw");
-        hideDialog();
+        hideDialog();// 停止先前的等待条
         Drawable pop_bg = activity.getResources().getDrawable(R.drawable.bg_pop_conner);
         UpgradeHelper uh = new UpgradeHelper(activity, true);
         uh.setOnResultErrorListener(attr -> toast(R.string.setting_upgrade_check_firmware_failed));

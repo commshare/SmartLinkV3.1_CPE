@@ -68,6 +68,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        
+        <!-- 绑定了HomeRxActivity的服务类(用于检测HomeRxActivity是否被杀死) -->
+        <service android:name=".rx.service.CheckService" />
 
         <!-- 新的启动界面 -->
         <activity

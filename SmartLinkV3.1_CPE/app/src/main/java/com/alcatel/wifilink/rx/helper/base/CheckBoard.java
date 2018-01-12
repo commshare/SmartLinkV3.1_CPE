@@ -7,6 +7,7 @@ import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 /**
@@ -54,6 +55,7 @@ public abstract class CheckBoard {
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    Logs.t("checkboard").vv("checkboarderror: "+error.getMessage());
                     resultErrorNext(error);
                     allError();
                     onResultErrors(error);// 请求接口中途错误
@@ -63,6 +65,7 @@ public abstract class CheckBoard {
 
                 @Override
                 public void onError(Throwable e) {
+                    Logs.t("checkboard").vv("checkboarderror: "+e.getMessage());
                     errorNext(e);
                     allError();
                     onErrors(e);// 请求接口错误溢出

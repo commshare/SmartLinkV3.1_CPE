@@ -5,7 +5,7 @@
     android:id="@+id/rl_pop_setting_download_all"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_pop_conner">
+    android:background="@drawable/bg_pop_conner2">
 
     <TextView
         android:id="@+id/tv_pop_setting_download_tip"

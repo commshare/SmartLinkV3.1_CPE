@@ -77,12 +77,14 @@ public class WizardRxActivity extends BaseActivityWithBack {
         SmartLinkV3App.getContextInstance().add(this);
         setContentView(R.layout.activity_wizard_rx);
         ButterKnife.bind(this);
+        Logs.t("ma_login").vv("wizard onCreate");
         initRes();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Logs.t("ma_login").vv("wizard onResume");
         // 启动心跳防止登出
         heartTimer();
         // 启动定时器

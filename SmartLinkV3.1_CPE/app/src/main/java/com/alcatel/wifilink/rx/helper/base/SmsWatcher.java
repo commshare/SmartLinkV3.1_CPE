@@ -14,7 +14,7 @@ import com.alcatel.wifilink.utils.ToastUtil_m;
 
 public class SmsWatcher implements TextWatcher {
 
-    private int maxLength = 70;
+    private int maxLength = 1530;
     private Context context;
     private EditText et;
 

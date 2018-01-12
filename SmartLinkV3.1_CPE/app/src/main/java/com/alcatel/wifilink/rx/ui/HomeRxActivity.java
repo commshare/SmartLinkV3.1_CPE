@@ -1,9 +1,11 @@
 package com.alcatel.wifilink.rx.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +16,8 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.rx.helper.business.SmsHelper;
+import com.alcatel.wifilink.rx.service.CheckService;
+import com.alcatel.wifilink.rx.service.CheckServiceConnection;
 import com.alcatel.wifilink.ui.activity.ActivityNewSms;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
@@ -133,6 +137,8 @@ public class HomeRxActivity extends BaseActivityWithBack {
     private TimerHelper smsTimer;
     private Activity activity;
     private SmsHelper smsHelper;
+    private Handler handler;
+    private CheckServiceConnection checkServiceConn;
 
 
     @Override
@@ -146,9 +152,19 @@ public class HomeRxActivity extends BaseActivityWithBack {
         startCurrentAcTimer();
         startHomeTimer();
         startServices();
+        bindServiceToHomeActivity();// 与当前的activity绑定服务
         startSmsMessageTimer();
         initRes();
         initFragment();
+    }
+
+    /**
+     * 与当前的activity绑定服务(用于homeservice的检测)
+     */
+    private void bindServiceToHomeActivity() {
+        Intent checkService = new Intent(this, CheckService.class);
+        checkServiceConn = new CheckServiceConnection();
+        bindService(checkService, checkServiceConn, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -162,6 +178,7 @@ public class HomeRxActivity extends BaseActivityWithBack {
     }
 
     private void initRes() {
+        handler = new Handler();
         container = R.id.fl_homeRx_container;
         home_logo_pre = getResources().getDrawable(R.drawable.tab_home_pre);
         home_logo_nor = getResources().getDrawable(R.drawable.tab_home_nor);
@@ -244,6 +261,8 @@ public class HomeRxActivity extends BaseActivityWithBack {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Logs.t("ma_permission").vv("home destroy");
+        unbindService(checkServiceConn);
         OtherUtils.stopHeartBeat(heartTimer);
         OtherUtils.clearAllTimer();
     }
@@ -370,7 +389,11 @@ public class HomeRxActivity extends BaseActivityWithBack {
                 clickSmsTab();
                 break;
             case R.id.ll_homeRx_setting:// SETTING
-                transferTabAndFragment(Cons.TAB_SETTING);
+                ProgressDialog pgds = OtherUtils.showProgressPop(this);
+                handler.postDelayed(() -> {
+                    OtherUtils.hideProgressPop(pgds);
+                    transferTabAndFragment(Cons.TAB_SETTING);
+                }, 1000);
                 break;
         }
     }

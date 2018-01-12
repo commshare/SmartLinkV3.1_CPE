@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
@@ -51,10 +52,12 @@ import com.alcatel.wifilink.ui.activity.SettingAccountActivity;
 import com.alcatel.wifilink.ui.activity.SettingDeviceActivity;
 import com.alcatel.wifilink.ui.activity.SettingLanguageActivity;
 import com.alcatel.wifilink.ui.activity.SettingShareActivity;
+import com.alcatel.wifilink.ui.activity.TestActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.FileUtils;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SPUtils;
 import com.alcatel.wifilink.utils.ScreenSize;
@@ -106,7 +109,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
 
     private TextView mDeviceVersion;
     private final static String mdefaultSaveUrl = "/tcl/linkhub/backup";
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_EXTERNAL_STORAGE = 123;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private ProgressDialog mCheckingDlg;
@@ -198,6 +201,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     @Override
     public void onPause() {
         super.onPause();
+        Logs.t("ma_permission").vv("settingfragment pause");
         stopTimer();
     }
 
@@ -323,7 +327,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     verifyStoragePermissions(getActivity());
                 }
-                popDialogFromBottom(Backup_Restore);
                 break;
             case R.id.setting_about:// 进入about
                 goToAboutSettingPage();
@@ -363,9 +366,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         // 3.修改弹窗属性信息
         TextView versionName = (TextView) inflate.findViewById(R.id.tv_pop_setting_rx_upgrade_noNewVersion_version);
         TextView ok = (TextView) inflate.findViewById(R.id.tv_pop_setting_rx_upgrade_ok);
+        TextView tip = (TextView) inflate.findViewById(R.id.tv_pop_setting_rx_upgrade_noNewVersion_tip);
         // 3.1.同上
         Logger.t("ma_upgrade").v("version:" + deviceNewVersion.getVersion());
-        versionName.setText(noNewVersion ? systemInfo.getSwVersion() : deviceNewVersion.getVersion() + " " + getString(R.string.available));
+        versionName.setText(noNewVersion ? systemInfo.getSwVersionMain() : deviceNewVersion.getVersion() + " " + getString(R.string.available));
+        tip.setVisibility(noNewVersion ? View.VISIBLE : View.GONE);
         ok.setText(noNewVersion ? getString(R.string.ok) : getString(R.string.setting_upgrade));
         ok.setOnClickListener(v -> {
             // 版本弹窗消隐
@@ -386,6 +391,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 upgradeTipDialog.show();
             }
         });
+        pop_noNewVersion = null;
         pop_noNewVersion = new PopupWindows(getActivity(), inflate, width, height, true, pop_bg);
     }
 
@@ -393,6 +399,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      * U3.触发FOTA下载
      */
     private void beginDownLoadFOTA() {
+        count = 0;
         Logger.t("ma_upgrade").v("SettingFragment.beginDownLoadFOTA");
         isDownloading = true;
         FirmUpgradeHelper fuh = new FirmUpgradeHelper(getActivity(), false);
@@ -514,6 +521,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 }
             };
             downTimer.start(3000);
+            pop_downloading = null;
             pop_downloading = new PopupWindows(getActivity(), v, width, height, false, pop_bg);
         });
         fuh.triggerFOTA();// 触发FOTA下载
@@ -524,6 +532,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
      */
     private void triggerFOTAUpgrade() {
         Logger.t("ma_upgrade").v("triggerFOTAUpgrade");
+        boradUpgradeDialog = null;
         boradUpgradeDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)// 升级提示
                                      .setTitleText(getString(R.string.setting_upgrade))// title
                                      .setContentText(getString(R.string.setting_upgrade_firmware_warning))// content
@@ -532,6 +541,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                                      .setConfirmClickListener(dialog -> {
                                          stopDownTimerAndPop();
                                          boradUpgradeDialog.dismiss();// 消隐
+                                         // toast("test to upgrade");
                                          startDeviceUpgrade();
                                      }).showCancelButton(true)// cancel
                                      .setCancelClickListener(Dialog::dismiss);// 设置取消按钮点击
@@ -681,9 +691,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void verifyStoragePermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
+        
+        int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission == PackageManager.PERMISSION_DENIED) {// 权限本身不允许--> 请求
             ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            Logs.t("ma_permission").vv("requestPermissions");
+        } else {// 权限本身允许--> 执行业务逻辑
+            popDialogFromBottom(Backup_Restore);
         }
     }
 
@@ -854,8 +868,6 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 } else {
                     restore();
                 }
-
-
             }
 
             @Override

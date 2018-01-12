@@ -1,13 +1,17 @@
 package com.alcatel.wifilink.ui.home.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SwitchCompat;
@@ -28,8 +32,8 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.network.RX;
-import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
 import com.alcatel.wifilink.ui.activity.RefreshWifiActivity;
 import com.alcatel.wifilink.ui.activity.WlanAdvancedSettingsActivity;
@@ -37,7 +41,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.wizard.helper.WepPsdHelper;
 import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 
 import static android.app.Activity.RESULT_OK;
@@ -338,6 +342,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
 
     @Override
     public void onClick(View v) {
+
         if (v.getId() == R.id.text_advanced_settings_2g) {
             Intent intent = new Intent(mContext, WlanAdvancedSettingsActivity.class);
             intent.putExtra(EXTRA_FRE, 2);
@@ -499,7 +504,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Adap
         });
         builder.setNegativeButton(R.string.cancel, null);
         builder.create().show();
-       
+
     }
 
 

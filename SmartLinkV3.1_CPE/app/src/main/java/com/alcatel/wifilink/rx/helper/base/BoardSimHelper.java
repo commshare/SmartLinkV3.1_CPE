@@ -88,7 +88,7 @@ public class BoardSimHelper {
                     }
                 });
             }
-        }.checkBoard(activity, LoginRxActivity.class,RefreshWifiRxActivity.class);
+        }.checkBoard(activity, LoginRxActivity.class, RefreshWifiRxActivity.class);
     }
 
     /**
@@ -113,16 +113,18 @@ public class BoardSimHelper {
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        Logger.t("ma_upgrade").e("error: " + error.getMessage());
                         rollRequestOnResultErrorNext(error);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Logger.t("ma_upgrade").e("e: " + e.getMessage());
                         rollRequestOnErrorNext(e);
                     }
                 });
             }
-        }.checkBoard(activity, LoginRxActivity.class,RefreshWifiRxActivity.class);
+        }.checkBoard(activity, LoginRxActivity.class, RefreshWifiRxActivity.class);
     }
 
     /**

@@ -31,6 +31,7 @@ import com.alcatel.wifilink.rx.helper.business.SimPinHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ScreenSize;
@@ -317,7 +318,7 @@ public class MobileNetworkRxFragment extends Fragment implements FragmentBackHan
         int height = (int) (size.height * 0.18f);
         View auto = inflate.findViewById(R.id.tv_pop_connMode_auto);
         View manual = inflate.findViewById(R.id.tv_pop_connMode_manual);
-        auto.setOnClickListener(v -> setConnMode(Cons.AUTO_MODE));
+        auto.setOnClickListener(v -> setConnMode(Cons.AUTO));
         manual.setOnClickListener(v -> setConnMode(Cons.MANUAL));
         pop_connMode = new PopupWindows(getActivity(), inflate, width, height, true, pop_bg);
     }
@@ -429,18 +430,25 @@ public class MobileNetworkRxFragment extends Fragment implements FragmentBackHan
                 ScreenSize.SizeBean size = ScreenSize.getSize(getActivity());
                 int width = (int) (size.width * 0.85f);
                 int height = (int) (size.height * 0.41f);
-                String currentPin = OtherUtils.getEdContent((EditText) inflate.findViewById(R.id.et_pop_changpin_currentPin));
-                String newPin = OtherUtils.getEdContent((EditText) inflate.findViewById(R.id.et_pop_changpin_newPin));
-                String confirmPin = OtherUtils.getEdContent((EditText) inflate.findViewById(R.id.et_pop_changpin_confirmPin));
+
+                EditText et_currentPin = (EditText) inflate.findViewById(R.id.et_pop_changpin_currentPin);
+                EditText et_newPin = (EditText) inflate.findViewById(R.id.et_pop_changpin_newPin);
+                EditText et_confirmPin = (EditText) inflate.findViewById(R.id.et_pop_changpin_confirmPin);
+                
                 View vCancel = inflate.findViewById(R.id.tv_pop_changpin_cancel);
                 View vOk = inflate.findViewById(R.id.tv_pop_changpin_ok);
                 vCancel.setOnClickListener(v -> pop_changpin.dismiss());
                 vOk.setOnClickListener(v -> {
-                    pop_changpin.dismiss();
+                    
+                    String currentPin = OtherUtils.getEdContent(et_currentPin);
+                    String newPin = OtherUtils.getEdContent(et_newPin);
+                    String confirmPin = OtherUtils.getEdContent(et_confirmPin);
+                    
                     ChangePinHelper changePinHelper = new ChangePinHelper(getActivity());
                     changePinHelper.setOnPinTimeoutListener(attr -> toPukRx());
                     changePinHelper.setOnChangePinSuccessListener(attr -> pop_changpin.dismiss());
                     changePinHelper.change(currentPin, newPin, confirmPin);
+                    pop_changpin.dismiss();
                 });
                 pop_changpin = new PopupWindows(getActivity(), inflate, width, height, true, pop_bg);
             }

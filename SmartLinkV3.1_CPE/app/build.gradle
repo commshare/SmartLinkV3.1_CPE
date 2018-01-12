@@ -46,8 +46,8 @@ android {
         applicationId "com.alcatel.wifilink"
         minSdkVersion 19
         targetSdkVersion 25
-        versionName '0.0.23'
-        versionCode 23
+        versionName '0.0.24'
+        versionCode 24
 
         setProperty("archivesBaseName", "LinkApp-CPE-Android-$versionName")
         multiDexEnabled true
@@ -147,4 +147,5 @@ dependencies {
     compile 'com.gelitenight.waveview:waveview:1.0.0'
     compile 'com.github.ikidou:FragmentBackHandler:2.1'
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
+    compile 'pub.devrel:easypermissions:0.3.0'
 }

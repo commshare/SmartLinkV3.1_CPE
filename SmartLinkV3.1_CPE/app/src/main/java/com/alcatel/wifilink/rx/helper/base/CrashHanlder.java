@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
+import com.alcatel.wifilink.utils.Logs;
 
 public class CrashHanlder implements Thread.UncaughtExceptionHandler {
 
@@ -44,6 +45,7 @@ public class CrashHanlder implements Thread.UncaughtExceptionHandler {
             // defaultHandler();
             
             // 自定义处理方式
+            Logs.t("crash").vv("crash: "+ex.getMessage());
             Intent intent = new Intent(mContext, RefreshWifiRxActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);

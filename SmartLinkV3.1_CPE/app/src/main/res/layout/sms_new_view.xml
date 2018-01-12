@@ -114,7 +114,7 @@
 						android:background="@color/backup_name_bg"
 						android:imeOptions="flagNoExtractUi"
 						android:inputType="none"
-						android:maxLength="70"
+						android:maxLength="1530"
 						android:scrollbarStyle="outsideOverlay"
 						android:scrollbars="vertical"
 						android:textSize="20sp" />
