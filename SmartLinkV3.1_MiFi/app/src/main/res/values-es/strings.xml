@@ -566,4 +566,5 @@
     <string name="login_remenber_psd">Recordar la contraseña</string>
     <string name="login_failed">No se ha podido acceder</string>
     <string name="logout_failed">  No se ha podido cerrar la sesión</string>
+    <string name="login_forgot_password_and_reset">Por favor, restablezca a valores de fábrica.</string>
 </resources>

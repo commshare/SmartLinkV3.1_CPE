@@ -19,7 +19,7 @@ import android.content.Context;
 public class AppInfo {
 
     /**
-     * 获取正在运行的包名
+     * 获取正在运行的最顶端的包名
      *
      * @param context
      * @return
@@ -61,6 +61,7 @@ public class AppInfo {
 
     /**
      * 获取全部正在运行中的包名
+     * (该方法在android 6.0之后只能获取2个包名)
      *
      * @param context
      * @return

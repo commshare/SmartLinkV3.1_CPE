@@ -593,4 +593,7 @@
     <string name="Set_connected_device_black_failed">لا يمكن حظر هذا الجهاز</string>
     <string name="crash_tip">انتهى مهلة الاتصال. تحقق من إشارة جهازك. أعد تشغيل جهازك أو اتصال Wi-Fi وسجل الدخول إلى التطبيق مرة أخرى.</string>
     <string name="reset_tip">يُرجى تشغيل زر إعادة الضبط بالجهاز لاستعادة إعدادات ضبط المصنع.</string>
+    <string name="about_x_data_remain">يتبقى حوالي %s من البيانات</string>
+    <string name="sms_max_length">لا يمكن أن تتجاوز SMS أكثر من %d حرفًا</string>
+    <string name="check_sim_normal_or_no_cost"> يُرجى التأكد مما إذا كانت بطاقة SIM الخاصة بك بها أرصدة كافية.</string>
 </resources>

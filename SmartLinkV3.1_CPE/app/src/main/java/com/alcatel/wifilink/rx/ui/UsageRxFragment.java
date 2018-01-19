@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.model.Usage.UsageRecord;
 import com.alcatel.wifilink.model.Usage.UsageSettings;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
@@ -23,6 +24,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.FraHelpers;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.github.ikidou.fragmentBackHandler.FragmentBackHandler;
@@ -70,6 +72,8 @@ public class UsageRxFragment extends Fragment implements FragmentBackHandler {
     private String reseting;
     private String resetSuccess;
     private UsageHelper usageHelper;
+    private long usedData_l = 0L;
+    private long monthly_l = 0L;
 
     @Nullable
     @Override
@@ -99,7 +103,7 @@ public class UsageRxFragment extends Fragment implements FragmentBackHandler {
         timerHelper = new TimerHelper(getActivity()) {
             @Override
             public void doSomething() {
-                getUsed();// 已经使用 / 月计划流量
+                getHomeNetworkMonthly();// 已经使用 / 月计划流量
                 getRoamingAndConnTime();// 获取漫游信息
             }
         };
@@ -155,6 +159,7 @@ public class UsageRxFragment extends Fragment implements FragmentBackHandler {
         });
         usageHelper.setOnNoRoamingListener(result -> {// 没有漫游
             int tConnTimes = (int) result.getTConnTimes();
+            Logs.t("ma_usages").ii("tConnTimes: " + tConnTimes);
             UsageHelper.Times usedTime = UsageHelper.getUsedTimeForSec(getActivity(), tConnTimes);
             String hour = usedTime.hour;
             String min = usedTime.min;
@@ -167,26 +172,56 @@ public class UsageRxFragment extends Fragment implements FragmentBackHandler {
     /**
      * 已经使用 / 月计划流量
      */
-    private void getUsed() {
+    private void getHomeNetworkMonthly() {
+        // 获取已使用流量
+        RX.getInstant().getUsageRecord(UsageHelper.getCurrentTime(), new ResponseObject<UsageRecord>() {
+            @Override
+            protected void onSuccess(UsageRecord result) {
+                // 处理已经使用的流量
+                usedData_l = result.getHUseData();
+                UsageHelper.Usage hUseDataByte = UsageHelper.getUsageByte(getActivity(), usedData_l);
+                String used = hUseDataByte.usage;
+                String used_unit = hUseDataByte.unit;
+                String usedData_s = used + used_unit;
+                // 处理月流量
+                UsageHelper.Usage monthByte = UsageHelper.getUsageByte(getActivity(), monthly_l);
+                String month = monthByte.usage;
+                String month_unit = monthByte.unit;
+                String monthly_s = month + month_unit;
+                // 显示流量使用情况
+                String normal = usedData_s + "/" + monthly_s;
+                tvNetworkTraffic.setText(monthly_l <= 0 ? usedData_s : normal);
+            }
+
+            @Override
+            protected void onResultError(ResponseBody.Error error) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+
+        // 获取月流量
         RX.getInstant().getUsageSettings(new ResponseObject<UsageSettings>() {
             @Override
             protected void onSuccess(UsageSettings result) {
-                // 已经使用
-                long usedData = result.getUsedData();
-                Logger.t("ma_usage").v(usedData + "");
-                UsageHelper.Usage usedByte = UsageHelper.getUsageByte(getActivity(), usedData);
-                String used = usedByte.usage;
-                String used_unit = usedByte.unit;
                 //  月流量计划
-                long monthlyPlan = result.getMonthlyPlan();
-                Logger.t("ma_usage").v(monthlyPlan + "");
-                UsageHelper.Usage monthByte = UsageHelper.getUsageByte(getActivity(), monthlyPlan);
+                monthly_l = result.getMonthlyPlan();
+                UsageHelper.Usage monthByte = UsageHelper.getUsageByte(getActivity(), monthly_l);
                 String month = monthByte.usage;
                 String month_unit = monthByte.unit;
+                String monthly_s = month + month_unit;
+                // 处理已经使用流量
+                UsageHelper.Usage hUseDataByte = UsageHelper.getUsageByte(getActivity(), usedData_l);
+                String used = hUseDataByte.usage;
+                String used_unit = hUseDataByte.unit;
+                String usedData_s = used + used_unit;
                 // 显示流量使用情况
-                String unLimitShow = used + used_unit;
-                String normal = used + used_unit + "/" + month + month_unit;
-                tvNetworkTraffic.setText(monthlyPlan <= 0 ? unLimitShow : normal);
+                String normal = usedData_s + "/" + monthly_s;
+                tvNetworkTraffic.setText(monthly_l <= 0 ? usedData_s : normal);
             }
 
             @Override

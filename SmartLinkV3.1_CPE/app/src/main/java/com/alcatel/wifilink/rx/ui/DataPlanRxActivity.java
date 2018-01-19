@@ -14,24 +14,25 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.appwidget.PopupWindows;
-import com.alcatel.wifilink.network.ResponseObject;
-import com.alcatel.wifilink.rx.helper.base.UsageHelper;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.SP;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.Usage.UsageSetting;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.bean.PinPukBean;
 import com.alcatel.wifilink.rx.helper.base.BoardSimHelper;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
+import com.alcatel.wifilink.rx.helper.base.UsageHelper;
 import com.alcatel.wifilink.rx.helper.base.WpsHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.SP;
 import com.alcatel.wifilink.utils.ScreenSize;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -217,6 +218,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
         toast(R.string.connect_failed);
         OtherUtils.hideProgressPop(pgd);
         to(RefreshWifiRxActivity.class);
+        Logs.t("ma_unknown").vv("DataPlanRx--> failed");
     }
 
     /**

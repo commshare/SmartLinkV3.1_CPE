@@ -563,5 +563,5 @@
     <string name="login_remenber_psd">Ricorda password</string>
     <string name="login_failed">Impossibile accedere</string>
     <string name="logout_failed">Logout impossibile</string>
-
+    <string name="login_forgot_password_and_reset">Si prega di ripristinare le impostazioni di fabbrica.</string>
 </resources>

@@ -563,4 +563,5 @@
     <string name="login_remenber_psd">Passwort merken</string>
     <string name="login_failed">Anmelden fehlgeschlagen</string>
     <string name="logout_failed">Abmelden fehlgeschlagen</string>
+    <string name="login_forgot_password_and_reset">Bitte auf Werkseinstellungen zurücksetzen.</string>
 </resources>

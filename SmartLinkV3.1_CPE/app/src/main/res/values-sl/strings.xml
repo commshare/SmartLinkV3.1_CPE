@@ -592,4 +592,7 @@
     <string name="Set_connected_device_black_failed">Te naprave ni mogoče blokirati</string>
     <string name="crash_tip">Časovna omejitev povezave. Preverite signal naprave. Znova zaženite napravo ali povezavo Wi-Fi in znova prijavite v aplikacijo.</string>
     <string name="reset_tip">Pritisnite gumb za ponastavitev na napravi, da obnovite tovarniške nastavitve</string>
+    <string name="about_x_data_remain">Ostanek% s podatkov</string>
+    <string name="sms_max_length">SMS ne sme biti več kot% d znakov</string>
+    <string name="check_sim_normal_or_no_cost">Preverite, ali ima vaša kartica SIM dovolj sredstev.</string>
 </resources>

@@ -14,16 +14,18 @@ import com.alcatel.wifilink.utils.Logs;
 
 public class CheckService extends Service {
 
+    /* 1.创建binder */
     private CheckBinder checkBinder = new CheckBinder();
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         CheckService service = checkBinder.getService();
-        Logs.t("ma_service").vv("CheckService onBind: " + service.getPackageName());
+        /* 3.返回binder */
         return checkBinder;
     }
 
+    /* 1.定义一个类继承binder进行绑定 */
     public class CheckBinder extends Binder {
         CheckService getService() {
             return CheckService.this;

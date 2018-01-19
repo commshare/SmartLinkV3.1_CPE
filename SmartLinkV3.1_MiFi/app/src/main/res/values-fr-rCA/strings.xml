@@ -553,4 +553,5 @@
     <string name="login_remenber_psd">Mémorisez le mot de passe</string>
     <string name="login_failed">Impossible de se connecter</string>
     <string name="logout_failed">Impossible de se déconnecter</string>
+    <string name="login_forgot_password_and_reset">Veuillez réinitialiser les paramètres d\'usine par défaut.</string>
 </resources>

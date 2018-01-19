@@ -86,8 +86,8 @@ public class UsageHelper {
      * @return
      */
     public static Times getUsedTimeForSec(Context context, int sec) {
-        int hours = sec / 60 / 60;
-        int mins = sec % 60 / 60;
+        int hours = sec / 3600;
+        int mins = (sec % 3600) / 60;
 
         Times times = new Times();
         times.hour = String.valueOf(hours);
@@ -119,9 +119,9 @@ public class UsageHelper {
         long dimension = 100;// 两位小数此处为100, 4位小数, 此处为10000....依此类推
         return (float) (Math.round(value * dimension)) / dimension;
     }
-    
+
     /* 保留N位小数 */
-    private static float mathRoundByDimension(float value,int dimen) {
+    private static float mathRoundByDimension(float value, int dimen) {
         long dimension = dimen;// 两位小数此处如为100,则表示保留两位小数, 4位小数, 此处为10000....依此类推
         return (float) (Math.round(value * dimension)) / dimension;
     }

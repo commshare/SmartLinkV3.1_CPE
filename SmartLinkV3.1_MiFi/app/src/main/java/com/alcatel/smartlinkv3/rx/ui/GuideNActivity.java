@@ -5,6 +5,9 @@ import android.support.v4.view.ViewPager;
 
 import com.alcatel.smartlinkv3.R;
 import com.alcatel.smartlinkv3.rx.adapter.GuideAdapter;
+import com.alcatel.smartlinkv3.rx.bean.SimState;
+import com.alcatel.smartlinkv3.rx.tools.API;
+import com.alcatel.smartlinkv3.rx.tools.MySubscriber;
 import com.zhy.android.percent.support.PercentLinearLayout;
 
 import butterknife.BindView;
@@ -23,5 +26,11 @@ public class GuideNActivity extends BaseRxActivity {
         setContentView(R.layout.activity_guide_n);
         ButterKnife.bind(this);
         vpGuiderx.setAdapter(new GuideAdapter(this, vpGuiderx, llGuiderxPoint, null));
+        API.get().getSimStatus(new MySubscriber<SimState>() {
+            @Override
+            protected void onSuccess(SimState result) {
+                
+            }
+        });
     }
 }

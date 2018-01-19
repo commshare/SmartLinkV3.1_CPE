@@ -563,5 +563,5 @@
     <string name="login_remenber_psd">Вспомнить пароль</string>
     <string name="login_failed">Невозможно зайти</string>
     <string name="logout_failed">Невозможно выйти</string>
-
+    <string name="login_forgot_password_and_reset">Сброс заводских настроек.</string>
 </resources>

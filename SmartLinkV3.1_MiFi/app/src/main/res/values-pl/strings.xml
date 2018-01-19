@@ -563,5 +563,5 @@
     <string name="login_remenber_psd">Zapamiętaj hasło</string>
     <string name="login_failed">Nie można zalogować się</string>
     <string name="logout_failed">Nie można wylogować się</string>
-
+    <string name="login_forgot_password_and_reset">Zresetuj do domyślnych ustawień fabrycznych.</string>
 </resources>

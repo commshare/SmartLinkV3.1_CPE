@@ -46,6 +46,7 @@ public class CrashHanlder implements Thread.UncaughtExceptionHandler {
             
             // 自定义处理方式
             Logs.t("crash").vv("crash: "+ex.getMessage());
+            Logs.t("ma_unknown").vv("CrashHandler--> uncaughtException");
             Intent intent = new Intent(mContext, RefreshWifiRxActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);

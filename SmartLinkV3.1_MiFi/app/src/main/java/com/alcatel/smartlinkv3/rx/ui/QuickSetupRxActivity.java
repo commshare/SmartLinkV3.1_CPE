@@ -114,7 +114,7 @@ public class QuickSetupRxActivity extends BaseRxActivity {
             }
 
             @Override
-            protected void onResultError(ResponseBody.Error error) {
+            protected void onResultError(ResponseBody.Error error) { 
                 OtherUtils.hideProgressPop(pdg);
                 ToastUtil_m.show(context, getString(R.string.setting_upgrade_no_connection));
                 ChangeActivity.toActivity(context, RefreshWifiActivity.class, false, true, false, 0);

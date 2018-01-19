@@ -33,6 +33,7 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.bean.SMSContactSelf;
 import com.alcatel.wifilink.rx.ui.HomeRxActivity;
+import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.allsetup.HomeActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
@@ -40,8 +41,6 @@ import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
 import com.alcatel.wifilink.ui.wizard.allsetup.DataPlanActivity;
 import com.alcatel.wifilink.ui.wizard.allsetup.WifiGuideActivity;
 import com.orhanobut.logger.Logger;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -280,7 +279,20 @@ public class OtherUtils {
     private static void clear(Activity oriActivity, Class acTimeout) {
         // 出错, 跳转到目标界面
         Log.v("ma_couldn_connect", "clear startHeartBeat error");
-        CA.toActivity(oriActivity, acTimeout, false, true, false, 0);
+        
+        // 获取当前顶层的activity
+        String currentActivitySimpleName = AppInfo.getCurrentActivitySimpleName(oriActivity);
+        String simpleName = LoginRxActivity.class.getSimpleName();
+        // 如果当前是处于登陆页面则不跳转
+        if (!currentActivitySimpleName.equalsIgnoreCase(simpleName) & // 相等
+                    !currentActivitySimpleName.contains(simpleName) & // 包含
+                    !simpleName.contains(currentActivitySimpleName) // 包含
+                ) {
+            CA.toActivity(oriActivity, acTimeout, false, true, false, 0);
+        } else {
+            Logs.t("ma_unknown").vv("OtherUtils--> startHeartBeat--> clear--> current is login");
+        }
+        
     }
 
     /**
@@ -744,7 +756,9 @@ public class OtherUtils {
         ProgressDialog pgd = new ProgressDialog(context);
         pgd.setMessage(context.getString(R.string.connecting));
         pgd.setCanceledOnTouchOutside(false);
-        pgd.show();
+        if (!((Activity)context).isFinishing()) {
+            pgd.show();
+        }
         return pgd;
     }
 

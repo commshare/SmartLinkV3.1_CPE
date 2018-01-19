@@ -593,4 +593,7 @@
     <string name="Set_connected_device_black_failed">Se ha producido un error al bloquear el dispositivo conectado.</string>
     <string name="crash_tip">Se ha agotado el tiempo de espera. Compruebe el nivel de señal en su equipo. Reinicie el dispositivo o la conexión Wi-Fi e inicie sesión de nuevo en la aplicación.</string>
     <string name="reset_tip">Por favor, utilice el botón de reset en el dispositivo para restaurar los valores de fábrica.</string>
+    <string name="about_x_data_remain">Aproximadamente %s de datos restantes</string>
+    <string name="sms_max_length">SMS no puede contener más de% d caracteres</string>
+    <string name="check_sim_normal_or_no_cost">Por favor, confirme si su tarjeta SIM tiene suficientes fondos disponibles</string>
 </resources>

@@ -5,16 +5,17 @@ import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.network.RX;
-import com.alcatel.wifilink.network.ResponseObject;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.ui.LoginRxActivity;
 import com.alcatel.wifilink.rx.ui.RefreshWifiRxActivity;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 
 /**
  * 检测是否连接上硬件并处于登陆状态
@@ -63,12 +64,14 @@ public abstract class CheckBoardLogin {
                         protected void onResultError(ResponseBody.Error error) {
                             // 3.错误--> wifi界面
                             to(RefreshWifiRxActivity.class);
+                            Logs.t("ma_unknown").vv("CheckBoardLogin--> initCheckTimer--> onResultError");
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             // 3.错误--> wifi界面
                             to(RefreshWifiRxActivity.class);
+                            Logs.t("ma_unknown").vv("CheckBoardLogin--> initCheckTimer--> onError");
                         }
                     });
                 }
@@ -112,6 +115,7 @@ public abstract class CheckBoardLogin {
                             OtherUtils.hideProgressPop(pgd);
                             toast(R.string.connect_failed);
                             to(RefreshWifiRxActivity.class);
+                            Logs.t("ma_unknown").vv("CheckBoardLogin--> initCheckOne--> onResultError");
                         }
 
                         @Override
@@ -120,6 +124,7 @@ public abstract class CheckBoardLogin {
                             OtherUtils.hideProgressPop(pgd);
                             toast(R.string.connect_failed);
                             to(RefreshWifiRxActivity.class);
+                            Logs.t("ma_unknown").vv("CheckBoardLogin--> initCheckOne--> onError");
                         }
                     });
                 }

@@ -593,4 +593,7 @@
     <string name="Set_connected_device_black_failed">Impossible de bloquer cet appareil</string>
     <string name="crash_tip">Délai de connection dépassé. Vérifiez le signal de votre appareil. Redémarrez votre appareil ou votre connexion Wi-Fi et reconnectez-vous à l\'application.</string>
     <string name="reset_tip">Appuyez sur le bouton de réinitialisation de l\'appareil pour restaurer les paramètres d\'usine</string>
+    <string name="about_x_data_remain">A propos des données% s restantes.</string>
+    <string name="sms_max_length">Les SMS ne peuvent pas dépasser  % d caractères.</string>
+    <string name="check_sim_normal_or_no_cost">Merci de confirmer que vous avez assez de data sur votre forfait.</string>
 </resources>

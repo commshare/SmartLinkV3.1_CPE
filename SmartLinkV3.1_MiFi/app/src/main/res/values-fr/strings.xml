@@ -563,5 +563,5 @@
     <string name="login_remenber_psd">Enregistrer mot de passe</string>
     <string name="login_failed">Ne peut se connecter</string>
     <string name="logout_failed">Ne peut se déconnecter</string>
-
+    <string name="login_forgot_password_and_reset">Veuillez réinitialiser les paramètres d\'usine par défaut.</string>
 </resources>

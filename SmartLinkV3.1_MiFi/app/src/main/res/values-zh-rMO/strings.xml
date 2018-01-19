@@ -513,4 +513,5 @@
     <string name="login_remenber_psd">密碼提示</string>
     <string name="login_failed">不能登入</string>
     <string name="logout_failed">不能登出</string>
+    <string name="login_forgot_password_and_reset">請重置為默認出廠設置。</string>
 </resources>

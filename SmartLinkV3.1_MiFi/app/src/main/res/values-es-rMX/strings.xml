@@ -556,4 +556,5 @@
     <string name="login_remenber_psd">Recordar contraseña</string>
     <string name="login_failed">No se pudo iniciar sesión</string>
     <string name="logout_failed">No se pudo cerrar sesión</string>
+    <string name="login_forgot_password_and_reset">Restablezca la configuración predeterminada de fábrica.</string>
 </resources>

@@ -18,7 +18,7 @@ public class LoadingRxActivity extends BaseActivityWithBack {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_rx);
-
+        stopAll();// 停止所有的定时器和context残余
         LoginStateHelper lsh = new LoginStateHelper(this);
         lsh.setOnErrorListener(attr -> to(RefreshWifiRxActivity.class, true, 2000));
         lsh.setOnResultErrorListener(attr -> to(RefreshWifiRxActivity.class, true, 2000));
@@ -26,6 +26,15 @@ public class LoadingRxActivity extends BaseActivityWithBack {
         lsh.setOnYesWifiListener(attr -> Logs.t("ma_loading").vv("wifi is effect"));
         lsh.setOnLoginstateListener(attr -> nextSkip());
         lsh.get();
+    }
+
+    /**
+     * 停止所有的定时器和context残余
+     */
+    private void stopAll() {
+        OtherUtils.clearAllTimer();
+        OtherUtils.stopHomeTimer();
+        OtherUtils.clearContexts(getClass().getSimpleName());
     }
 
     /**
@@ -43,7 +52,6 @@ public class LoadingRxActivity extends BaseActivityWithBack {
     @Override
     protected void onResume() {
         super.onResume();
-        OtherUtils.clearAllTimer();
     }
 
     private void toast(int resId) {

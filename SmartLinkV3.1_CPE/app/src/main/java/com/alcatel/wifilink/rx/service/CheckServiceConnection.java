@@ -3,6 +3,7 @@ package com.alcatel.wifilink.rx.service;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.alcatel.wifilink.utils.Logs;
 
@@ -13,11 +14,11 @@ import com.alcatel.wifilink.utils.Logs;
 public class CheckServiceConnection implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        Logs.t("ma_service").vv("connected");
+        Log.v("service","CheckServiceConnection onServiceConnected");
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Logs.t("ma_service").vv("disconnected");
+        Log.v("service","CheckServiceConnection onServiceDisconnected");
     }
 }

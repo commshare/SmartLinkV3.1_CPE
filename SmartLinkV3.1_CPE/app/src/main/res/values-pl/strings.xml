@@ -592,4 +592,7 @@
     <string name="Set_connected_device_black_failed">Konfiguracja blokady podłączonego urządzenia nie powiodła się.</string>
     <string name="crash_tip">Czas połączenia minął. Sprawdź sygnał swojego urządzenia. Zrestartuj urządzenie lub połączenie Wi-Fi i zaloguj się ponownie do aplikacji.</string>
     <string name="reset_tip">Naciśnij przycisk resetowania na urządzeniu, aby przywrócić ustawienia fabryczne</string>
+    <string name="about_x_data_remain">Pozostało około% s danych</string>
+    <string name="sms_max_length">SMS nie może być większy niż% d znaków</string>
+    <string name="check_sim_normal_or_no_cost">Potwierdź, czy Twoja karta SIM ma wystarczającą ilość dostępnych środków.</string>
 </resources>

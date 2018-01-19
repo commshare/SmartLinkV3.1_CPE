@@ -1,9 +1,12 @@
 package com.alcatel.wifilink.rx.helper.base;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.rx.ui.LoginRxActivity;
+import com.alcatel.wifilink.utils.AppInfo;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.ResponseBody;
@@ -55,7 +58,7 @@ public abstract class CheckBoard {
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
-                    Logs.t("checkboard").vv("checkboarderror: "+error.getMessage());
+                    Logs.t("checkboard").vv("checkboarderror: " + error.getMessage());
                     resultErrorNext(error);
                     allError();
                     onResultErrors(error);// 请求接口中途错误
@@ -65,7 +68,7 @@ public abstract class CheckBoard {
 
                 @Override
                 public void onError(Throwable e) {
-                    Logs.t("checkboard").vv("checkboarderror: "+e.getMessage());
+                    Logs.t("checkboard").vv("checkboarderror: " + e.getMessage());
                     errorNext(e);
                     allError();
                     onErrors(e);// 请求接口错误溢出
@@ -77,8 +80,19 @@ public abstract class CheckBoard {
             noWifiNext(wifiConnect);
             // wifi掉线
             if (ori != null) {
-                // ToastUtil_m.show(ori, ori.getString(R.string.connect_failed));
-                CA.toActivity(ori, target[1] != null ? target[1] : target[0], false, true, false, 0);
+                // 获取当前顶层的activity
+                String currentActivitySimpleName = AppInfo.getCurrentActivitySimpleName(ori);
+                String simpleName = LoginRxActivity.class.getSimpleName();
+                // 如果当前是处于登陆页面则不跳转
+                if (!currentActivitySimpleName.equalsIgnoreCase(simpleName) & // 相等
+                            !currentActivitySimpleName.contains(simpleName) & // 包含
+                            !simpleName.contains(currentActivitySimpleName) // 包含
+                        ) {
+                    CA.toActivity(ori, target[1] != null ? target[1] : target[0], false, true, false, 0);
+                } else {
+                    Logs.t("ma_unknown").vv("Checkboard--> checkBoard");  
+                }
+                
             }
         }
     }

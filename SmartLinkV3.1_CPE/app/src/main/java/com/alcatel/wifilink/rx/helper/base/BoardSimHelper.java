@@ -9,6 +9,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.user.LoginState;
@@ -77,6 +78,7 @@ public class BoardSimHelper {
                         Log.v("ma_couldn_connect", "boardSimHelper getLoginState error: " + error.getMessage());
                         toast(R.string.connect_failed);
                         to(RefreshWifiRxActivity.class);
+                        Logs.t("ma_unknown").vv("boardSimhelper--> boardNormal--> onResultError");
                     }
 
                     @Override
@@ -85,6 +87,7 @@ public class BoardSimHelper {
                         OtherUtils.hideProgressPop(pgd);
                         toast(R.string.connect_failed);
                         to(RefreshWifiRxActivity.class);
+                        Logs.t("ma_unknown").vv("boardSimhelper--> boardNormal--> onError");
                     }
                 });
             }
@@ -178,6 +181,7 @@ public class BoardSimHelper {
                 OtherUtils.hideProgressPop(pgd);
                 toast(R.string.home_sim_not_accessible);
                 to(RefreshWifiRxActivity.class);
+                Logs.t("ma_unknown").vv("boardSimhelper--> obtainSimStatusOne--> onResultError");
             }
 
             @Override
@@ -186,6 +190,7 @@ public class BoardSimHelper {
                 OtherUtils.hideProgressPop(pgd);
                 toast(R.string.connect_failed);
                 to(RefreshWifiRxActivity.class);
+                Logs.t("ma_unknown").vv("boardSimhelper--> obtainSimStatusOne--> onError");
             }
         });
     }

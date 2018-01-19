@@ -3,6 +3,7 @@ package com.alcatel.wifilink.rx.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -29,20 +30,24 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
     Button btnRefresh;
     private CheckBoard checkBoard;
     private AlertDialog dialog;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.refreshrx_activity);
         ButterKnife.bind(this);
+        handler = new Handler();
         Logs.t("ma_permission").vv("refreshrx onCreate");
+        Logs.t("ma_unknown").vv("refresh start");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         stopTimer();// 停止定时器
-        checkBorads();// 重新进入界面时检测硬件连接状态
+        handler.postDelayed(this::checkBorads,3000);
+        // checkBorads();// 重新进入界面时检测硬件连接状态
     }
 
 
@@ -62,7 +67,8 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
                 @Override
                 protected void onSuccess(LoginState result) {
                     OtherUtils.hideProgressPop(pgd);
-                    to(LoginRxActivity.class, true);
+                    // to(LoginRxActivity.class, true);
+                    to(LoadingRxActivity.class,true);
                 }
 
                 @Override

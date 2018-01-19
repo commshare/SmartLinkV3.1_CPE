@@ -132,11 +132,7 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.web_manager:
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("http://192.168.1.1");
-                intent.setData(content_url);
-                startActivity(intent);
+                toWebUiSite();
                 break;
             case R.id.quick_guide:
                 userChrome();
@@ -144,6 +140,14 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
             default:
                 break;
         }
+    }
+
+    private void toWebUiSite() {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse("http://192.168.1.1");
+        intent.setData(content_url);
+        startActivity(intent);
     }
 
     /* **** userChrome **** */

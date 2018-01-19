@@ -563,5 +563,5 @@
     <string name="login_remenber_psd">Lembrar a palavra-passe</string>
     <string name="login_failed">Não foi possível iniciar sessão</string>
     <string name="logout_failed">Não foi possível terminar sessão</string>
-
+    <string name="login_forgot_password_and_reset">Reponha as predefinições de fábrica.</string>
 </resources>

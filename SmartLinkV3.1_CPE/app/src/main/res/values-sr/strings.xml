@@ -592,4 +592,7 @@
     <string name="Set_connected_device_black_failed">Ne mogu da blokiraju ovaj uređaj</string>
     <string name="crash_tip">Veza je istekla. Proverite signal na uređaju. Restartujte uređaj ili Wi-Fi vezu i ponovo se prijavite u aplikaciju.</string>
     <string name="reset_tip">Pritiniste taster za resetovanje na uređaju da biste vratili fabrička podešavanja.</string>
+    <string name="about_x_data_remain">Oko %s podataka je preostalo</string>
+    <string name="sms_max_length">SMS ne može da ima više od %d znakova</string>
+    <string name="check_sim_normal_or_no_cost">Potvrdite da vaša SIM kartica ima dovoljno kredita</string>
 </resources>
