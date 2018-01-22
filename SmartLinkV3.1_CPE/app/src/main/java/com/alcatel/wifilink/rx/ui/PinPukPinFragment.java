@@ -86,7 +86,7 @@ public class PinPukPinFragment extends Fragment {
         red_color = getResources().getColor(R.color.red);
         gray_color = getResources().getColor(R.color.gray);
         check_pic = getResources().getDrawable(R.drawable.general_btn_remember_pre);
-        uncheck_pic = getResources().getDrawable(R.drawable.general_btn_remember_nor);
+        uncheck_pic = getResources().getDrawable(R.drawable.edit_normal);
     }
 
     /**

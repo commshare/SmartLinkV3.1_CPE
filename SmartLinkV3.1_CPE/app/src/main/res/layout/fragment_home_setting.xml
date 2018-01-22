@@ -5,13 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/color_bg_grey">
 
+    <!-- 9%sh -->
+
     <!-- banner -->
     <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/rl_settingRx_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mg_blue"
-        app:layout_heightPercent="9%h">
+        app:layout_heightPercent="9%sh">
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +44,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/rl_settingRx_banner"
         android:background="@color/color_bg_grey">
-
         <!-- 总布局 -->
         <com.zhy.android.percent.support.PercentLinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -225,6 +226,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
                 android:background="@color/color_white"
+                android:visibility="gone"
                 app:layout_heightPercent="9%sh">
 
                 <ImageView
@@ -262,6 +264,67 @@
                     android:src="@drawable/right_arrow_big"
                     app:layout_heightPercent="35%h"
                     app:layout_widthPercent="35%h" />
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
+            <!-- 4.wifi extender -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/setting_wifi_extender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:visibility="gone"
+                app:layout_heightPercent="9%sh">
+
+                <ImageView
+                    android:id="@+id/setting_wifi_extender_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
+                    android:src="@drawable/wifi_extender"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
+                    android:layout_toEndOf="@id/setting_wifi_extender_pic"
+                    android:layout_toRightOf="@id/setting_wifi_extender_pic"
+                    android:text="@string/setting_wifi_extender"
+                    android:textColor="@color/black_text"
+                    app:layout_textSizePercent="25%h" />
+
+                <ImageView
+                    android:id="@+id/iv_wifi_extender_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
+
+                <TextView
+                    android:id="@+id/tv_wifi_extender_socket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_10dip"
+                    android:layout_marginRight="@dimen/dimen_10dip"
+                    android:layout_toLeftOf="@id/iv_wifi_extender_arrow"
+                    android:layout_toStartOf="@id/iv_wifi_extender_arrow"
+                    android:text="@string/setting_off_state"
+                    app:layout_textSizePercent="25%h" />
+
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
             <!-- 5.language -->
@@ -493,6 +556,54 @@
 
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
+            <!-- 8.feedback -->
+            <com.zhy.android.percent.support.PercentRelativeLayout
+                android:id="@+id/setting_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dip"
+                android:background="@color/color_white"
+                android:visibility="gone"
+                app:layout_heightPercent="9%sh">
+
+                <ImageView
+                    android:id="@+id/setting_feedback_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
+                    android:src="@drawable/feedback"
+                    app:layout_heightPercent="40%h"
+                    app:layout_widthPercent="40%h" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dimen_10dip"
+                    android:layout_marginStart="@dimen/dimen_10dip"
+                    android:layout_toEndOf="@id/setting_feedback_pic"
+                    android:layout_toRightOf="@id/setting_feedback_pic"
+                    android:text="@string/setting_feedback"
+                    android:textColor="@color/black_text"
+                    app:layout_textSizePercent="25%h" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/common_margin"
+                    android:layout_marginRight="@dimen/common_margin"
+                    android:contentDescription="@string/setting_wifi"
+                    android:src="@drawable/right_arrow_big"
+                    app:layout_heightPercent="35%h"
+                    app:layout_widthPercent="35%h" />
+
+            </com.zhy.android.percent.support.PercentRelativeLayout>
+
             <!-- 9.about -->
             <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/setting_about"
@@ -539,6 +650,8 @@
                     app:layout_widthPercent="35%h" />
 
             </com.zhy.android.percent.support.PercentRelativeLayout>
+            
         </com.zhy.android.percent.support.PercentLinearLayout>
+
     </ScrollView>
 </com.zhy.android.percent.support.PercentRelativeLayout>

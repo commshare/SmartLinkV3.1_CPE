@@ -271,9 +271,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     private void showSharingService() {
         OtherUtils otherUtils = new OtherUtils();
         otherUtils.setOnHwVersionListener(deviceVersion -> {
-            if (deviceVersion.contains("HH40")) {
-                mSharingService.setVisibility(View.GONE);
-            }
+            mSharingService.setVisibility(deviceVersion.contains("HH40") ? View.GONE : View.VISIBLE);
         });
         otherUtils.getDeviceHWVersion();
     }
@@ -691,7 +689,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void verifyStoragePermissions(Activity activity) {
-        
+
         int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission == PackageManager.PERMISSION_DENIED) {// 权限本身不允许--> 请求
             ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
