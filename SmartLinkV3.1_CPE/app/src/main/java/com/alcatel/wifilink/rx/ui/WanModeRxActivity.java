@@ -187,6 +187,7 @@ public class WanModeRxActivity extends AppCompatActivity {
                 etPppoeMtu.setText(String.valueOf(result.getMtu()));
                 break;
             case Cons.STATIC:
+                Logs.t("ma_etherwan").vv("static ip: " + result.getStaticIpAddress());
                 etStaticIpaddress.setText(result.getStaticIpAddress());
                 etStaticSubnet.setText(result.getSubNetMask());
                 break;

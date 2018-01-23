@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_normal">
 
-    <ScrollView
+    <Button
+        android:id="@+id/btn_connect"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="48dp">
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_10dip"
+        android:layout_marginEnd="@dimen/dimen_30dip"
+        android:layout_marginStart="@dimen/dimen_30dip"
+        android:height="@dimen/dimen_24dip"
+        android:background="@drawable/selector_conner_btn_blue"
+        android:text="@string/apply"
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+    
+    <ScrollView
+        android:layout_marginBottom="@dimen/dimen_10dip"
+        android:layout_above="@id/btn_connect"
+        android:id="@+id/scv_etherwan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -70,14 +88,14 @@
                     android:id="@+id/pppoe_selected_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:background="@drawable/btn_radio_on_disable"
-                    android:visibility="gone"
-                    android:scaleType="center" />
+                    android:scaleType="center"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
@@ -116,7 +134,7 @@
                         android:text="@string/no_need_to_set_internet_parameters"
                         android:textColor="@color/deep_grey_text"
                         android:textSize="@dimen/dimen_textsize_12sp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -124,11 +142,11 @@
                     android:id="@+id/dhcp_selected_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:background="@drawable/btn_radio_on_disable"
                     android:scaleType="center"
                     android:visibility="gone" />
@@ -178,14 +196,14 @@
                     android:id="@+id/static_ip_selected_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:background="@drawable/btn_radio_on_disable"
-                    android:visibility="gone"
-                    android:scaleType="center" />
+                    android:scaleType="center"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
@@ -201,8 +219,8 @@
                 android:layout_below="@+id/ethernet_wan_connection_static_ip"
                 android:layout_marginTop="@dimen/dimen_5dip"
                 android:background="#ffffff"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -237,10 +255,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
 
                 <LinearLayout
@@ -276,12 +294,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -315,14 +332,14 @@
 
                     <!-- MTU -->
                     <EditText
-                        android:inputType="number"
                         android:id="@+id/pppoe_mtu"
-                        android:background="@null"
-                        android:maxLength="4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_20dip"
                         android:layout_marginStart="@dimen/dimen_20dip"
+                        android:background="@null"
+                        android:inputType="number"
+                        android:maxLength="4"
                         android:textColor="@color/deep_grey_text"
                         android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
@@ -378,21 +395,21 @@
                         android:layout_marginLeft="@dimen/dimen_12dip"
                         android:layout_marginStart="@dimen/dimen_12dip"
                         android:background="@null"
-                        android:hint="@string/ip_address"
-                        android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp"
                         android:digits="1234567890."
-                        android:inputType="number" />
+                        android:hint="@string/ip_address"
+                        android:inputType="number"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
 
                 <LinearLayout
@@ -419,21 +436,21 @@
                         android:layout_marginLeft="@dimen/dimen_12dip"
                         android:layout_marginStart="@dimen/dimen_12dip"
                         android:background="@null"
-                        android:hint="@string/subnet_mask"
-                        android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp"
                         android:digits="1234567890."
-                        android:inputType="number" />
+                        android:hint="@string/subnet_mask"
+                        android:inputType="number"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
 
                 <LinearLayout
@@ -460,21 +477,21 @@
                         android:layout_marginLeft="@dimen/dimen_12dip"
                         android:layout_marginStart="@dimen/dimen_12dip"
                         android:background="@null"
-                        android:hint="@string/default_gateway"
-                        android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp"
                         android:digits="1234567890."
-                        android:inputType="number" />
+                        android:hint="@string/default_gateway"
+                        android:inputType="number"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
 
                 <LinearLayout
@@ -501,21 +518,21 @@
                         android:layout_marginLeft="@dimen/dimen_12dip"
                         android:layout_marginStart="@dimen/dimen_12dip"
                         android:background="@null"
-                        android:hint="@string/preferred_dns"
-                        android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp"
                         android:digits="1234567890."
-                        android:inputType="number" />
+                        android:hint="@string/preferred_dns"
+                        android:inputType="number"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
 
                 <LinearLayout
@@ -542,23 +559,22 @@
                         android:layout_marginLeft="@dimen/dimen_12dip"
                         android:layout_marginStart="@dimen/dimen_12dip"
                         android:background="@null"
-                        android:hint="@string/secondary_dns"
-                        android:textColor="@color/grey_text"
-                        android:textSize="@dimen/dimen_textsize_14sp"
                         android:digits="1234567890."
-                        android:inputType="number"/>
+                        android:hint="@string/secondary_dns"
+                        android:inputType="number"
+                        android:textColor="@color/grey_text"
+                        android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/dimen_20dip"
-                    android:layout_marginStart="@dimen/dimen_20dip"
-                    android:layout_marginRight="@dimen/dimen_20dip"
                     android:layout_marginEnd="@dimen/dimen_20dip"
+                    android:layout_marginLeft="@dimen/dimen_20dip"
+                    android:layout_marginRight="@dimen/dimen_20dip"
+                    android:layout_marginStart="@dimen/dimen_20dip"
                     android:background="@color/custom_spinner_divider_line" />
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -592,14 +608,14 @@
 
                     <!-- MTU -->
                     <EditText
-                        android:inputType="number"
-                        android:maxLength="4"
-                        android:background="@null"
                         android:id="@+id/static_ip_mtu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dimen_20dip"
                         android:layout_marginStart="@dimen/dimen_20dip"
+                        android:background="@null"
+                        android:inputType="number"
+                        android:maxLength="4"
                         android:textColor="@color/deep_grey_text"
                         android:textSize="@dimen/dimen_textsize_14sp" />
                 </LinearLayout>
@@ -608,13 +624,6 @@
 
         </RelativeLayout>
     </ScrollView>
-    <Button
-        android:id="@+id/btn_connect"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:text="@string/apply"/>
+
+    
 </RelativeLayout>

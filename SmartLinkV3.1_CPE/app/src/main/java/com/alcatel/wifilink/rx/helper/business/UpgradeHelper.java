@@ -167,8 +167,8 @@ public class UpgradeHelper {
      */
     public void checkVersion() {
         if (isShowWaiting) {
-
             try {
+                isContinueChecking = true;
                 startCountDownView();// 1.启动倒计时view
                 startCountDownTimer();// 2.启动延时器(延迟180秒)
             } catch (Exception e) {
@@ -187,8 +187,13 @@ public class UpgradeHelper {
             @Override
             public void doSomething() {
                 isContinueChecking = false;
-                activity.runOnUiThread(() -> hideDialog());
-                ToastUtil_m.show(activity, R.string.could_not_update_try_again);
+                activity.runOnUiThread(() -> {
+                    hideDialog();
+                    isContinueChecking = false;
+                    countDownTimer.stop();
+                    ToastUtil_m.show(activity, R.string.could_not_update_try_again);
+                });
+
             }
         };
         countDownTimer.startDelay(180 * 1000);
@@ -295,14 +300,17 @@ public class UpgradeHelper {
     }
 
     private void hideDialog() {
+        if (countDownTimer != null) {
+            countDownTimer.stop();// 停止倒数计时器
+        }
         if (pgd != null) {
-            pgd.dismiss();
+            pgd.dismiss();// 隐藏等待条
         }
         if (countDown_pop != null) {
-            countDown_pop.dismiss();
+            countDown_pop.dismiss();// 隐藏倒数条
         }
         if (ctv != null) {
-            ctv.setCount(180);
+            ctv.setCount(180);// 停止倒数
             ctv.pause();
         }
     }

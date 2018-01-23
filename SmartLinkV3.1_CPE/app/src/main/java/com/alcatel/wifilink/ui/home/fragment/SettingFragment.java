@@ -144,6 +144,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     private int upgrade_Temp = 0;// 临时记录升级失效的次数
     private TextView tvLogout;
     int count = 0;
+    private Handler handler;
 
     @Nullable
     @Override
@@ -169,6 +170,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void initSome() {
+        handler = new Handler();
         simTimerHelper = new BoardSimHelper(getActivity());
         wanTimerHelper = new BoardWanHelper(getActivity());
 
@@ -1002,8 +1004,15 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         if (resultCode == SettingFragment.SET_LANGUAGE_REQUEST) {
             if (data != null && data.getBooleanExtra(SettingLanguageActivity.IS_SWITCH_LANGUAGE, false)) {
                 // 切换语言(重新加载fragment) + 跳转到setting-fragment
-                activity.reloadFragment();
-                activity.fraHelpers.transfer(activity.clazz[Cons.TAB_SETTING]);
+                activity.tvTabHome.setText(R.string.main_home);
+                activity.tvTabWifi.setText(R.string.setting_wifi);
+                activity.tvTabSms.setText(R.string.main_sms);
+                activity.tvTabSetting.setText(R.string.main_setting);
+                activity.reloadFragment(activity.clazz[Cons.TAB_SETTING]);
+                // handler.postDelayed(() -> {
+                //     activity.fraHelpers.transfer(activity.clazz[Cons.TAB_SETTING]);
+                // }, 2000);
+
             }
         }
     }

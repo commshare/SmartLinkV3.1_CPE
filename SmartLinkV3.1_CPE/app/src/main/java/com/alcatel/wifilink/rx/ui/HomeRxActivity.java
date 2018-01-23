@@ -75,19 +75,19 @@ public class HomeRxActivity extends BaseActivityWithBack {
     @BindView(R.id.iv_homeRx_tab_home)
     ImageView ivTabHome;
     @BindView(R.id.tv_homeRx_tab_home)
-    TextView tvTabHome;
+    public TextView tvTabHome;
     @BindView(R.id.ll_homeRx_wifi)
     PercentLinearLayout llWifi;// WIFI
     @BindView(R.id.iv_homeRx_tab_wifi)
     ImageView ivTabWifi;
     @BindView(R.id.tv_homeRx_tab_wifi)
-    TextView tvTabWifi;
+    public TextView tvTabWifi;
     @BindView(R.id.ll_homeRx_sms)
     PercentRelativeLayout llSms;// SMS
     @BindView(R.id.iv_homeRx_tab_sms)
     ImageView ivTabSms;
     @BindView(R.id.tv_homeRx_tab_sms)
-    TextView tvTabSms;
+    public TextView tvTabSms;
     @BindView(R.id.tv_homeRx_smsDot)
     TextView tvSmsDot;
     @BindView(R.id.ll_homeRx_setting)
@@ -95,7 +95,7 @@ public class HomeRxActivity extends BaseActivityWithBack {
     @BindView(R.id.iv_homeRx_tab_setting)
     ImageView ivTabSetting;
     @BindView(R.id.tv_homeRx_tab_setting)
-    TextView tvTabSetting;
+    public TextView tvTabSetting;
 
     private long mkeyTime; //点击2次返回键的时间
     public int tabFlag = Cons.TAB_MAIN;
@@ -241,8 +241,8 @@ public class HomeRxActivity extends BaseActivityWithBack {
     /**
      * 切换语言后重新加载
      */
-    public void reloadFragment() {
-        fraHelpers.reload(SettingFragment.class);
+    public void reloadFragment(Class targetClass) {
+        fraHelpers.reload(targetClass);
     }
 
     /**

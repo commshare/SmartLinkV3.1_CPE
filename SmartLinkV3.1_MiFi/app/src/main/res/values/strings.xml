@@ -564,6 +564,6 @@
     <string name="Available">Available</string>
     <string name="Selected">Selected</string>
     <string name="Forbidden">Forbidden</string>
-    <string name="login_forgot_password_and_reset">Please manually operate the hardware to reset the factory setting</string>
+    <string name="login_forgot_password_and_reset">Please reset to default factory settings.</string>
 
 </resources>

@@ -119,7 +119,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                Toast.makeText(EthernetWanConnectionActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EthernetWanConnectionActivity.this, getString(R.string.setting_failed), Toast.LENGTH_SHORT).show();
             }
 
             @Override

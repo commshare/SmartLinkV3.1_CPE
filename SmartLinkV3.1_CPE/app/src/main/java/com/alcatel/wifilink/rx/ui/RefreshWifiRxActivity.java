@@ -46,7 +46,7 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         stopTimer();// 停止定时器
-        handler.postDelayed(this::checkBorads,3000);
+        handler.postDelayed(this::checkBorads, 3000);
         // checkBorads();// 重新进入界面时检测硬件连接状态
     }
 
@@ -68,7 +68,7 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
                 protected void onSuccess(LoginState result) {
                     OtherUtils.hideProgressPop(pgd);
                     // to(LoginRxActivity.class, true);
-                    to(LoadingRxActivity.class,true);
+                    to(LoadingRxActivity.class, true);
                 }
 
                 @Override
@@ -102,7 +102,9 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
             startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         });
         dialog = builder.create();
-        dialog.show();
+        if (dialog != null & !dialog.isShowing()) {
+            dialog.show();
+        }
     }
 
     /**
