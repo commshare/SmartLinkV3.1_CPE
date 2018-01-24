@@ -12,13 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.network.ResponseObject;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wan.WanSettingsParams;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
+import com.alcatel.wifilink.utils.Logs;
+import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 
 public class EthernetWanConnectionActivity extends BaseActivityWithBack implements OnClickListener {
     private static final String TAG = "EthernetWanConnectionActivity";
@@ -163,7 +165,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
                 showConnectStaticIp();
                 break;
             case R.id.btn_connect:
-                if (mConnectOrDisconnect.getCurrentTextColor() == getResources().getColor(R.color.black)) {
+                if (mConnectOrDisconnect.getCurrentTextColor() == getResources().getColor(R.color.white)) {
                     connectWan();
                 } else {
                     Toast.makeText(EthernetWanConnectionActivity.this, R.string.it_is_connected_you_can_switch_other_connection_mode_page, Toast.LENGTH_SHORT).show();
@@ -186,13 +188,61 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
             }
             mWanSettingsParams.setPppoeMtu(pppoeMtu);
         } else if (flag == Cons.FLAG_STATIC_IP) {
+
+            String str_staticIp = OtherUtils.getEdContent(mStaticIpAddress);
+            String str_subnetMask = OtherUtils.getEdContent(mStaticIpSubnetMask);
+            String str_defaultGateway = OtherUtils.getEdContent(mStaticIpDefaultGateway);
+            String str_preferredDns = OtherUtils.getEdContent(mStaticIpPreferredDns);
+            String str_secondaryDns = OtherUtils.getEdContent(mStaticIpSecondaryDns);
+
+            // 非空判断
+            if (OtherUtils.isEmptys(mStaticIpAddress, mStaticIpSubnetMask, mStaticIpDefaultGateway, mStaticIpPreferredDns, mStaticIpSecondaryDns)) {
+                toast(getString(R.string.not_empty));
+                return;
+            }
+
+            // static ip
+            if (!OtherUtils.ipSuperMatch(str_staticIp)) {
+                String ipValid = getString(R.string.ip_address) + "\n" + getString(R.string.connect_failed);
+                toast(ipValid);
+                return;
+            }
+
+            // subnet mask
+            if (!OtherUtils.ipSuperMatch(str_subnetMask)) {
+                String subnetValid = getString(R.string.subnet_mask) + "\n" + getString(R.string.connect_failed);
+                toast(subnetValid);
+                return;
+            }
+
+            // default gate way
+            if (!OtherUtils.ipSuperMatch(str_defaultGateway)) {
+                String defaultGateway = getString(R.string.default_gateway) + "\n" + getString(R.string.connect_failed);
+                toast(defaultGateway);
+                return;
+            }
+
+            // preferred dns
+            if (!OtherUtils.ipSuperMatch(str_preferredDns)) {
+                String preferred_dns = getString(R.string.preferred_dns) + "\n" + getString(R.string.connect_failed);
+                toast(preferred_dns);
+                return;
+            }
+
+            // secondary dns
+            if (!OtherUtils.ipSuperMatch(str_secondaryDns)) {
+                String secondary_dns = getString(R.string.secondary_dns) + "\n" + getString(R.string.connect_failed);
+                toast(secondary_dns);
+                return;
+            }
+
+
             if (staticMtu < 576 || staticMtu > 1500) {
                 ToastUtil_m.show(this, getString(R.string.mtu_not_match));
                 return;
             }
             mWanSettingsParams.setMtu(staticMtu);
         }
-
 
         mWanSettingsParams.setAccount(mPppoeAccount.getText().toString().trim());
         mWanSettingsParams.setPassword(mPppoePassword.getText().toString().trim());
@@ -213,7 +263,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
         if (mWanSettingsResult.getConnectType() == 2 && mWanSettingsResult.getStatus() == 2) {
             mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.gray));
         } else {
-            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.black));
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.white));
         }
         mWanSettingsParams.setConnectType(2);
         mSelectedPppopImg.setVisibility(View.GONE);
@@ -229,7 +279,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
         if (mWanSettingsResult.getConnectType() == 1 && mWanSettingsResult.getStatus() == 2) {
             mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.gray));
         } else {
-            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.black));
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.white));
         }
         mWanSettingsParams.setConnectType(1);
         mSelectedPppopImg.setVisibility(View.GONE);
@@ -245,7 +295,7 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
         if (mWanSettingsResult.getConnectType() == 0 && mWanSettingsResult.getStatus() == 2) {
             mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.gray));
         } else {
-            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.black));
+            mConnectOrDisconnect.setTextColor(getResources().getColor(R.color.white));
         }
         mWanSettingsParams.setConnectType(0);
         mSelectedPppopImg.setVisibility(View.VISIBLE);
@@ -289,5 +339,10 @@ public class EthernetWanConnectionActivity extends BaseActivityWithBack implemen
 
         super.onStop();
     }
+
+    public void toast(String content) {
+        ToastUtil_m.show(this, content);
+    }
+
 
 }

@@ -208,12 +208,12 @@ public class LoginRxActivity extends BaseActivityWithBack {
                     @Override
                     public void onError(Throwable e) {
                         OtherUtils.hideProgressPop(pgd);
+                        Logs.v("ma_unknown", "getLoginState: toLogin: onError");
                         CA.toActivity(LoginRxActivity.this, RefreshWifiRxActivity.class, false, true, false, 0);
                     }
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
-                        System.out.println("ma_rx_loging: getLoginstatus" + error.getMessage() + ":" + error.getCode());
                         OtherUtils.hideProgressPop(pgd);
                         if (error.getCode().equalsIgnoreCase(Cons.GET_LOGIN_STATE_FAILED)) {
                             ToastUtil_m.show(LoginRxActivity.this, getString(R.string.connection_timed_out));
@@ -221,6 +221,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
                             Log.v("ma_loginrx", "error: " + error.getCode() + ";errormes: " + error.getMessage());
                             ToastUtil_m.show(LoginRxActivity.this, getString(R.string.login_failed));
                         }
+                        Logs.v("ma_unknown", "getLoginState: toLogin: onResultError");
                         CA.toActivity(LoginRxActivity.this, RefreshWifiRxActivity.class, false, true, false, 0);
                     }
                 });
@@ -229,6 +230,7 @@ public class LoginRxActivity extends BaseActivityWithBack {
             @Override
             public void onError(Throwable e) {
                 OtherUtils.hideProgressPop(pgd);
+                Logs.v("ma_unknown", "LoginStateHelper: toLogin: onResultError");
                 CA.toActivity(LoginRxActivity.this, RefreshWifiRxActivity.class, false, true, false, 0);
             }
 

@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.alcatel.wifilink.model.wlan.LanSettings;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.utils.Logs;
 
 public class AboutActivity extends BaseActivityWithBack implements View.OnClickListener {
     private final static String TAG = "AboutActivity";
@@ -152,15 +154,21 @@ public class AboutActivity extends BaseActivityWithBack implements View.OnClickL
 
     /* **** userChrome **** */
     private void userChrome() {
-        String lang = getResources().getConfiguration().locale.getLanguage();
-        String url = "http://www.alcatel-move.com/um/url.html?project=" + mProject + "&custom=" + mCustom + "&lang=" + lang;
-        Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        Uri content_url = Uri.parse(url);
-        String path = content_url.getPath();
-        String query = content_url.getQuery();
-        intent.setData(content_url);
-        startActivity(intent);
+        if (!TextUtils.isEmpty(mProject) && !TextUtils.isEmpty(mCustom)) {
+            String lang = getResources().getConfiguration().locale.getLanguage();
+            // http://www.alcatel-move.com/um/url.html?project=HH41&custom=00&lang=en
+            Logs.t("ma_web").vv("mProject: " + mProject);
+            Logs.t("ma_web").vv("mCustom: " + mCustom);
+            String url = "http://www.alcatel-move.com/um/url.html?project=" + mProject + "&custom=" + mCustom + "&lang=" + lang;
+            // url = "http://www.alcatel-move.com/um/url.html?project=HH41&custom=00&lang=en";
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse(url);
+            String path = content_url.getPath();
+            String query = content_url.getQuery();
+            intent.setData(content_url);
+            startActivity(intent);
+        }
     }
 
 }

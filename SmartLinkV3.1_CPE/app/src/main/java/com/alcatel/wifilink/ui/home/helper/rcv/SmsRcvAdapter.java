@@ -20,6 +20,7 @@ import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.sms.SmsCountHelper;
 import com.alcatel.wifilink.ui.sms.activity.SmsDetailActivity;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 import com.orhanobut.logger.Logger;
 
@@ -122,6 +123,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     private void setSmsPoint(SmsHolder holder, int position) {
         SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         int smsType = smsContact.getSMSType();
+        Logs.t("ma_smsdetail").vv("smsType: " + smsType);
         // 查看缓冲区是否有当前contactid对应的未读短信数量
         int unreadCache = SmsCountHelper.getUnreadCache(smsContact.getContactId());
         // 以下4种情况均需要显示对应的点
@@ -141,6 +143,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     /* **** setSmsLongClickPoint **** */
     private void setSmsLongClickPoint(SmsHolder holder, int position) {
         // 初始化状态
+        Logs.t("ma_smsdetail").vv("SmsFragments.isLongClick: " + SmsFragments.isLongClick);
         holder.iv_smsLongClickPoint.setVisibility(SmsFragments.isLongClick ? VISIBLE : GONE);
         holder.iv_smsLongClickPoint.setImageDrawable(check_off);
         // 判断是否处于全选|全不选状态
@@ -180,7 +183,7 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
 
     /* **** setSmsClick **** */
     private void setSmsClick(SmsHolder holder, int position) {
-        
+
         // 1.切换
         SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         holder.rl_sms.setOnClickListener(v -> {

@@ -6,7 +6,7 @@ import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.network.ResponseObject;
-import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.OtherUtils;
 
 /**
@@ -34,15 +34,18 @@ public class LoginStateHelper {
 
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
+                    Logs.v("ma_unknown", "LoginStateHelper: onResultError");
                     resultErrorNext(error);
                 }
 
                 @Override
                 public void onError(Throwable e) {
+                    Logs.v("ma_unknown", "LoginStateHelper: onError");
                     errorNext(e);
                 }
             });
         } else {
+            Logs.v("ma_unknown", "LoginStateHelper: no wifi");
             noWifiNext(wifiConnect);
         }
     }

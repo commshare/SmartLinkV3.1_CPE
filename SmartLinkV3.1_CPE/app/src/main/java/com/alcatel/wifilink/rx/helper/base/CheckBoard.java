@@ -68,6 +68,7 @@ public abstract class CheckBoard {
 
                 @Override
                 public void onError(Throwable e) {
+                    Logs.t("ma_unknown").vv("Checkboard--> onError");
                     Logs.t("checkboard").vv("checkboarderror: " + e.getMessage());
                     errorNext(e);
                     allError();
@@ -77,6 +78,7 @@ public abstract class CheckBoard {
                 }
             });
         } else {
+            Logs.t("ma_unknown").vv("Checkboard--> wifi not Connect");
             noWifiNext(wifiConnect);
             // wifi掉线
             if (ori != null) {

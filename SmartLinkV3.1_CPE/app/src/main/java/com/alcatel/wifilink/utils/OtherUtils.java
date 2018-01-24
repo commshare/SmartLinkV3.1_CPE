@@ -194,6 +194,10 @@ public class OtherUtils {
      * @param ipAddress
      */
     public static boolean ipSuperMatch(String ipAddress) {
+        if (!ipMatch(ipAddress)) {
+            Logs.t("ma_ip").vv("ip address: " + "init check not match");
+            return false;
+        }
         Logs.t("ma_ip").vv("ip address: " + ipAddress);
         if (TextUtils.isEmpty(ipAddress)) {// 空值
             Logs.t("ma_ip").vv("ip address: " + "empty");
@@ -214,10 +218,34 @@ public class OtherUtils {
         for (String s : address) {
             ips.add(Integer.valueOf(s));
         }
-        int num0 = ips.get(0);
-        int num1 = ips.get(1);
-        int num2 = ips.get(2);
-        int num3 = ips.get(3);
+
+        int num0 = 0;
+        try {// 避免位数不够
+            num0 = ips.get(0);
+        } catch (Exception e) {
+            num0 = 0;
+        }
+
+        int num1 = 0;
+        try {// 避免位数不够
+            num1 = ips.get(1);
+        } catch (Exception e) {
+            num1 = 0;
+        }
+
+        int num2 = 0;
+        try {// 避免位数不够
+            num2 = ips.get(2);
+        } catch (Exception e) {
+            num2 = 0;
+        }
+
+        int num3 = 0;
+        try {// 避免位数不够
+            num3 = ips.get(3);
+        } catch (Exception e) {
+            num3 = 0;
+        }
 
         Logs.t("ma_ip").vv(num0 + ":" + num1 + ":" + num2 + ":" + num3);
         if ((num0 <= 0 || num0 == 127 || num0 > 223) || // num0
@@ -257,16 +285,19 @@ public class OtherUtils {
                         @Override
                         public void onError(Throwable e) {
                             Logs.v("ma_couldn_connect", "startHeartBeat1: " + e.getMessage());
+                            Logs.v("ma_unknown", "startHeartBeat1: onError");
                             clear(oriActivity, acTimeout);
                         }
 
                         @Override
                         protected void onResultError(ResponseBody.Error error) {
+                            Logs.v("ma_unknown", "startHeartBeat1: onResultError");
                             Logs.v("ma_couldn_connect", "startHeartBeat2: " + error.getMessage());
                             clear(oriActivity, acTimeout);
                         }
                     });
                 } else {// wifi失效
+                    Logs.v("ma_unknown", "startHeartBeat1: is not Wifi");
                     Logs.v("ma_couldn_connect", "no wifi");
                     clear(oriActivity, acTimeout);
                 }
@@ -279,7 +310,7 @@ public class OtherUtils {
     private static void clear(Activity oriActivity, Class acTimeout) {
         // 出错, 跳转到目标界面
         Log.v("ma_couldn_connect", "clear startHeartBeat error");
-        
+
         // 获取当前顶层的activity
         String currentActivitySimpleName = AppInfo.getCurrentActivitySimpleName(oriActivity);
         String simpleName = LoginRxActivity.class.getSimpleName();
@@ -292,7 +323,7 @@ public class OtherUtils {
         } else {
             Logs.t("ma_unknown").vv("OtherUtils--> startHeartBeat--> clear--> current is login");
         }
-        
+
     }
 
     /**
@@ -756,7 +787,7 @@ public class OtherUtils {
         ProgressDialog pgd = new ProgressDialog(context);
         pgd.setMessage(context.getString(R.string.connecting));
         pgd.setCanceledOnTouchOutside(false);
-        if (!((Activity)context).isFinishing()) {
+        if (!((Activity) context).isFinishing()) {
             pgd.show();
         }
         return pgd;

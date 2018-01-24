@@ -314,7 +314,7 @@
                 android:textColor="@color/mg_blue"
                 app:layout_textSizePercent="30%h"
                 app:layout_widthPercent="40%w" />
-
+            
         </com.zhy.android.percent.support.PercentRelativeLayout>
 
         <!-- ip address -->

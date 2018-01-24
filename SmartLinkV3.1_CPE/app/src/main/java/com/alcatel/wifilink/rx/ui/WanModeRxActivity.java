@@ -308,23 +308,20 @@ public class WanModeRxActivity extends AppCompatActivity {
                         toast(R.string.not_empty);
                         return;
                     }
-                    // IP基本规则匹配判断
-                    boolean ip_match = OtherUtils.ipMatch(ipaddress);
-                    boolean subnet_match = OtherUtils.ipMatch(subnetMask);
 
                     // IP高级规则匹配判断
                     boolean ip_super_match = OtherUtils.ipSuperMatch(ipaddress);
                     boolean subnet_super_match = OtherUtils.ipSuperMatch(subnetMask);
 
-                    if (!ip_match || !ip_super_match) {
-                        Logs.t("ma_ip").vv("ip: " + ip_match + ";ip_super: " + ip_super_match);
-                        String ipValid = getString(R.string.ip_address) + " " + getString(R.string.connect_failed);
+                    if (!ip_super_match) {
+                        Logs.t("ma_ip").vv("ip: " + ip_super_match + ";");
+                        String ipValid = getString(R.string.ip_address) + "\n" + getString(R.string.connect_failed);
                         toast(ipValid);
                         return;
                     }
-                    if (!subnet_match || !subnet_super_match) {
-                        Logs.t("ma_ip").vv("subnet: " + subnet_match + ";subnet_super: " + subnet_super_match);
-                        String subnetValid = getString(R.string.subnet_mask) + " " + getString(R.string.connect_failed);
+                    if (!subnet_super_match) {
+                        Logs.t("ma_ip").vv("subnet: " + subnet_super_match + ";");
+                        String subnetValid = getString(R.string.subnet_mask) + "\n" + getString(R.string.connect_failed);
                         toast(subnetValid);
                         return;
                     }

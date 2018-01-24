@@ -459,7 +459,7 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
     /* **** resetLongClickFlag **** */
     private void resetLongClickFlag() {
         // the ori long click flag maybe true--> then set false
-        isLongClick = !isLongClick;// 1. reset this flag to set the selected logo gone
+        isLongClick = false;// 1. reset this flag to set the selected logo gone
         adapter.isLongClick = isLongClick;// 2. and deliver this to the adapter flag 
         iv_delete.setVisibility(View.GONE);// 3. set deleted button gone
         etSmsdetailSend.setEnabled(!isLongClick);// 4. set et enable
