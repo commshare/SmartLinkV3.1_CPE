@@ -31,6 +31,7 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
     private CheckBoard checkBoard;
     private AlertDialog dialog;
     private Handler handler;
+    private ProgressDialog pgd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         stopTimer();// 停止定时器
+        pgd = OtherUtils.showProgressPop(this);
         handler.postDelayed(this::checkBorads, 3000);
         // checkBorads();// 重新进入界面时检测硬件连接状态
     }
@@ -61,7 +63,6 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
      */
     private void checkBorads() {
         boolean iswifi = OtherUtils.isWifiConnect(this);
-        ProgressDialog pgd = OtherUtils.showProgressPop(this);
         if (iswifi) {
             RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                 @Override
@@ -74,25 +75,25 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
                 @Override
                 protected void onResultError(ResponseBody.Error error) {
                     OtherUtils.hideProgressPop(pgd);
-                    showDialog();
+                    gotConnectDialog();
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     OtherUtils.hideProgressPop(pgd);
-                    showDialog();
+                    gotConnectDialog();
                 }
             });
         } else {
             OtherUtils.hideProgressPop(pgd);
-            showDialog();
+            gotConnectDialog();
         }
     }
 
     /**
      * 显示连接失败对话框
      */
-    public void showDialog() {
+    public void gotConnectDialog() {
         dialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.refresh_get_connected);

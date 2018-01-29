@@ -9,6 +9,8 @@
 
     <!-- send layout -->
     <RelativeLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:id="@+id/rl_smsdetail_layout_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +60,7 @@
             android:minHeight="@dimen/dimen_40dip"
             android:paddingLeft="@dimen/dimen_8dip"
             android:paddingStart="@dimen/dimen_8dip"
-            android:textSize="14sp" />
+            android:textSize="14sp" /> 
 
     </RelativeLayout>
 

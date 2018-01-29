@@ -123,9 +123,10 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     private void setSmsPoint(SmsHolder holder, int position) {
         SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         int smsType = smsContact.getSMSType();
-        Logs.t("ma_smsdetail").vv("smsType: " + smsType);
+        Logs.t("ma_smsunread").ii("smsType: " + smsType);
         // 查看缓冲区是否有当前contactid对应的未读短信数量
         int unreadCache = SmsCountHelper.getUnreadCache(smsContact.getContactId());
+        Logs.t("ma_smsunread").ii("unreadCache: " + unreadCache);
         // 以下4种情况均需要显示对应的点
         boolean pointShow = smsType == UNREAD || smsType == SENT_FAILED || smsType == DRAFT || unreadCache > 0;
         holder.iv_smsPoint.setVisibility(pointShow ? VISIBLE : View.INVISIBLE);

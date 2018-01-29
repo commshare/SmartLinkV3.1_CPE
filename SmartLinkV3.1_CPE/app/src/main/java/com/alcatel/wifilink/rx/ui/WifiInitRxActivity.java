@@ -362,7 +362,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
             SP.getInstance(activity).putBoolean(Cons.WIFIINIT_RX, true);
             to(HomeRxActivity.class);
         } else {
-            // 4.弹出登陆会话框
+            // 4.显示重启提示对话框
             showReStartDeviceDialog();
         }
 

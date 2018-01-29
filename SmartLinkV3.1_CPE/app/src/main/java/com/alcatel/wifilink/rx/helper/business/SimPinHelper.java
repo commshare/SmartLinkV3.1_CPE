@@ -11,6 +11,7 @@ import com.alcatel.wifilink.network.ResponseBody;
 import com.alcatel.wifilink.rx.helper.base.PinStatuHelper;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.Logs;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 
 /**
@@ -72,11 +73,13 @@ public class SimPinHelper {
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        Logs.t("ma_simpin").ii("simpinhelper: disablePin:changePinState: onResultError ");
                         toast(R.string.setting_failed);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Logs.t("ma_simpin").ii("simpinhelper: disablePin:changePinState: onError ");
                         toast(R.string.setting_failed);
                     }
                 });
@@ -89,6 +92,7 @@ public class SimPinHelper {
 
             @Override
             public void onError(Throwable e) {
+                Logs.t("ma_simpin").ii("simpinhelper: disablePin:unlockPin: onError ");
                 toast(R.string.setting_failed);
             }
         });
@@ -114,11 +118,13 @@ public class SimPinHelper {
 
                     @Override
                     protected void onResultError(ResponseBody.Error error) {
+                        Logs.t("ma_simpin").ii("simpinhelper: enableUnlockFirst:changePinState onResultError");
                         toast(R.string.setting_failed);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Logs.t("ma_simpin").ii("simpinhelper: enableUnlockFirst:changePinState onError");
                         toast(R.string.setting_failed);
                     }
                 });
@@ -131,6 +137,7 @@ public class SimPinHelper {
 
             @Override
             public void onError(Throwable e) {
+                Logs.t("ma_simpin").ii("simpinhelper:unlockPin getPinRemaingTime");
                 toast(R.string.setting_failed);
             }
         });
@@ -141,16 +148,19 @@ public class SimPinHelper {
      */
     private void getPinRemaingTime(ResponseBody.Error error) {
         // 提示
-        if (error.getCode().equalsIgnoreCase("020201")) {
+        String code = error.getCode();
+        Logs.t("ma_simpin").ii("simpinhelper: getPinRemaingTime:code: " + code);
+        if (code.equalsIgnoreCase("204411") || code.equalsIgnoreCase("020201")) {
             toast(R.string.pin_error_waring_title);
         } else {
+            Logs.t("ma_simpin").ii("simpinhelper: getPinRemaingTime");
             toast(R.string.setting_failed);
         }
         // 获取剩余次数
         RX.getInstant().getSimStatus(new ResponseObject<SimStatus>() {
             @Override
             protected void onSuccess(SimStatus result) {
-                if (result.getSIMState() == Cons.PIN_REQUIRED) {
+                if (result.getSIMState() == Cons.PIN_REQUIRED || result.getSIMState() == Cons.READY) {
                     int pinRemainingTimes = result.getPinRemainingTimes();
                     if (pinRemainingTimes >= 1) {
                         String tip = pinRemainingTimes + " " + activity.getString(R.string.sim_unlocked_attempts);
