@@ -1,4 +1,4 @@
-package com.alcatel.wifilink.common;
+package com.alcatel.wifilink.utils;
 
 import android.content.Context;
 import android.os.Handler;

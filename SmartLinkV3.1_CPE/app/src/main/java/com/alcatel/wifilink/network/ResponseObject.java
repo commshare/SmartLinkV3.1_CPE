@@ -3,7 +3,7 @@ package com.alcatel.wifilink.network;
 import android.content.Context;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.utils.ToastUtil;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.utils.Logs;
 

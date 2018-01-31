@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.utils.ToastUtil;
 import com.alcatel.wifilink.model.sms.SMSSendParam;
 import com.alcatel.wifilink.model.sms.SendSMSResult;
 import com.alcatel.wifilink.network.RX;

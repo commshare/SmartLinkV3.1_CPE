@@ -23,7 +23,7 @@ import com.alcatel.wifilink.appwidget.RippleView;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.common.ShareperfrenceUtil;
+import com.alcatel.wifilink.utils.ShareperfrenceUtil;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.sim.SimStatus;
 import com.alcatel.wifilink.model.wan.WanSettingsResult;

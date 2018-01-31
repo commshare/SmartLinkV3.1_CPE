@@ -31,7 +31,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.DataUti;
 import com.alcatel.wifilink.common.DensityUtils;
 import com.alcatel.wifilink.common.ENUM.SendStatus;
-import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.utils.ToastUtil;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.utils.ToastUtil_m;

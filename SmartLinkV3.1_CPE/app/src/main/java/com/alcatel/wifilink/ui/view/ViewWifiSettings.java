@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.common.ENUM;
-import com.alcatel.wifilink.common.ToastUtil;
+import com.alcatel.wifilink.utils.ToastUtil;
 import com.alcatel.wifilink.model.wlan.WlanSupportAPMode;
 import com.alcatel.wifilink.model.wlan.WlanSettings;
 import com.alcatel.wifilink.network.RX;
