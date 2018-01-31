@@ -72,7 +72,9 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
     TextView tvSetTimelimit;
     @BindView(R.id.rl_setPlan_rx_setTimelimit)
     PercentRelativeLayout rlSetTimelimit;
+
     Unbinder unbinder;
+
 
     private HomeRxActivity activity;
     private FraHelpers fraHelpers;
@@ -303,7 +305,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
         String content = OtherUtils.getEdContent(edNum);
         // 非空判断
         if (TextUtils.isEmpty(content)) {
-            toast(R.string.not_empty);
+            // toast(R.string.not_empty);
             content = "0";
         }
         // 范围鉴定
@@ -321,9 +323,18 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
             attr.setMonthlyPlan(tvmb.getCurrentTextColor() == blue_color ? num * 1024l * 1024l : num * 1024l * 1024l * 1024l);
             // 2.在提交usage-setting
             UsageSettingHelper ush1 = new UsageSettingHelper(getActivity());
-            ush1.setOnSetSuccessListener(attr1 -> pgd.dismiss());
-            ush1.setOnErrorListener(attr1 -> pgd.dismiss());
-            ush1.setOnResutlErrorListener(attr1 -> pgd.dismiss());
+            ush1.setOnSetSuccessListener(attr1 -> {
+                toast(R.string.success);
+                pgd.dismiss();
+            });
+            ush1.setOnErrorListener(attr1 -> {
+                toast(R.string.connect_failed);
+                pgd.dismiss();
+            });
+            ush1.setOnResutlErrorListener(attr1 -> {
+                toast(R.string.connect_failed);
+                pgd.dismiss();
+            });
             ush1.setUsageSetting(attr);
         });
         ush.setOnErrorListener(attr1 -> pgd.dismiss());
@@ -499,7 +510,7 @@ public class SetDataPlanRxfragment extends Fragment implements FragmentBackHandl
                 if (monthlyPlan > 0) {// 2.非无限流量的情况下
                     String des = getString(R.string.home_usage_over_redial_message);// 3.超出月流量--> 显示警告
                     if (usedData < monthlyPlan) {// 3.没有超出--> 显示剩余百分比
-                        String per_s = (int) (((monthlyPlan - usedData) / monthlyPlan) * 100)+"%";
+                        String per_s = (int) (((monthlyPlan - usedData) / monthlyPlan) * 100) + "%";
                         des = String.format(getString(R.string.about_x_data_remain), per_s);
                     }
                     toastLong(des);// 4.吐司提示

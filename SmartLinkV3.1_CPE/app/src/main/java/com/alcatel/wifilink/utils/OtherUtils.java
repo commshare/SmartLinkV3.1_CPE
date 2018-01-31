@@ -307,17 +307,27 @@ public class OtherUtils {
         return heartTimerAll;
     }
 
+    /**
+     * 清理并跳转
+     *
+     * @param oriActivity
+     * @param acTimeout
+     */
     private static void clear(Activity oriActivity, Class acTimeout) {
         // 出错, 跳转到目标界面
         Log.v("ma_couldn_connect", "clear startHeartBeat error");
 
         // 获取当前顶层的activity
         String currentActivitySimpleName = AppInfo.getCurrentActivitySimpleName(oriActivity);
-        String simpleName = LoginRxActivity.class.getSimpleName();
+        String loginName = LoginRxActivity.class.getSimpleName();
+        String saveName = SPUtils.getInstance(oriActivity).getString(Cons.CURRENT_ACTIVITY, "");
         // 如果当前是处于登陆页面则不跳转
-        if (!currentActivitySimpleName.equalsIgnoreCase(simpleName) & // 相等
-                    !currentActivitySimpleName.contains(simpleName) & // 包含
-                    !simpleName.contains(currentActivitySimpleName) // 包含
+        if (!currentActivitySimpleName.equalsIgnoreCase(loginName) & // 不相等
+                    !currentActivitySimpleName.contains(loginName) & // 不包含
+                    !loginName.contains(currentActivitySimpleName) & // 不包含
+                    !loginName.equalsIgnoreCase(saveName) & // 不相等
+                    !loginName.contains(saveName) & // 不包含
+                    !saveName.contains(loginName) // 不包含
                 ) {
             CA.toActivity(oriActivity, acTimeout, false, true, false, 0);
         } else {

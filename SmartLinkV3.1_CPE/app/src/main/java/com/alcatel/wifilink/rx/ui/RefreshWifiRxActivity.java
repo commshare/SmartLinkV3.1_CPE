@@ -67,7 +67,9 @@ public class RefreshWifiRxActivity extends AppCompatActivity {
             RX.getInstant().getLoginState(new ResponseObject<LoginState>() {
                 @Override
                 protected void onSuccess(LoginState result) {
-                    OtherUtils.hideProgressPop(pgd);
+                    if (!isFinishing()) {
+                        OtherUtils.hideProgressPop(pgd);
+                    }
                     // to(LoginRxActivity.class, true);
                     to(LoadingRxActivity.class, true);
                 }

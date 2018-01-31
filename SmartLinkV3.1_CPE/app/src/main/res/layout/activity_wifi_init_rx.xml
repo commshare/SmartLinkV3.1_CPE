@@ -33,6 +33,17 @@
             android:textColor="@color/white"
             app:layout_textSizePercent="30%h" />
 
+        <TextView
+            android:id="@+id/tv_wifiInit_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:text="@string/skip"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="27%h" />
+
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
     <!-- ##### 2.4G ##### -->

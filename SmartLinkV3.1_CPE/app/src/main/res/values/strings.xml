@@ -596,7 +596,10 @@
     <string name="about_x_data_remain">About %s data remaining</string>
     <string name="sms_max_length">SMS can enter %d characters at most</string>
     <string name="check_sim_normal_or_no_cost">Please check whether your SIM card is normal or no cost</string>
-    
+
     <string name="setting_wifi_extender">Wi-Fi extender</string>
     <string name="setting_feedback">Feedback</string>
+    <string name="change_password_failed">Change password failed</string>
+    <string name="the_current_password_is_wrong">The current password is wrong</string>
+    <string name="the_current_password_is_the_same_as_default_password">The current password is the same as default password</string>
 </resources>

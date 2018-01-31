@@ -47,6 +47,8 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
 
     @BindView(R.id.iv_dataplan_rx_back)
     ImageView ivDataplanRxBack;// 回退键
+    @BindView(R.id.tv_setPlan_rx_skip)
+    TextView tvSkip;// 跳过
     @BindView(R.id.iv_dataplan_rx_limit_arrow)
     ImageView ivDataplanRxLimitArrow;// 下拉箭头
     @BindView(R.id.tv_dataplan_rx_limit_unit)
@@ -163,6 +165,7 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
     }
 
     @OnClick({R.id.iv_dataplan_rx_back,// 回退
+                     R.id.tv_setPlan_rx_skip,// 跳过
                      R.id.iv_dataplan_rx_limit_arrow,// 限制箭头
                      R.id.tv_dataplan_rx_limit_unit,// 单位
                      R.id.iv_dataplan_rx_auto,// 自动开关
@@ -171,6 +174,9 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
         switch (view.getId()) {
             case R.id.iv_dataplan_rx_back:
                 clickBackButton();
+                break;
+            case R.id.tv_setPlan_rx_skip:// 跳过
+                clickSkip();
                 break;
             case R.id.iv_dataplan_rx_limit_arrow:
             case R.id.tv_dataplan_rx_limit_unit:
@@ -183,6 +189,14 @@ public class DataPlanRxActivity extends BaseActivityWithBack {
                 doneClick();
                 break;
         }
+    }
+
+
+    /**
+     * 点击跳过
+     */
+    private void clickSkip() {
+        toAc();
     }
 
     /**

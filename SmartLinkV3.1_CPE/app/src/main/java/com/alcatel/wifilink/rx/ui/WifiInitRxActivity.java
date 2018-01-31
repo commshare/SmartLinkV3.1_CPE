@@ -13,20 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.network.ResponseObject;
-import com.alcatel.wifilink.utils.CA;
-import com.alcatel.wifilink.utils.SP;
-import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.wlan.WlanSetting;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.CheckBoardLogin;
 import com.alcatel.wifilink.rx.helper.base.LogoutHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.activity.SmartLinkV3App;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;
 import com.alcatel.wifilink.ui.home.helper.main.TimerHelper;
+import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.SP;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.orhanobut.logger.Logger;
 import com.zhy.android.percent.support.PercentRelativeLayout;
 
@@ -40,9 +40,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class WifiInitRxActivity extends BaseActivityWithBack {
 
-    // 回退
+
     @BindView(R.id.iv_wifiInit_back)
-    ImageView ivBack;
+    ImageView ivBack;// 回退
+    @BindView(R.id.tv_wifiInit_skip)
+    TextView tvWifiInitSkip;// 跳过
 
     // 2.4G面板
     @BindView(R.id.rl_wifiInit_2p4G)
@@ -79,6 +81,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
     TextView tvTryagain;// 重试按钮
     @BindView(R.id.tv_wifiInit_rx_tohome)
     TextView tvTohome;// 前往主页
+
 
     private int FLAG_2P4G = 0;
     private int FLAG_5G = 1;
@@ -214,6 +217,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
     }
 
     @OnClick({R.id.iv_wifiInit_back,// 回退
+                     R.id.tv_wifiInit_skip,// 跳过
                      R.id.iv_wifiInit_wlanStatus_socket_2p4G,// 2.4G状态开关
                      R.id.iv_wifiInit_password_eyes_2p4G,// 2.4G可视按钮
                      R.id.iv_wifiInit_wlanStatus_socket_5G,// 5G状态开关
@@ -226,6 +230,9 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
         switch (view.getId()) {
             case R.id.iv_wifiInit_back:// 回退
                 clickBack();
+                break;
+            case R.id.tv_wifiInit_skip:// 跳过
+                toHome();
                 break;
             case R.id.iv_wifiInit_wlanStatus_socket_2p4G:// 2.4G状态开关
                 checkWlanStatusSocket(FLAG_2P4G);
@@ -359,13 +366,17 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
         }
         if (is2P4GAPStatusSame & is5GAPStatusSame & is2P4GSSIDSame & is5GSSIDSame & is2P4GWpaSame & is5GWpaSame) {
             // 4.直接跳转到主页
-            SP.getInstance(activity).putBoolean(Cons.WIFIINIT_RX, true);
-            to(HomeRxActivity.class);
+            toAc();
         } else {
             // 4.显示重启提示对话框
             showReStartDeviceDialog();
         }
 
+    }
+
+    private void toAc() {
+        SP.getInstance(activity).putBoolean(Cons.WIFIINIT_RX, true);
+        to(HomeRxActivity.class);
     }
 
     /**
@@ -429,10 +440,7 @@ public class WifiInitRxActivity extends BaseActivityWithBack {
         new CheckBoardLogin(this) {
             @Override
             public void afterCheckSuccess(ProgressDialog pgd) {
-                // 提交标记
-                SP.getInstance(activity).putBoolean(Cons.WIFIINIT_RX, true);
-                // 跳转
-                to(HomeRxActivity.class);
+                toAc();
             }
         };
     }

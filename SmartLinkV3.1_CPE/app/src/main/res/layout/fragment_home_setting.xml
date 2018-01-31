@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_grey">
+    android:background="@color/grey_line">
 
     <!-- 9%sh -->
 
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_settingRx_banner"
-        android:background="@color/color_bg_grey">
+        android:background="@color/grey_line">
         <!-- 总布局 -->
         <com.zhy.android.percent.support.PercentLinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

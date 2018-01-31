@@ -142,6 +142,13 @@ public class HomeRxActivity extends BaseActivityWithBack {
 
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        /* 注意1: 重写这个方法并把super.onSaveInstanceState(outState);这个方法注销,避免该activity保存fragment状态 */
+        /* 注意2: 该做法是为了防止fragment的重叠问题,因为此处的机制是采用了fragment的show or hide的方式来显示 */
+        // super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;

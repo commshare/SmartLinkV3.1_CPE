@@ -16,7 +16,9 @@ public class Constants {
         public static final String SERBIAN = "sr";
         public static final String CROATIAN = "hr";
         public static final String SLOVENIAN = "sl";
+        public static final String POLAND = "pl";
     }
+
     public class SIMState {
         public static final int NOWN = 0;
         public static final int SIM_CARD_DETECTED = 1;
@@ -91,20 +93,20 @@ public class Constants {
         public static final int ROAMING_ENABLE = 1;
     }
 
-    public class WanSettingsStatus{
+    public class WanSettingsStatus {
         public static final int DISCONNECTED = 0;
         public static final int CONNECTING = 1;
         public static final int CONNECTED = 2;
         public static final int DISCONNECTING = 3;
     }
 
-    public class DeviceUpgradeStatus{
+    public class DeviceUpgradeStatus {
         public static final int DEVICE_UPGRADE_NOT_START = 0;
         public static final int DEVICE_UPGRADE_UPDATING = 1;
         public static final int DEVICE_UPGRADE_COMPLETE = 2;
     }
 
-    public class DeviceVersionCheckState{
+    public class DeviceVersionCheckState {
         public static final int DEVICE_CHECKING = 0;
         public static final int DEVICE_NEW_VERSION = 1;
         public static final int DEVICE_NO_NEW_VERSION = 2;
@@ -113,13 +115,13 @@ public class Constants {
         public static final int DEVICE_CHECK_ERROR = 5;
     }
 
-    public class DeviceUSBStatus{
+    public class DeviceUSBStatus {
         public static final int NOT_INSERT = 0;
         public static final int USB_STORAGE = 1;
         public static final int USB_PRINT = 2;
     }
 
-    public class UsageSetting{
+    public class UsageSetting {
         public static final int UNIT_MB = 0;
         public static final int UNIT_GB = 1;
         public static final int UNIT_KB = 2;

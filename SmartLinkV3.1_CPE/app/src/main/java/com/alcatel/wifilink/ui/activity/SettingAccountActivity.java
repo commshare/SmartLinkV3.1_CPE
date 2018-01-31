@@ -1,6 +1,7 @@
 package com.alcatel.wifilink.ui.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,18 +13,20 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.alcatel.wifilink.network.RX;
-import com.alcatel.wifilink.network.ResponseObject;
-import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.R;
-import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.LinkAppSettings;
-import com.alcatel.wifilink.utils.ToastUtil_m;
+import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseBody;
+import com.alcatel.wifilink.network.ResponseObject;
+import com.alcatel.wifilink.utils.CA;
+import com.alcatel.wifilink.utils.EncryptionUtil;
 import com.alcatel.wifilink.utils.OtherUtils;
+import com.alcatel.wifilink.utils.ToastUtil_m;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SettingAccountActivity extends BaseActivityWithBack implements OnClickListener {
 
@@ -35,7 +38,6 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_account);
         setTitle(R.string.setting_account);
@@ -71,27 +73,24 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         }
 
         OtherUtils otherUtils = new OtherUtils();
-        otherUtils.setOnCustomizedVersionListener(new OtherUtils.OnCustomizedVersionListener() {
-            @Override
-            public void getCustomizedStatus(boolean isCustomized) {
-                // isCustomized: true--> 则为定制版
-                if (isCustomized) {
-                    // setting the direct condition psd
-                    String splChrs = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\\-\\+\\!\\^\\$\\@\\#\\&\\*])[A-Za-z0-9\\-\\+\\!\\^\\$\\@\\#\\&\\*]{4,16}$";
-                    Pattern pattern = Pattern.compile(splChrs);
-                    Matcher matcher = pattern.matcher(confirmPwd);
-                    if (matcher.find()) {
-                        // 是否需要加密
-                        otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
-                        otherUtils.getDeviceSwVersion();
-                    } else {
-                        Toast.makeText(SettingAccountActivity.this, getString(R.string.login_invalid_password), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
+        otherUtils.setOnCustomizedVersionListener(isCustomized -> {
+            // isCustomized: true--> 则为定制版
+            if (isCustomized) {
+                // setting the direct condition psd
+                String splChrs = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\\-\\+\\!\\^\\$\\@\\#\\&\\*])[A-Za-z0-9\\-\\+\\!\\^\\$\\@\\#\\&\\*]{4,16}$";
+                Pattern pattern = Pattern.compile(splChrs);
+                Matcher matcher = pattern.matcher(confirmPwd);
+                if (matcher.find()) {
                     // 是否需要加密
                     otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
                     otherUtils.getDeviceSwVersion();
+                } else {
+                    Toast.makeText(SettingAccountActivity.this, getString(R.string.login_invalid_password), Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                // 是否需要加密
+                otherUtils.setOnSwVersionListener(needToEncrypt -> changePsd(needToEncrypt, LinkAppSettings.USER_NAME, currentPwd, confirmPwd));
+                otherUtils.getDeviceSwVersion();
             }
         });
         otherUtils.isCustomVersion();
@@ -115,11 +114,24 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         int nID = v.getId();
         switch (nID) {
             case R.id.password_notice:
-                showDialog(getString(R.string.login_forgotpassword_des));
-                break;
-            default:
+                // showDialog(getString(R.string.login_forgotpassword_des));
+                showAlertDialog();
                 break;
         }
+    }
+
+    /**
+     * 显示对话框
+     */
+    private void showAlertDialog() {
+        // 重启设备
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)// 类型
+                .setTitleText(getString(R.string.warning))// 警告
+                .setContentText(getString(R.string.reset_tip))// 描述
+                .setConfirmText(getString(R.string.ok))// 确定
+                .setConfirmClickListener(Dialog::dismiss)// 设置确定监听
+                .show();
+
     }
 
     @Override
@@ -155,14 +167,22 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
             @Override
             protected void onSuccess(Object result) {
                 Toast.makeText(SettingAccountActivity.this, R.string.succeed, Toast.LENGTH_SHORT).show();
-                logout();
+                // logout();
+                finish();
             }
 
             @Override
             protected void onResultError(ResponseBody.Error error) {
-                if ("010101".equals(error.getCode())) {
+                if ("010401".equalsIgnoreCase(error.getCode())) {
+                    toast(R.string.change_password_failed); 
+                } else if ("010402".equalsIgnoreCase(error.getCode())) {
+                    toast(R.string.the_current_password_is_wrong);
+                } else if ("010403".equalsIgnoreCase(error.getCode())) {
+                    toast(R.string.the_current_password_is_the_same_as_default_password);
+                } else {
+                    Toast.makeText(SettingAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(SettingAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -190,20 +210,19 @@ public class SettingAccountActivity extends BaseActivityWithBack implements OnCl
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void toast(int resId) {
+        ToastUtil_m.show(this, resId);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void toastLong(int resId) {
+        ToastUtil_m.showLong(this, resId);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void toast(String content) {
+        ToastUtil_m.show(this, content);
     }
 
-
+    private void to(Class ac, boolean isFinish) {
+        CA.toActivity(this, ac, false, isFinish, false, 0);
+    }
 }

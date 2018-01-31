@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.model.sms.SMSContactList;
+import com.alcatel.wifilink.model.sms.SMSContentList;
+import com.alcatel.wifilink.model.sms.SMSContentParam;
 import com.alcatel.wifilink.model.sms.SmsSingle;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.network.ResponseObject;
@@ -123,6 +125,9 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
     private void setSmsPoint(SmsHolder holder, int position) {
         SMSContactList.SMSContact smsContact = smsContactList.get(position).getSmscontact();
         int smsType = smsContact.getSMSType();
+        int unreadCount = smsContact.getUnreadCount();
+        /*  如果检测到未读, 但是未读的数量又为0, 则是FW未做处理, 其实是不存在未读短信, 直接设置为已读 */
+        smsType = smsType == UNREAD & unreadCount == 0 ? Cons.READ : smsType;
         Logs.t("ma_smsunread").ii("smsType: " + smsType);
         // 查看缓冲区是否有当前contactid对应的未读短信数量
         int unreadCache = SmsCountHelper.getUnreadCache(smsContact.getContactId());
@@ -236,6 +241,13 @@ public class SmsRcvAdapter extends RecyclerView.Adapter<SmsHolder> {
         // 清空缓冲区短信未读数量
         HomeActivity.smsUnreadMap.put(smsContact.getContactId(), 0);
         // 调用此接口的目的是为了告知路由器该ID下的短信已读
+        SMSContentParam scp = new SMSContentParam(0, smsContact.getContactId());
+        RX.getInstant().getSMSContentList(scp, new ResponseObject<SMSContentList>() {
+            @Override
+            protected void onSuccess(SMSContentList result) {
+
+            }
+        });
         RX.getInstant().getSingleSMS(smsContact.getSMSId(), new ResponseObject<SmsSingle>() {
             @Override
             protected void onSuccess(SmsSingle result) {

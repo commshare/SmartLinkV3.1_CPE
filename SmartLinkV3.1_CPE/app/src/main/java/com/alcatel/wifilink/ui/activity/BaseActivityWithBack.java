@@ -16,6 +16,7 @@ import com.alcatel.wifilink.R;
 import com.alcatel.wifilink.network.RX;
 import com.alcatel.wifilink.utils.CA;
 import com.alcatel.wifilink.common.Constants;
+import com.alcatel.wifilink.utils.SPUtils;
 import com.alcatel.wifilink.utils.ToastUtil_m;
 import com.alcatel.wifilink.model.user.LoginState;
 import com.alcatel.wifilink.network.ResponseObject;
@@ -66,6 +67,8 @@ public class BaseActivityWithBack extends AppCompatActivity {
         if (!"".equals(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""))) {
             switchLanguage(PreferenceUtil.getString(Constants.Language.LANGUAGE, ""));
         }
+        // 提交当前的activity
+        SPUtils.getInstance(this).put(Cons.CURRENT_ACTIVITY, getClass().getSimpleName());
     }
 
     /**

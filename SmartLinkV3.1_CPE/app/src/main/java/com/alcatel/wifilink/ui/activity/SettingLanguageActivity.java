@@ -30,7 +30,18 @@ import static java.lang.Character.toUpperCase;
 public class SettingLanguageActivity extends BaseActivityWithBack {
     private static final String TAG = "SettingLanguageActivity";
     public static final String IS_SWITCH_LANGUAGE = "is_switch_language";
-    private String[] mLanguageStrings = {Constants.Language.ENGLISH, Constants.Language.ARABIC, Constants.Language.ESPANYOL, Constants.Language.GERMENIC, Constants.Language.ITALIAN, Constants.Language.FRENCH, Constants.Language.SERBIAN, Constants.Language.CROATIAN, Constants.Language.SLOVENIAN};
+    private String[] mLanguageStrings = {
+            Constants.Language.ENGLISH,// en-1
+            Constants.Language.ARABIC,// ar-2
+            Constants.Language.ESPANYOL,// es-3
+            Constants.Language.GERMENIC,// de-4
+            Constants.Language.ITALIAN,// it-5
+            Constants.Language.FRENCH,// fr-6
+            Constants.Language.SERBIAN,// sr-7
+            Constants.Language.CROATIAN,// hr-8
+            Constants.Language.SLOVENIAN,// sl-9
+            Constants.Language.POLAND // pl-10
+    };
     private ListView mLanguageListView;
     private LanguageAdapter mLanguageAdapter;
     private String mCurrentLanguage;
@@ -92,26 +103,6 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
         setResult(SettingFragment.SET_LANGUAGE_REQUEST, intent);
         finish();
         super.onBackPressed();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     private class LanguageAdapter extends BaseAdapter {
@@ -179,6 +170,9 @@ public class SettingLanguageActivity extends BaseActivityWithBack {
             } else if (languages[position].equals(Constants.Language.SLOVENIAN)) {
                 // 斯洛文尼亚
                 config.locale = new Locale(Constants.Language.SLOVENIAN);
+            }else if (languages[position].equals(Constants.Language.POLAND)) {
+                // 斯洛文尼亚
+                config.locale = new Locale(Constants.Language.POLAND);
             }
 
             String displayName = config.locale.getDisplayName(config.locale);

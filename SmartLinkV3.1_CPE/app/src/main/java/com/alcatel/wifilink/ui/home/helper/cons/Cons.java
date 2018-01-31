@@ -53,6 +53,7 @@ public class Cons {
     public static String FIRST_RUN = "FIRST_RUN";// 连接向导标记
 
     public static String CUSTOM_ID_1 = "E1";// 需要定制的版本customId
+    public static String CURRENT_ACTIVITY = "CURRENT_ACTIVITY";// 当前运行的Activity
 
     /* 标记 */
     public static int FLAG_PPPOE = 0;
