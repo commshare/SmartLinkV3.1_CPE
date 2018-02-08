@@ -268,12 +268,12 @@
 
             <!-- 4.wifi extender -->
             <com.zhy.android.percent.support.PercentRelativeLayout
-                android:id="@+id/setting_wifi_extender"
+                android:id="@+id/rl_setting_wifi_extender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
                 android:background="@color/color_white"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_heightPercent="9%sh">
 
                 <ImageView
@@ -283,7 +283,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dimen_20dip"
                     android:layout_marginStart="@dimen/dimen_20dip"
-                    android:src="@drawable/wifi_extender"
+                    android:src="@drawable/wifi_ex"
                     app:layout_heightPercent="40%h"
                     app:layout_widthPercent="40%h" />
 
@@ -563,7 +563,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10dip"
                 android:background="@color/color_white"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_heightPercent="9%sh">
 
                 <ImageView

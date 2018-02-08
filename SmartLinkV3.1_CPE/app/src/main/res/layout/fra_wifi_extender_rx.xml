@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fffef5">
+
+    <!-- banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifiExtender_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_wifi_extender"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_wifiExtender_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:gravity="center"
+            android:text="@string/scan"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="27%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- not connect tip -->
+    <TextView
+        android:id="@+id/tv_wifiExtender_not_connect_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wifiExtender_banner"
+        android:layout_marginBottom="@dimen/dimen_10dip"
+        android:background="@color/ffdb84"
+        android:gravity="start|center_vertical"
+        android:paddingEnd="@dimen/dimen_8dip"
+        android:paddingStart="@dimen/dimen_8dip"
+        android:text="@string/device_not_connected_please_check_network_settings"
+        android:textColor="@color/c_7c601e"
+        app:layout_heightPercent="6%h"
+        app:layout_textSizePercent="2.2%h" />
+
+    <!-- wifi extender not connect layout -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifiExtender_click_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_wifiExtender_not_connect_tip"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        app:layout_heightPercent="14%h">
+
+        <!-- l1:socket -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/tv_wifiExtender_socket_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_heightPercent="28%h">
+
+            <TextView
+                android:id="@+id/tv_wifiExtender_panel_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dimen_8dip"
+                android:gravity="center"
+                android:text="@string/setting_wifi_extender"
+                android:textColor="@color/black"
+                app:layout_textSizePercent="75%h" />
+
+            <ImageView
+                android:id="@+id/iv_wifiExtender_panel_socket"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/general_btn_off"
+                app:layout_widthPercent="15%w" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- l2:des -->
+        <TextView
+            android:id="@+id/tv_wifiExtender_not_connect_panel_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_wifiExtender_socket_panel"
+            android:paddingEnd="@dimen/dimen_8dip"
+            android:paddingStart="@dimen/dimen_8dip"
+            android:text="@string/connect_to_other_wifi_networks"
+            android:textColor="@color/c_999999"
+            app:layout_textSizePercent="14%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- had connected -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_wifiExtender_had_connected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wifiExtender_click_panel"
+        android:background="@color/white"
+        app:layout_heightPercent="8%h">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dip"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:layout_marginStart="@dimen/dimen_8dip"
+            android:alpha="0.3"
+            android:background="@color/gray11" />
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_had_connected_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_8dip"
+            android:src="@drawable/btn_radio_on_normal"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_wifiExtender_had_connected_hotDot_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_8dip"
+            android:layout_toEndOf="@id/iv_wifiExtender_had_connected_check"
+            android:text="TCL-OA"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="30%h" />
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_had_connected_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:src="@drawable/wifi_ex"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_had_connected_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_toStartOf="@id/iv_wifiExtender_had_connected_wifi"
+            android:src="@drawable/lock"
+            app:layout_heightPercent="45%h"
+            app:layout_widthPercent="45%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- available network -->
+    <TextView
+        android:id="@+id/tv_wifiExtender_available_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_wifiExtender_had_connected"
+        android:layout_marginStart="@dimen/dimen_8dip"
+        android:layout_marginTop="@dimen/dimen_8dip"
+        android:text="@string/available_networks"
+        android:textColor="@color/c_666666"
+        app:layout_textSizePercent="2.7%h" />
+
+    <!-- hot dot list -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_wifiExtender_available_network"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_wifiExtender_available_network"
+        android:layout_marginBottom="@dimen/dimen_8dip"
+        android:layout_marginTop="@dimen/dimen_8dip" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

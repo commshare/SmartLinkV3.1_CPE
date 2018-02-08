@@ -3,6 +3,9 @@ package com.alcatel.wifilink.rx.ui;
 import android.os.Bundle;
 
 import com.alcatel.wifilink.R;
+import com.alcatel.wifilink.model.system.SystemStates;
+import com.alcatel.wifilink.network.RX;
+import com.alcatel.wifilink.network.ResponseObject;
 import com.alcatel.wifilink.rx.helper.base.LoginStateHelper;
 import com.alcatel.wifilink.ui.activity.BaseActivityWithBack;
 import com.alcatel.wifilink.ui.home.helper.cons.Cons;

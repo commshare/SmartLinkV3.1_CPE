@@ -47,6 +47,7 @@ import com.alcatel.wifilink.model.sms.SmsInitState;
 import com.alcatel.wifilink.model.sms.SmsSingle;
 import com.alcatel.wifilink.model.system.SysStatus;
 import com.alcatel.wifilink.model.system.SystemInfo;
+import com.alcatel.wifilink.model.system.SystemStates;
 import com.alcatel.wifilink.model.system.WanSetting;
 import com.alcatel.wifilink.model.update.DeviceNewVersion;
 import com.alcatel.wifilink.model.update.DeviceUpgradeState;
@@ -426,6 +427,10 @@ public class RX {
         subscribe(subscriber, smartLinkApi.getSystemStatus(new RequestBody(Methods.GET_SYSTEM_STATUS)));
     }
 
+    public void getSystemStates(ResponseObject<SystemStates> subscriber) {
+        subscribe(subscriber, smartLinkApi.getSystemStates(new RequestBody(Methods.GET_SYSTEM_STATUS)));
+    }
+
     public void rebootDevice(ResponseObject subscriber) {
         subscribe(subscriber, smartLinkApi.reboot(new RequestBody(Methods.SET_DEVICE_REBOOT)));
     }
@@ -687,6 +692,9 @@ public class RX {
 
         @POST("/jrd/webapi")
         Observable<ResponseBody<SysStatus>> getSystemStatus(@Body RequestBody requestBody);
+
+        @POST("/jrd/webapi")
+        Observable<ResponseBody<SystemStates>> getSystemStates(@Body RequestBody requestBody);
 
         @POST("/jrd/webapi")
         Observable<ResponseBody> reboot(@Body RequestBody requestBody);

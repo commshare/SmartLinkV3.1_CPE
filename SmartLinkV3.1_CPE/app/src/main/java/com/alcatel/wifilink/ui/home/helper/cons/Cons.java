@@ -36,6 +36,8 @@ public class Cons {
     public static int TAB_USAGE = 6;
     public static int TAB_MOBILE_NETWORK = 7;
     public static int TAB_SET_DATA_PLAN = 8;
+    public static int TAB_WIFI_EXTENDER = 9;
+    public static int TAB_FEEDBACK = 10;
 
     public static String USAGE_LIMIT = "USAGE_LIMIT";
 
@@ -245,7 +247,7 @@ public class Cons {
     public static final int NO_START_UPDATE = 0;
     public static final int UPDATING = 1;
     public static final int COMPLETE = 2;
-    
+
     /* sms check state */
     public static final int CLICK = 0;
     public static final int SELETE_ALL = 1;

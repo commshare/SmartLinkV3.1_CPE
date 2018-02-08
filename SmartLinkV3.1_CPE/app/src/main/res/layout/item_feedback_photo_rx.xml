@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_item_feedback_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/e1e1e1"
+        app:layout_heightPercent="9.4%sh"
+        app:layout_marginLeftPercent="0.6%sh"
+        app:layout_marginRightPercent="0.6%sh"
+        app:layout_widthPercent="9.4%sh">
+
+        <ImageView
+            android:id="@+id/iv_item_feedback_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/feedback_empty_photo" />
+
+        <ImageView
+            android:id="@+id/iv_item_feedback_photo_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/feedback_deleted"
+            app:layout_heightPercent="35%w"
+            app:layout_widthPercent="35%w" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

@@ -145,6 +145,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     private TextView tvLogout;
     int count = 0;
     private Handler handler;
+    private RelativeLayout rl_wifiExtender;
+    private View rl_feedback;
 
     @Nullable
     @Override
@@ -266,6 +268,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
         mBackup = (RelativeLayout) m_view.findViewById(R.id.setting_backup);
         mAbout = (RelativeLayout) m_view.findViewById(R.id.setting_about);
         mDeviceVersion = (TextView) m_view.findViewById(R.id.setting_firmware_upgrade_version);
+
+        rl_wifiExtender = (RelativeLayout) m_view.findViewById(R.id.rl_setting_wifi_extender);// wifi extender 面板
+        rl_wifiExtender.setOnClickListener(this);
+
+        rl_feedback = m_view.findViewById(R.id.setting_feedback);
+        rl_feedback.setOnClickListener(this);
+
         getDeviceFWCurrentVersion();
         showSharingService();
     }
@@ -330,6 +339,13 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
                 break;
             case R.id.setting_about:// 进入about
                 goToAboutSettingPage();
+                break;
+
+            case R.id.rl_setting_wifi_extender:// 进入wifi extender
+                goToWifiExtender();
+                break;
+            case R.id.setting_feedback:// 进入feedback
+                goToFeedback();
                 break;
             default:
                 break;
@@ -973,23 +989,44 @@ public class SettingFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void goToAccountSettingPage() {
-        // to setting account activity
         Intent intent = new Intent(getActivity(), SettingAccountActivity.class);
         activity.startActivity(intent);
     }
 
+    /**
+     * 进入Mobile network
+     */
     private void goToMobileNetworkSettingPage() {
-        activity.fraHelpers.transfer(activity.clazz[7]);
+        activity.fraHelpers.transfer(activity.clazz[Cons.TAB_MOBILE_NETWORK]);
     }
 
+    /**
+     * 进入ethernet wan conncet
+     */
     private void goEthernetWanConnectionPage() {
         Intent intent = new Intent(getActivity(), EthernetWanConnectionActivity.class);
         getActivity().startActivity(intent);
     }
 
+    /**
+     * 进入device setting
+     */
     private void goToDeviceSettingPage() {
-        // to setting connectDeviceList activity
         CA.toActivity(activity, SettingDeviceActivity.class, false, true, false, 0);
+    }
+
+    /**
+     * 进入wifi extender
+     */
+    private void goToWifiExtender() {
+        activity.fraHelpers.transfer(activity.clazz[Cons.TAB_WIFI_EXTENDER]);
+    }
+
+    /**
+     * 进入feedback
+     */
+    private void goToFeedback() {
+        activity.fraHelpers.transfer(activity.clazz[Cons.TAB_FEEDBACK]);
     }
 
     private void goToAboutSettingPage() {

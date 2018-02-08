@@ -327,6 +327,18 @@ public class SmsDetailActivity extends BaseActivityWithBack implements View.OnCl
                     RX.getInstant().getSMSContactList(0, new ResponseObject<SMSContactList>() {
                         @Override
                         protected void onSuccess(SMSContactList result) {
+
+                            // 1.1.判断最新获取的contact id集合是否包含传进来的id--> 是:回退
+                            List<Long> contactIds = new ArrayList<>();
+                            for (SMSContactList.SMSContact scc : result.getSMSContactList()) {
+                                contactIds.add(scc.getContactId());
+                            }
+                            if (!contactIds.contains(smsContact.getContactId())) {
+                                clickBack();
+                                return;
+                            }
+
+                            // 1.2.否:获取最新的短信列表
                             for (SMSContactList.SMSContact scc : result.getSMSContactList()) {
                                 long contactId = scc.getContactId();
                                 // 1.是当前的contact id

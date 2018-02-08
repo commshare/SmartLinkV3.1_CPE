@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_heightPercent="8%sh">
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_had_connected_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_8dip"
+            android:src="@drawable/btn_radio_on_normal"
+            android:visibility="invisible"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="30%h" />
+
+        <TextView
+            android:id="@+id/tv_wifiExtender_had_connected_hotDot_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_8dip"
+            android:layout_toEndOf="@id/iv_wifiExtender_had_connected_check"
+            android:text="TCL-OA"
+            android:textColor="@color/black"
+            app:layout_textSizePercent="30%h" />
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_had_connected_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_8dip"
+            android:src="@drawable/wifi_ex"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="50%h" />
+
+        <ImageView
+            android:id="@+id/iv_wifiExtender_had_connected_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_10dip"
+            android:layout_toStartOf="@id/iv_wifiExtender_had_connected_wifi"
+            android:src="@drawable/lock"
+            app:layout_heightPercent="45%h"
+            app:layout_widthPercent="45%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

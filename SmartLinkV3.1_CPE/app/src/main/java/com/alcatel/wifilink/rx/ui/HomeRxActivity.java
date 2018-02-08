@@ -123,7 +123,9 @@ public class HomeRxActivity extends BaseActivityWithBack {
             PukRxFragment.class,// puk--> 5
             UsageRxFragment.class,// puk--> 6
             MobileNetworkRxFragment.class, // mobile network--> 7
-            SetDataPlanRxfragment.class// set data plan--> 8
+            SetDataPlanRxfragment.class, // set data plan--> 8
+            WifiExtenderRxFragment.class,// wifi extender--> 9
+            FeedbackFragment.class// feedback--> 10
     };
     public FraHelpers fraHelpers;
     private BoardSimHelper boardSimHelper;

@@ -47,7 +47,9 @@ public class HomeService extends Service {
                 // 2.如果绑定的服务不再运行
                 if (!checkServiceRunning) {
                     // 3.停止服务--> 4.停止服务的onDestroy方法里登出
-                    stopService(intent);
+                    if (intent != null) {
+                        stopService(intent);
+                    }
                 }
             }
         };

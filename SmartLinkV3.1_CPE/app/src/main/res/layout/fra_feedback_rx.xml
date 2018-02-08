@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fffef5">
+
+    <!-- 1.banner -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_feedback_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mg_blue"
+        app:layout_heightPercent="9%h">
+
+        <ImageView
+            android:id="@+id/iv_feedback_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            app:layout_heightPercent="50%h" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/setting_feedback"
+            android:textColor="@color/white"
+            app:layout_textSizePercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- 2.Type title -->
+    <TextView
+        android:id="@+id/tv_feedback_type_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_feedback_banner"
+        android:background="@color/fffef5"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimen_8dip"
+        android:text="@string/type"
+        android:textColor="@color/c_666666"
+        app:layout_heightPercent="6%h"
+        app:layout_textSizePercent="2.7%h" />
+
+    <!-- 3.type show current type -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_feedback_selectType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_feedback_type_title"
+        android:background="@color/white"
+        app:layout_heightPercent="7%h">
+
+        <EditText
+            android:id="@+id/et_feedback_selectType"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:editable="false"
+            android:gravity="center_vertical"
+            android:hint="@string/select_the_feedback_type"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingStart="@dimen/dimen_8dip"
+            android:textColorHint="@color/gray11"
+            app:layout_textSizePercent="35%h"
+            app:layout_widthPercent="70%w" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dimen_15dip"
+            android:rotation="90"
+            android:src="@drawable/general_ic_next"
+            app:layout_heightPercent="30%h"
+            app:layout_widthPercent="30%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- 4.description -->
+    <TextView
+        android:id="@+id/tv_feedback_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_feedback_selectType"
+        android:background="@color/fffef5"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dimen_8dip"
+        android:text="@string/description"
+        android:textColor="@color/c_666666"
+        app:layout_heightPercent="6%h"
+        app:layout_textSizePercent="2.7%h" />
+
+    <!-- 5.enter feedback and suggestion -->
+    <ScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scv_feedback_enterFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_feedback_description"
+        android:background="@color/white"
+        android:scrollbars="none"
+        app:layout_heightPercent="40%h">
+
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_feedback_enterFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/enter_feedback_and_suggestion"
+                android:maxLength="2000"
+                android:padding="@dimen/dimen_8dip"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray11"
+                app:layout_textSizePercent="6%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </ScrollView>
+
+    <!-- 6.string num -->
+    <TextView
+        android:id="@+id/tv_feedback_stringNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scv_feedback_enterFeedback"
+        android:background="@color/white"
+        android:gravity="center_vertical|end"
+        android:paddingEnd="@dimen/dimen_8dip"
+        android:text="0/2000"
+        android:textColor="@color/gray11"
+        app:layout_heightPercent="6%h"
+        app:layout_textSizePercent="2.2%h" />
+
+    <!-- 7.photo -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_feedback_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_feedback_stringNum"
+        android:background="@color/white"
+        app:layout_heightPercent="12%h">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_0.5dip"
+            android:layout_alignParentTop="true"
+            android:alpha="0.5"
+            android:background="@color/gray11" />
+
+        <!-- photo logo -->
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/rl_feedback_photo_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_8dip"
+            android:background="@drawable/feedback_photo_bg"
+            app:layout_heightPercent="80%h"
+            app:layout_widthPercent="80%h">
+
+            <ImageView
+                android:id="@+id/iv_feedback_photo_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/feedback_camera"
+                app:layout_heightPercent="45%h"
+                app:layout_widthPercent="45%h" />
+
+            <TextView
+                android:id="@+id/tv_feedback_photo_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_feedback_photo_logo"
+                android:layout_centerHorizontal="true"
+                android:text="1/5"
+                android:textColor="@color/gray11"
+                app:layout_textSizePercent="20%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <!-- recycle view photo selecter -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_feedback_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/rl_feedback_photo_logo"
+            android:scrollbars="none"
+            app:layout_marginPercent="10%h" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- 8.submit -->
+    <TextView
+        android:id="@+id/tv_feedback_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_feedback_photo"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_feedback_submit_disable"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        app:layout_heightPercent="7.5%h"
+        app:layout_marginTopPercent="2.5%h"
+        app:layout_textSizePercent="2.7%h"
+        app:layout_widthPercent="85%w" />
+
+    <!-- 9.select the type choice panel -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_feedback_selectType_choice_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_feedback_selectType_choice_list_gray"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:background="@color/gray" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_feedback_selectType_choice_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/white"
+            android:scrollbars="none"
+            app:layout_widthPercent="80%w" />
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <!-- 10.submit ok -->
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/rl_feedback_selectType_submit_ok"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_feedback_selectType_submit_ok_gray"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:background="@color/gray" />
+
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:id="@+id/iv_feedback_selectType_submit_ok_pop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_feedback_submit_ok"
+            app:layout_heightPercent="50%h"
+            app:layout_widthPercent="80%w">
+
+            <ImageView
+                android:id="@+id/iv_feedback_selectType_submit_ok_pop_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/submit_ok"
+                app:layout_heightPercent="42%h"
+                app:layout_marginTopPercent="9%h"
+                app:layout_widthPercent="48%h" />
+
+            <TextView
+                android:id="@+id/iv_feedback_selectType_submit_ok_pop_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_feedback_selectType_submit_ok_pop_logo"
+                android:gravity="center"
+                android:text="@string/thanks_for_your_feedback_to_help_us_improve_our_product"
+                android:textColor="@color/black"
+                app:layout_marginPercent="5%w"
+                app:layout_textSizePercent="5.3%h" />
+
+            <TextView
+                android:id="@+id/iv_feedback_selectType_submit_ok_pop_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/ok"
+                android:textColor="@color/mg_blue"
+                app:layout_marginBottomPercent="6%h"
+                app:layout_textSizePercent="5.5%h" />
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

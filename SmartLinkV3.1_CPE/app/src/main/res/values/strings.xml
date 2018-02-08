@@ -597,9 +597,38 @@
     <string name="sms_max_length">SMS can enter %d characters at most</string>
     <string name="check_sim_normal_or_no_cost">Please check whether your SIM card is normal or no cost</string>
 
+    <!-- 2018-02-02 -->
     <string name="setting_wifi_extender">Wi-Fi extender</string>
     <string name="setting_feedback">Feedback</string>
     <string name="change_password_failed">Change password failed</string>
     <string name="the_current_password_is_wrong">The current password is wrong</string>
     <string name="the_current_password_is_the_same_as_default_password">The current password is the same as default password</string>
+
+    <string name="scan">Scan</string>
+    <string name="device_not_connected_please_check_network_settings">Device not connected.Please check network settings.</string>
+    <string name="connect_to_other_wifi_networks">Connect to other Wi-Fi networks</string>
+    <string name="type">Type</string>
+    <string name="select_the_feedback_type">Select the feedback type</string>
+    <string name="description">Description</string>
+    <string name="enter_feedback_and_suggestion">Enter feedback and suggestion</string>
+    <string name="submit">Submit</string>
+    <string name="thanks_for_your_feedback_to_help_us_improve_our_product">Thanks for your feedback to help us improve 
+        our product</string>
+    <string name="wifi_connection">Wi-Fi connection</string>
+    <string name="signal_for_feedback">Signal</string>
+    <string name="battery_life">Battery life</string>
+    <string name="others">Others</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+    <string name="transfer_list">Transfer list</string>
+    <string name="no_device_found">No device found</string>
+    <string name="when_using_the_same_wifi_network_as_your_friends">When using the same Wi-Fi network as your friends,
+        open Link app to find your connected friends and touch to share.</string>
+    <string name="no_transfer_list">No transfer list</string>
+    <string name="no_videos">No Videos</string>
+    <string name="known_networks_will_be_joined_automatically">known networks will be joined automatically.If no known 
+        networks are available,you will have no manually select</string>
+    <string name="available_networks">Available networks</string>
+    <string name="return_feedback_title">Return?</string>
+    <string name="return_feedback_des">The data will not be saved.\nAre you sure you want to return?</string>
 </resources>

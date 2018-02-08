@@ -189,4 +189,14 @@
     <string-array name="succeed_desc">
         <item>Create folder successfully!</item>
     </string-array>
+
+    <string-array name="feedbacktype">
+        <item>@string/wifi_connection</item>
+        <item>@string/main_sms</item>
+        <item>@string/signal_for_feedback</item>
+        <item>@string/battery_life</item>
+        <item>@string/usage_setting_mobile_data</item>
+        <item>@string/setting_network</item>
+        <item>@string/others</item>
+    </string-array>
 </resources>
